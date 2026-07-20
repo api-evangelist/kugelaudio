@@ -1,0 +1,71 @@
+generated: '2026-07-19'
+method: searched
+source: https://api.kugelaudio.com/openapi.json
+docs: https://docs.kugelaudio.com/api-reference/authentication
+notes: >-
+  Searched from the docs rather than derived: the published OpenAPI 3.1 document
+  at https://api.kugelaudio.com/openapi.json declares NO components.securitySchemes
+  and no root-level security requirement, even though every documented endpoint
+  requires an API key. The auth model below is captured from the authentication
+  and raw-API docs pages. This gap is recorded in review notes as a concrete fix
+  for the provider.
+summary:
+  types: [apiKey, http]
+  api_key_in: [header, query]
+  oauth2_flows: []
+  oauth2: false
+  scopes_supported: false
+schemes:
+  - name: BearerApiKey
+    type: http
+    scheme: bearer
+    in: header
+    parameter: Authorization
+    format: 'Authorization: Bearer [example key]'
+    transport: [https]
+    docs: https://docs.kugelaudio.com/api-reference/authentication
+    sources: [https://docs.kugelaudio.com/api-reference/authentication]
+  - name: ApiKeyHeader
+    type: apiKey
+    in: header
+    parameter: x-api-key
+    transport: [https]
+    docs: https://docs.kugelaudio.com/api-reference/raw-api
+    sources: [https://docs.kugelaudio.com/api-reference/raw-api]
+  - name: ApiKeyQuery
+    type: apiKey
+    in: query
+    parameter: api_key
+    transport: [wss]
+    note: >-
+      WebSocket endpoints (/ws/tts, /ws/tts/stream, /ws/tts/multi) accept the key
+      as a query parameter; an Authorization header is also accepted where the
+      client supports it.
+    sources: [https://docs.kugelaudio.com/api-reference/authentication]
+key_management:
+  issued_at: https://kugelaudio.com/dashboard
+  path: Dashboard -> Settings -> API Keys
+  shown_once: true
+  revocable: true
+  revocation_effect: immediate
+  rotation_guidance: >-
+    Docs recommend periodic rotation and separate keys per environment
+    (development, staging, production).
+  environment_variable: KUGELAUDIO_API_KEY
+  scoped_permissions: false
+  scoped_permissions_note: >-
+    "All API keys have full access to your account's resources. We're working on
+    scoped permissions for future releases." — docs, 2026-07-19.
+  region_routing: >-
+    Prefixing a key with `eu-` routes to the direct EU endpoint
+    (https://api.eu.kugelaudio.com) instead of the geo-routed canonical host.
+client_side_guidance: >-
+  Docs explicitly warn against using keys in frontend JavaScript, mobile app
+  source, public repositories, or client-side environment variables.
+auth_errors:
+  - {status: 401, error_code: UNAUTHORIZED, meaning: API key missing, invalid, or revoked}
+  - {status: 403, error_code: UNAUTHORIZED, meaning: Key valid but cannot access the requested resource}
+  - {ws_close_code: 4001, error_code: UNAUTHORIZED, meaning: WebSocket authentication failed}
+related:
+  - errors/kugelaudio-error-codes.yml
+  - conventions/kugelaudio-conventions.yml
