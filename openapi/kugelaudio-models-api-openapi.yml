@@ -1,0 +1,72 @@
+openapi: 3.1.0
+info:
+  title: KugelAudio TTS 11labs Models API
+  description: 'Unified API: REST + WebSocket + ElevenLabs + Vapi'
+  version: 2.0.0
+tags:
+- name: Models
+paths:
+  /v1/models:
+    get:
+      summary: Get Models
+      description: The public model catalog, filtered to live deployments.
+      operationId: get_models_v1_models_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelsResponse'
+      tags:
+      - Models
+components:
+  schemas:
+    ModelsResponse:
+      properties:
+        models:
+          items:
+            $ref: '#/components/schemas/ModelInfo'
+          type: array
+          title: Models
+      type: object
+      required:
+      - models
+      title: ModelsResponse
+      description: List of available models.
+    ModelInfo:
+      properties:
+        id:
+          type: string
+          title: Id
+        model_id:
+          type: string
+          title: Model Id
+        name:
+          type: string
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        parameters:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Parameters
+        max_input_length:
+          type: integer
+          title: Max Input Length
+          default: 5000
+        sample_rate:
+          type: integer
+          title: Sample Rate
+          default: 24000
+      type: object
+      required:
+      - id
+      - model_id
+      - name
+      title: ModelInfo
+      description: Public catalog entry for one TTS model.

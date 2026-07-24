@@ -1,0 +1,700 @@
+openapi: 3.1.0
+info:
+  title: KugelAudio TTS 11labs license API
+  description: 'Unified API: REST + WebSocket + ElevenLabs + Vapi'
+  version: 2.0.0
+tags:
+- name: license
+paths:
+  /v1/license/health:
+    get:
+      tags:
+      - license
+      summary: License Health
+      operationId: license_health_v1_license_health_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                additionalProperties:
+                  type: string
+                type: object
+                title: Response License Health V1 License Health Get
+  /v1/license/deployment-status:
+    get:
+      tags:
+      - license
+      summary: Deployment Status
+      description: Lightweight deployment-license validation for remote ingress monitors.
+      operationId: deployment_status_v1_license_deployment_status_get
+      parameters:
+      - name: X-Kugel-License-Key
+        in: header
+        required: true
+        schema:
+          type: string
+          title: X-Kugel-License-Key
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeploymentLicenseStatusResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/license/activate:
+    post:
+      tags:
+      - license
+      summary: Activate
+      operationId: activate_v1_license_activate_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActivateRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActivateResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/license/files:
+    get:
+      tags:
+      - license
+      summary: Get File
+      description: Presigned URL for any license-owned file in the weights bucket.
+      operationId: get_file_v1_license_files_get
+      parameters:
+      - name: path
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Path
+      - name: X-Kugel-License-Key
+        in: header
+        required: true
+        schema:
+          type: string
+          title: X-Kugel-License-Key
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/license/validate:
+    post:
+      tags:
+      - license
+      summary: Validate
+      operationId: validate_v1_license_validate_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ValidateRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidateResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/license/usage:
+    post:
+      tags:
+      - license
+      summary: Usage
+      operationId: usage_v1_license_usage_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UsageRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/license/status:
+    get:
+      tags:
+      - license
+      summary: Status
+      operationId: status_v1_license_status_get
+      parameters:
+      - name: license_key
+        in: query
+        required: true
+        schema:
+          type: string
+          title: License Key
+      - name: instance_id
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Instance Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Status V1 License Status Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/license/revoke:
+    post:
+      tags:
+      - license
+      summary: Revoke
+      operationId: revoke_v1_license_revoke_post
+      parameters:
+      - name: X-Api-Key
+        in: header
+        required: true
+        schema:
+          type: string
+          title: X-Api-Key
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RevokeRequest'
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/license/resolve-api-key:
+    post:
+      tags:
+      - license
+      summary: Resolve Api Key
+      description: Resolve a customer API key — used by on-prem ingress proxies.
+      operationId: resolve_api_key_v1_license_resolve_api_key_post
+      parameters:
+      - name: X-Kugel-License-Key
+        in: header
+        required: true
+        schema:
+          type: string
+          title: X-Kugel-License-Key
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResolveApiKeyRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResolveApiKeyResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/license/voices:
+    get:
+      tags:
+      - license
+      summary: List Voices
+      operationId: list_voices_v1_license_voices_get
+      parameters:
+      - name: license_key
+        in: query
+        required: true
+        schema:
+          type: string
+          title: License Key
+      - name: instance_id
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Instance Id
+      - name: model_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Model Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VoiceResponse'
+                title: Response List Voices V1 License Voices Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/license/voices/{voice_id}:
+    get:
+      tags:
+      - license
+      summary: Get Voice
+      operationId: get_voice_v1_license_voices__voice_id__get
+      parameters:
+      - name: voice_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Voice Id
+      - name: license_key
+        in: query
+        required: true
+        schema:
+          type: string
+          title: License Key
+      - name: instance_id
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Instance Id
+      - name: model_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Model Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VoiceResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/license/voices/{voice_id}/references/{reference_id}/encoding:
+    put:
+      tags:
+      - license
+      summary: Upload Voice Encoding
+      operationId: upload_voice_encoding_v1_license_voices__voice_id__references__reference_id__encoding_put
+      parameters:
+      - name: voice_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Voice Id
+      - name: reference_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Reference Id
+      - name: license_key
+        in: query
+        required: true
+        schema:
+          type: string
+          title: License Key
+      - name: instance_id
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Instance Id
+      - name: model_id
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Model Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    DeploymentLicenseStatusResponse:
+      properties:
+        valid:
+          type: boolean
+          title: Valid
+          default: true
+        max_concurrent_generations:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Max Concurrent Generations
+      type: object
+      title: DeploymentLicenseStatusResponse
+    ActivateRequest:
+      properties:
+        license_key:
+          type: string
+          title: License Key
+        model_id:
+          type: string
+          title: Model Id
+        instance_id:
+          type: string
+          title: Instance Id
+      type: object
+      required:
+      - license_key
+      - model_id
+      - instance_id
+      title: ActivateRequest
+    ResolveApiKeyResponse:
+      properties:
+        org_id:
+          type: integer
+          title: Org Id
+        api_key_id:
+          type: integer
+          title: Api Key Id
+        user_id:
+          type: string
+          title: User Id
+        project_id:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Project Id
+      type: object
+      required:
+      - org_id
+      - api_key_id
+      - user_id
+      title: ResolveApiKeyResponse
+    ActivateResponse:
+      properties:
+        file_encryption_key:
+          type: string
+          title: File Encryption Key
+        offline_token:
+          type: string
+          title: Offline Token
+        public_key_pem:
+          type: string
+          title: Public Key Pem
+        hmac_key:
+          type: string
+          title: Hmac Key
+        customer_id:
+          type: integer
+          title: Customer Id
+      type: object
+      required:
+      - file_encryption_key
+      - offline_token
+      - public_key_pem
+      - hmac_key
+      - customer_id
+      title: ActivateResponse
+    UsageResponse:
+      properties:
+        quota:
+          $ref: '#/components/schemas/QuotaStatus'
+      type: object
+      required:
+      - quota
+      title: UsageResponse
+    ValidateRequest:
+      properties:
+        license_key:
+          type: string
+          title: License Key
+        instance_id:
+          type: string
+          title: Instance Id
+      type: object
+      required:
+      - license_key
+      - instance_id
+      title: ValidateRequest
+    RevokeRequest:
+      properties:
+        license_key:
+          type: string
+          title: License Key
+        instance_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Instance Id
+      type: object
+      required:
+      - license_key
+      title: RevokeRequest
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    VoiceResponse:
+      properties:
+        id:
+          type: integer
+          title: Id
+        name:
+          type: string
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        category:
+          type: string
+          title: Category
+          default: cloned
+        sex:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Sex
+        age:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Age
+        supported_languages:
+          items:
+            type: string
+          type: array
+          title: Supported Languages
+        sample_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Sample Url
+        avatar_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Avatar Url
+        references:
+          items:
+            $ref: '#/components/schemas/VoiceReferenceResponse'
+          type: array
+          title: References
+      type: object
+      required:
+      - id
+      - name
+      title: VoiceResponse
+    UsageRequest:
+      properties:
+        license_key:
+          type: string
+          title: License Key
+        instance_id:
+          type: string
+          title: Instance Id
+        chars:
+          type: integer
+          title: Chars
+        audio_seconds:
+          type: number
+          title: Audio Seconds
+        reported_at:
+          type: number
+          title: Reported At
+        signature:
+          type: string
+          title: Signature
+          default: ''
+      type: object
+      required:
+      - license_key
+      - instance_id
+      - chars
+      - audio_seconds
+      - reported_at
+      title: UsageRequest
+    ResolveApiKeyRequest:
+      properties:
+        api_key:
+          type: string
+          title: Api Key
+      type: object
+      required:
+      - api_key
+      title: ResolveApiKeyRequest
+    VoiceReferenceResponse:
+      properties:
+        id:
+          type: integer
+          title: Id
+        audio_url:
+          type: string
+          title: Audio Url
+        encoding_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Encoding Url
+      type: object
+      required:
+      - id
+      - audio_url
+      title: VoiceReferenceResponse
+    FileResponse:
+      properties:
+        download_url:
+          type: string
+          title: Download Url
+        size_bytes:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Size Bytes
+      type: object
+      required:
+      - download_url
+      title: FileResponse
+    QuotaStatus:
+      properties:
+        used_chars:
+          type: integer
+          title: Used Chars
+        used_seconds:
+          type: number
+          title: Used Seconds
+        quota_chars:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Quota Chars
+        quota_seconds:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Quota Seconds
+        exceeded:
+          type: boolean
+          title: Exceeded
+      type: object
+      required:
+      - used_chars
+      - used_seconds
+      - exceeded
+      title: QuotaStatus
+    ValidateResponse:
+      properties:
+        offline_token:
+          type: string
+          title: Offline Token
+        quota:
+          anyOf:
+          - $ref: '#/components/schemas/QuotaStatus'
+          - type: 'null'
+      type: object
+      required:
+      - offline_token
+      title: ValidateResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

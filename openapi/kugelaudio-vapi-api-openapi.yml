@@ -1,0 +1,170 @@
+openapi: 3.1.0
+info:
+  title: KugelAudio TTS 11labs Vapi API
+  description: 'Unified API: REST + WebSocket + ElevenLabs + Vapi'
+  version: 2.0.0
+tags:
+- name: Vapi
+paths:
+  /vapi/synthesize:
+    post:
+      summary: Vapi Synthesize
+      description: 'Vapi custom TTS webhook.
+
+
+        With ``message.call.id``: clause POSTs of one agent turn share a
+
+        TTS session (KV continuation). Without it (test harness, non-Vapi
+
+        callers): a stateless one-shot synthesis.'
+      operationId: vapi_synthesize_vapi_synthesize_post
+      parameters:
+      - name: voice_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Voice Id
+      - name: model_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Model Id
+      - name: x-voice-id
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: X-Voice-Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VapiTTSRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Vapi
+components:
+  schemas:
+    VapiTTSRequest:
+      properties:
+        message:
+          $ref: '#/components/schemas/VapiMessage'
+      type: object
+      required:
+      - message
+      title: VapiTTSRequest
+      description: Vapi custom TTS webhook request body.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    VapiArtifact:
+      properties:
+        messages:
+          items: {}
+          type: array
+          title: Messages
+      type: object
+      title: VapiArtifact
+      description: 'Subset of Vapi''s ``artifact`` — only the transcript length.
+
+
+        ``len(messages)`` is the turn id: stable across POSTs of one agent
+
+        turn, grows between turns. Items are never introspected.'
+    VapiCall:
+      properties:
+        id:
+          type: string
+          minLength: 1
+          title: Id
+        orgId:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Orgid
+      type: object
+      required:
+      - id
+      title: VapiCall
+      description: Subset of Vapi's ``call`` object — only the stable id.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    VapiMessage:
+      properties:
+        type:
+          type: string
+          title: Type
+          default: voice-request
+        text:
+          type: string
+          maxLength: 10000
+          minLength: 1
+          title: Text
+        sampleRate:
+          type: integer
+          title: Samplerate
+          description: Target sample rate in Hz
+        call:
+          anyOf:
+          - $ref: '#/components/schemas/VapiCall'
+          - type: 'null'
+        artifact:
+          anyOf:
+          - $ref: '#/components/schemas/VapiArtifact'
+          - type: 'null'
+      type: object
+      required:
+      - text
+      - sampleRate
+      title: VapiMessage
+      description: The ``message`` object Vapi sends in every custom TTS webhook.

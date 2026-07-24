@@ -1,0 +1,764 @@
+openapi: 3.1.0
+info:
+  title: KugelAudio TTS 11labs Dictionaries API
+  description: 'Unified API: REST + WebSocket + ElevenLabs + Vapi'
+  version: 2.0.0
+tags:
+- name: Dictionaries
+paths:
+  /v1/dictionaries:
+    get:
+      summary: List Dictionaries
+      description: List every dictionary belonging to the caller's project.
+      operationId: list_dictionaries_v1_dictionaries_get
+      parameters:
+      - name: project_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Project Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DictionaryListResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Dictionaries
+    post:
+      summary: Create Dictionary
+      description: Create a new dictionary scoped to the caller's project.
+      operationId: create_dictionary_v1_dictionaries_post
+      parameters:
+      - name: project_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Project Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateDictionaryRequest'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DictionaryResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Dictionaries
+  /v1/dictionaries/{dict_id}:
+    get:
+      summary: Get Dictionary
+      description: Fetch a single dictionary by ID.
+      operationId: get_dictionary_v1_dictionaries__dict_id__get
+      parameters:
+      - name: dict_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Dict Id
+      - name: project_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Project Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DictionaryResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Dictionaries
+    patch:
+      summary: Update Dictionary
+      description: Update name / description / language / is_active.
+      operationId: update_dictionary_v1_dictionaries__dict_id__patch
+      parameters:
+      - name: dict_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Dict Id
+      - name: project_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Project Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateDictionaryRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DictionaryResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Dictionaries
+    delete:
+      summary: Delete Dictionary
+      description: Delete a dictionary (cascades to its entries).
+      operationId: delete_dictionary_v1_dictionaries__dict_id__delete
+      parameters:
+      - name: dict_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Dict Id
+      - name: project_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Project Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Dictionaries
+  /v1/dictionaries/{dict_id}/entries:
+    get:
+      summary: List Entries
+      description: List entries in a dictionary with optional search and pagination.
+      operationId: list_entries_v1_dictionaries__dict_id__entries_get
+      parameters:
+      - name: dict_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Dict Id
+      - name: project_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Project Id
+      - name: search
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            maxLength: 200
+          - type: 'null'
+          title: Search
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 500
+          minimum: 1
+          default: 100
+          title: Limit
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+          title: Offset
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DictionaryEntryListResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Dictionaries
+    post:
+      summary: Add Entry
+      description: Add a single entry to a dictionary.
+      operationId: add_entry_v1_dictionaries__dict_id__entries_post
+      parameters:
+      - name: dict_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Dict Id
+      - name: project_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Project Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EntryPayload'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DictionaryEntryResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Dictionaries
+    put:
+      summary: Bulk Replace Entries
+      description: 'Replace all entries in the dictionary with the supplied list.
+
+
+        Atomic semantics: upsert every supplied entry by
+
+        ``(dictionary_id, word)``, then delete any existing entries whose
+
+        word is not in the payload. The cache is invalidated once at the
+
+        end.'
+      operationId: bulk_replace_entries_v1_dictionaries__dict_id__entries_put
+      parameters:
+      - name: dict_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Dict Id
+      - name: project_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Project Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkReplaceEntriesRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkReplaceResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Dictionaries
+  /v1/dictionaries/{dict_id}/entries/{entry_id}:
+    patch:
+      summary: Update Entry
+      description: Update an entry's word / replacement / ipa / case_sensitive.
+      operationId: update_entry_v1_dictionaries__dict_id__entries__entry_id__patch
+      parameters:
+      - name: dict_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Dict Id
+      - name: entry_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Entry Id
+      - name: project_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Project Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateEntryRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DictionaryEntryResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Dictionaries
+    delete:
+      summary: Delete Entry
+      description: Delete a single entry.
+      operationId: delete_entry_v1_dictionaries__dict_id__entries__entry_id__delete
+      parameters:
+      - name: dict_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Dict Id
+      - name: entry_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Entry Id
+      - name: project_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Project Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Dictionaries
+  /v1/dictionaries/{project_id}/invalidate:
+    post:
+      summary: Invalidate Dictionary Cache
+      description: 'Invalidate cached dictionary entries for a project.
+
+
+        Internal endpoint — requires master-key authentication. Called by
+
+        the web app after dictionary mutations so the TTS backend picks up
+
+        changes immediately instead of waiting for the cache TTL to expire.'
+      operationId: invalidate_dictionary_cache_v1_dictionaries__project_id__invalidate_post
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Project Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Dictionaries
+components:
+  schemas:
+    DictionaryEntryResponse:
+      properties:
+        id:
+          type: integer
+          title: Id
+        dictionary_id:
+          type: integer
+          title: Dictionary Id
+        word:
+          type: string
+          title: Word
+        replacement:
+          type: string
+          title: Replacement
+        ipa:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Ipa
+        case_sensitive:
+          type: boolean
+          title: Case Sensitive
+        created_at:
+          type: string
+          title: Created At
+        updated_at:
+          type: string
+          title: Updated At
+      type: object
+      required:
+      - id
+      - dictionary_id
+      - word
+      - replacement
+      - case_sensitive
+      - created_at
+      - updated_at
+      title: DictionaryEntryResponse
+      description: A single dictionary entry.
+    DictionaryListResponse:
+      properties:
+        dictionaries:
+          items:
+            $ref: '#/components/schemas/DictionaryResponse'
+          type: array
+          title: Dictionaries
+      type: object
+      required:
+      - dictionaries
+      title: DictionaryListResponse
+      description: List of dictionaries for a project.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    BulkReplaceResponse:
+      properties:
+        upserted:
+          type: integer
+          title: Upserted
+        deleted:
+          type: integer
+          title: Deleted
+        total:
+          type: integer
+          title: Total
+      type: object
+      required:
+      - upserted
+      - deleted
+      - total
+      title: BulkReplaceResponse
+      description: Counts of what changed during bulk replace.
+    DictionaryEntryListResponse:
+      properties:
+        entries:
+          items:
+            $ref: '#/components/schemas/DictionaryEntryResponse'
+          type: array
+          title: Entries
+        total:
+          type: integer
+          title: Total
+        limit:
+          type: integer
+          title: Limit
+        offset:
+          type: integer
+          title: Offset
+      type: object
+      required:
+      - entries
+      - total
+      - limit
+      - offset
+      title: DictionaryEntryListResponse
+      description: Paginated list of dictionary entries.
+    UpdateEntryRequest:
+      properties:
+        word:
+          anyOf:
+          - type: string
+            maxLength: 200
+            minLength: 1
+          - type: 'null'
+          title: Word
+        replacement:
+          anyOf:
+          - type: string
+            maxLength: 1000
+            minLength: 1
+          - type: 'null'
+          title: Replacement
+        ipa:
+          anyOf:
+          - type: string
+            maxLength: 200
+          - type: 'null'
+          title: Ipa
+        case_sensitive:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Case Sensitive
+      additionalProperties: false
+      type: object
+      title: UpdateEntryRequest
+      description: Patch an existing entry.
+    EntryPayload:
+      properties:
+        word:
+          type: string
+          maxLength: 200
+          minLength: 1
+          title: Word
+        replacement:
+          type: string
+          maxLength: 1000
+          minLength: 1
+          title: Replacement
+        ipa:
+          anyOf:
+          - type: string
+            maxLength: 200
+          - type: 'null'
+          title: Ipa
+        case_sensitive:
+          type: boolean
+          title: Case Sensitive
+          default: false
+      additionalProperties: false
+      type: object
+      required:
+      - word
+      - replacement
+      title: EntryPayload
+      description: Fields shared by single-entry create and bulk-replace items.
+    BulkReplaceEntriesRequest:
+      properties:
+        entries:
+          items:
+            $ref: '#/components/schemas/EntryPayload'
+          type: array
+          title: Entries
+      additionalProperties: false
+      type: object
+      required:
+      - entries
+      title: BulkReplaceEntriesRequest
+      description: 'Atomic upsert + delete-missing replacement of all entries in a dictionary.
+
+
+        Idempotent: callers sending the same payload twice converge to the
+
+        same final state. Entries in the existing dictionary whose ``word``
+
+        is not in ``entries`` are deleted; entries whose ``word`` matches
+
+        are upserted.'
+    UpdateDictionaryRequest:
+      properties:
+        name:
+          anyOf:
+          - type: string
+            maxLength: 200
+            minLength: 1
+          - type: 'null'
+          title: Name
+        description:
+          anyOf:
+          - type: string
+            maxLength: 2000
+          - type: 'null'
+          title: Description
+        language:
+          anyOf:
+          - type: string
+            maxLength: 16
+          - type: 'null'
+          title: Language
+        is_active:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Is Active
+      additionalProperties: false
+      type: object
+      title: UpdateDictionaryRequest
+      description: Patch an existing dictionary. project_id cannot be changed.
+    CreateDictionaryRequest:
+      properties:
+        name:
+          type: string
+          maxLength: 200
+          minLength: 1
+          title: Name
+        description:
+          anyOf:
+          - type: string
+            maxLength: 2000
+          - type: 'null'
+          title: Description
+        language:
+          anyOf:
+          - type: string
+            maxLength: 16
+          - type: 'null'
+          title: Language
+          description: BCP-47 language tag (e.g. 'en', 'de-DE'). Omit for all languages.
+      additionalProperties: false
+      type: object
+      required:
+      - name
+      title: CreateDictionaryRequest
+      description: Create a new dictionary scoped to a project.
+    DictionaryResponse:
+      properties:
+        id:
+          type: integer
+          title: Id
+        project_id:
+          type: integer
+          title: Project Id
+        name:
+          type: string
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        language:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Language
+        is_active:
+          type: boolean
+          title: Is Active
+        created_at:
+          type: string
+          title: Created At
+        updated_at:
+          type: string
+          title: Updated At
+      type: object
+      required:
+      - id
+      - project_id
+      - name
+      - is_active
+      - created_at
+      - updated_at
+      title: DictionaryResponse
+      description: A single dictionary record.
+    DeleteResponse:
+      properties:
+        deleted:
+          type: boolean
+          title: Deleted
+          default: true
+      type: object
+      title: DeleteResponse
+      description: Response for delete operations (200 + body so JS SDKs can JSON-parse).
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

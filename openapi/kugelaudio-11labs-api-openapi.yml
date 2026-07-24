@@ -1,0 +1,334 @@
+openapi: 3.1.0
+info:
+  title: KugelAudio TTS 11labs API
+  description: 'Unified API: REST + WebSocket + ElevenLabs + Vapi'
+  version: 2.0.0
+tags:
+- name: 11labs
+paths:
+  /11labs/v1/text-to-speech/{voice_id}:
+    post:
+      summary: Text To Speech
+      description: Generate speech from text (ElevenLabs compatible).
+      operationId: text_to_speech_11labs_v1_text_to_speech__voice_id__post
+      parameters:
+      - name: voice_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Voice Id
+      - name: output_format
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Output Format
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ElevenLabsTTSRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - 11labs
+  /11labs/v1/text-to-speech/{voice_id}/stream:
+    post:
+      summary: Text To Speech Stream
+      description: Streaming alias — same audio stream as the non-stream endpoint.
+      operationId: text_to_speech_stream_11labs_v1_text_to_speech__voice_id__stream_post
+      parameters:
+      - name: voice_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Voice Id
+      - name: output_format
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Output Format
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ElevenLabsTTSRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - 11labs
+  /11labs/v1/voices:
+    get:
+      summary: Get Voices
+      description: 'All voices visible to the caller: public catalog + own org voices.'
+      operationId: get_voices_11labs_v1_voices_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ElevenLabsVoicesResponse'
+      tags:
+      - 11labs
+  /11labs/v1/voices/{voice_id}:
+    get:
+      summary: Get Voice
+      description: Get one voice by handle or legacy numeric id.
+      operationId: get_voice_11labs_v1_voices__voice_id__get
+      parameters:
+      - name: voice_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Voice Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ElevenLabsVoice'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - 11labs
+  /11labs/v1/models:
+    get:
+      summary: Get Models
+      description: 'Available models in the ElevenLabs shape, one entry per alias.
+
+
+        Returns a bare JSON array — the official API shape; the official SDK
+
+        (``client.models.list()``) parses ``List[Model]`` and breaks on any
+
+        wrapper object.'
+      operationId: get_models_11labs_v1_models_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ElevenLabsModel'
+                type: array
+                title: Response Get Models 11Labs V1 Models Get
+      tags:
+      - 11labs
+  /11labs/health:
+    get:
+      summary: Health
+      operationId: health_11labs_health_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                additionalProperties:
+                  type: string
+                type: object
+                title: Response Health 11Labs Health Get
+      tags:
+      - 11labs
+components:
+  schemas:
+    ElevenLabsVoice:
+      properties:
+        voice_id:
+          type: string
+          title: Voice Id
+        name:
+          type: string
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        category:
+          type: string
+          title: Category
+          default: cloned
+        labels:
+          additionalProperties: true
+          type: object
+          title: Labels
+          default: {}
+        preview_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Preview Url
+      type: object
+      required:
+      - voice_id
+      - name
+      title: ElevenLabsVoice
+      description: One voice in the ElevenLabs catalog shape.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ElevenLabsVoicesResponse:
+      properties:
+        voices:
+          items:
+            $ref: '#/components/schemas/ElevenLabsVoice'
+          type: array
+          title: Voices
+      type: object
+      required:
+      - voices
+      title: ElevenLabsVoicesResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ElevenLabsVoiceSettings:
+      properties:
+        stability:
+          type: number
+          maximum: 1.0
+          minimum: 0.0
+          title: Stability
+          default: 0.5
+        similarity_boost:
+          type: number
+          maximum: 1.0
+          minimum: 0.0
+          title: Similarity Boost
+          default: 0.75
+        style:
+          type: number
+          maximum: 1.0
+          minimum: 0.0
+          title: Style
+          default: 0.0
+        use_speaker_boost:
+          type: boolean
+          title: Use Speaker Boost
+          default: true
+      type: object
+      title: ElevenLabsVoiceSettings
+      description: ElevenLabs voice settings (mapped onto KugelAudio params).
+    ElevenLabsTTSRequest:
+      properties:
+        text:
+          type: string
+          maxLength: 10000
+          minLength: 1
+          title: Text
+        model_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Model Id
+          default: eleven_monolingual_v1
+        voice_settings:
+          anyOf:
+          - $ref: '#/components/schemas/ElevenLabsVoiceSettings'
+          - type: 'null'
+      type: object
+      required:
+      - text
+      title: ElevenLabsTTSRequest
+      description: ElevenLabs-compatible TTS request body.
+    ElevenLabsModel:
+      properties:
+        model_id:
+          type: string
+          title: Model Id
+        name:
+          type: string
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        can_be_finetuned:
+          type: boolean
+          title: Can Be Finetuned
+          default: false
+        can_do_text_to_speech:
+          type: boolean
+          title: Can Do Text To Speech
+          default: true
+        can_do_voice_conversion:
+          type: boolean
+          title: Can Do Voice Conversion
+          default: false
+        token_cost_factor:
+          type: number
+          title: Token Cost Factor
+          default: 1.0
+      type: object
+      required:
+      - model_id
+      - name
+      title: ElevenLabsModel
+      description: One model in the ElevenLabs catalog shape.

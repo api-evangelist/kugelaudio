@@ -1,0 +1,161 @@
+openapi: 3.1.0
+info:
+  title: KugelAudio TTS 11labs Predict API
+  description: 'Unified API: REST + WebSocket + ElevenLabs + Vapi'
+  version: 2.0.0
+tags:
+- name: Predict
+paths:
+  /predict:
+    post:
+      summary: Predict
+      description: Legacy alias for ``/v1/tts/generate``.
+      operationId: predict_predict_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SynthesizeRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Predict
+components:
+  schemas:
+    SynthesizeRequest:
+      properties:
+        text:
+          type: string
+          maxLength: 10000
+          minLength: 1
+          title: Text
+          description: Text to synthesize
+        voice_id:
+          anyOf:
+          - type: integer
+          - type: string
+          - type: 'null'
+          title: Voice Id
+          description: Voice handle or legacy numeric ID for cloning
+        cfg_scale:
+          type: number
+          title: Cfg Scale
+          description: Classifier-free guidance scale (clamped to 1.2–2.5)
+          default: 2.0
+        temperature:
+          type: number
+          maximum: 1.0
+          minimum: 0.0
+          title: Temperature
+          description: Sampling variance. 0 = most stable, 1 = most variance.
+          default: 0.4
+        max_new_tokens:
+          type: integer
+          maximum: 8192.0
+          minimum: 1.0
+          title: Max New Tokens
+          description: Maximum tokens to generate
+          default: 2048
+        sample_rate:
+          type: integer
+          title: Sample Rate
+          description: Output sample rate in Hz
+          default: 24000
+        language:
+          anyOf:
+          - type: string
+            maxLength: 10
+          - type: 'null'
+          title: Language
+          description: Language code (e.g., 'en', 'de')
+        model_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Model Id
+          description: Model to use
+        normalize:
+          type: boolean
+          title: Normalize
+          description: Enable text normalization
+          default: true
+        project_id:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Project Id
+          description: Project ID for custom dictionary lookup
+        dictionary_ids:
+          anyOf:
+          - items:
+              type: integer
+            type: array
+            maxItems: 50
+          - type: 'null'
+          title: Dictionary Ids
+          description: Per-request dictionary selection. Omit for the default behavior (all active dictionaries of the project apply, filtered by language). An empty list disables dictionaries for this request. A list of dictionary IDs applies exactly those dictionaries — including inactive ones — bypassing the language filter.
+        speed:
+          type: number
+          maximum: 1.2
+          minimum: 0.8
+          title: Speed
+          description: Playback speed multiplier (0.8 = slower, 1.2 = faster)
+          default: 1.0
+        output_format:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Output Format
+          description: Combined codec+rate token (e.g. 'pcm_8000', 'ulaw_8000', 'alaw_8000'). Opt-in; when set it is authoritative and must not contradict 'sample_rate'. Absent ⇒ legacy 'sample_rate' path (linear PCM16).
+      additionalProperties: false
+      type: object
+      required:
+      - text
+      title: SynthesizeRequest
+      description: One-shot synthesis request (REST and single-request WebSocket).
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

@@ -1,0 +1,36 @@
+openapi: 3.1.0
+info:
+  title: KugelAudio TTS 11labs Health API
+  description: 'Unified API: REST + WebSocket + ElevenLabs + Vapi'
+  version: 2.0.0
+tags:
+- name: Health
+paths:
+  /health:
+    get:
+      summary: Health
+      description: Liveness — always healthy when the process responds.
+      operationId: health_health_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+      tags:
+      - Health
+components:
+  schemas:
+    HealthResponse:
+      properties:
+        status:
+          type: string
+          enum:
+          - healthy
+          - unhealthy
+          title: Status
+          default: healthy
+      type: object
+      title: HealthResponse
+      description: Liveness check response.

@@ -1,0 +1,201 @@
+openapi: 3.1.0
+info:
+  title: KugelAudio TTS 11labs billing API
+  description: 'Unified API: REST + WebSocket + ElevenLabs + Vapi'
+  version: 2.0.0
+tags:
+- name: billing
+paths:
+  /v1/billing/credit-state:
+    get:
+      tags:
+      - billing
+      summary: Billing Credit State
+      operationId: billing_credit_state_v1_billing_credit_state_get
+      parameters:
+      - name: org_id
+        in: query
+        required: true
+        schema:
+          type: integer
+          minimum: 1
+          title: Org Id
+      - name: X-Kugel-License-Key
+        in: header
+        required: true
+        schema:
+          type: string
+          title: X-Kugel-License-Key
+      - name: x-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+          title: X-Api-Key
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingCreditStateResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/billing/record-usage:
+    post:
+      tags:
+      - billing
+      summary: Record Billing Usage
+      operationId: record_billing_usage_v1_billing_record_usage_post
+      parameters:
+      - name: X-Kugel-License-Key
+        in: header
+        required: true
+        schema:
+          type: string
+          title: X-Kugel-License-Key
+      - name: x-api-key
+        in: header
+        required: true
+        schema:
+          type: string
+          title: X-Api-Key
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecordBillingUsageRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordBillingUsageResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    RecordBillingUsageResponse:
+      properties:
+        success:
+          type: boolean
+          title: Success
+        cost_cents:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Cost Cents
+        error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error
+        currency:
+          type: string
+          title: Currency
+          default: eur
+      type: object
+      required:
+      - success
+      title: RecordBillingUsageResponse
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    RecordBillingUsageRequest:
+      properties:
+        org_id:
+          type: integer
+          title: Org Id
+        model_id:
+          type: string
+          title: Model Id
+        audio_seconds:
+          type: number
+          title: Audio Seconds
+        api_key_id:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Api Key Id
+        user_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: User Id
+        char_count:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Char Count
+        ttfa_ms:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Ttfa Ms
+        metadata:
+          additionalProperties: true
+          type: object
+          title: Metadata
+      type: object
+      required:
+      - org_id
+      - model_id
+      - audio_seconds
+      title: RecordBillingUsageRequest
+      description: One finished TTS generation — same fields as :class:`UsageReport`.
+    BillingCreditStateResponse:
+      properties:
+        has_access:
+          type: boolean
+          title: Has Access
+        remaining_cents:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Remaining Cents
+      type: object
+      required:
+      - has_access
+      title: BillingCreditStateResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

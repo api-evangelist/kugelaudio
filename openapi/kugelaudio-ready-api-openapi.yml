@@ -1,0 +1,52 @@
+openapi: 3.1.0
+info:
+  title: KugelAudio TTS 11labs Ready API
+  description: 'Unified API: REST + WebSocket + ElevenLabs + Vapi'
+  version: 2.0.0
+tags:
+- name: Ready
+paths:
+  /ready:
+    get:
+      summary: Ready
+      description: 'Readiness — gates on the backends selected for this deployment.
+
+
+        The selection comes from ``KUGELAUDIO_READINESS_BACKENDS`` via the
+
+        runtime settings (e.g. ``tts`` on a deployment with an ASR URL
+
+        configured but no ASR service running).'
+      operationId: ready_ready_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReadyResponse'
+      tags:
+      - Ready
+components:
+  schemas:
+    ReadyResponse:
+      properties:
+        status:
+          type: string
+          enum:
+          - ready
+          - not_ready
+          title: Status
+        model_path:
+          type: string
+          title: Model Path
+        multi_model:
+          type: boolean
+          title: Multi Model
+      type: object
+      required:
+      - status
+      - model_path
+      - multi_model
+      title: ReadyResponse
+      description: Readiness check response.
