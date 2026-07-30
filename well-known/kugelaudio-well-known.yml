@@ -1,0 +1,65 @@
+generated: '2026-07-19'
+method: searched
+source: https://www.kugelaudio.com/.well-known/api-catalog
+notes: >-
+  KugelAudio publishes an RFC 9727 api-catalog linkset on the marketing host.
+  That linkset is what led to the real OpenAPI at
+  https://api.kugelaudio.com/openapi.json and to a provider-published Agent
+  Skill — neither is linked from the docs navigation. No security.txt, no OIDC
+  or OAuth authorization-server metadata, and no ai-plugin.json were found on
+  any host (the API is API-key authenticated, so OAuth discovery is not
+  expected).
+hosts:
+  - host: https://www.kugelaudio.com
+    documents:
+      - path: /.well-known/api-catalog
+        status: 200
+        content_type: application/linkset+json
+        file: kugelaudio-api-catalog.json
+      - path: /.well-known/agent-skills/index.json
+        status: 200
+        content_type: application/json
+        file: kugelaudio-agent-skills-index.json
+        discovered_via: /.well-known/api-catalog
+      - {path: /.well-known/security.txt, status: 404}
+      - {path: /.well-known/openid-configuration, status: 404}
+      - {path: /.well-known/oauth-authorization-server, status: 404}
+      - {path: /.well-known/ai-plugin.json, status: 404}
+  - host: https://api.kugelaudio.com
+    documents:
+      - {path: /.well-known/security.txt, status: 404}
+      - {path: /.well-known/openid-configuration, status: 404}
+      - {path: /.well-known/oauth-authorization-server, status: 404}
+      - {path: /.well-known/api-catalog, status: 404}
+      - {path: /.well-known/ai-plugin.json, status: 404}
+  - host: https://api.eu.kugelaudio.com
+    documents:
+      - {path: /.well-known/security.txt, status: 404}
+      - {path: /.well-known/openid-configuration, status: 404}
+      - {path: /.well-known/oauth-authorization-server, status: 404}
+      - {path: /.well-known/api-catalog, status: 404}
+      - {path: /.well-known/ai-plugin.json, status: 404}
+  - host: https://docs.kugelaudio.com
+    documents:
+      - {path: /.well-known/security.txt, status: 404}
+      - {path: /.well-known/openid-configuration, status: 404}
+      - {path: /.well-known/oauth-authorization-server, status: 404}
+      - {path: /.well-known/api-catalog, status: 404}
+      - {path: /.well-known/ai-plugin.json, status: 404}
+catalog_links:
+  - anchor: https://api.kugelaudio.com
+    rel: service-desc
+    href: https://api.kugelaudio.com/openapi.json
+    type: application/vnd.oai.openapi+json;version=3.1
+  - anchor: https://api.kugelaudio.com
+    rel: service-doc
+    href: https://docs.kugelaudio.com/api-reference/introduction
+    type: text/html
+  - anchor: https://api.kugelaudio.com
+    rel: status
+    href: https://www.kugelaudio.com/status
+    type: text/html
+  - anchor: https://www.kugelaudio.com
+    rel: agent-skills
+    href: https://www.kugelaudio.com/.well-known/agent-skills/index.json
+    type: application/json

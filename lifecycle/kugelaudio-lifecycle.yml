@@ -1,0 +1,50 @@
+generated: '2026-07-19'
+method: searched
+source: https://docs.kugelaudio.com/api-reference/introduction
+versioning:
+  scheme: uri-path
+  current: v1
+  api_document_version: 2.0.0
+  api_document_version_note: >-
+    The OpenAPI info.version reads 2.0.0 while every path is served under /v1/.
+    The docs describe v1 as the current, stable, production-recommended version.
+  compatibility: Backward compatibility is maintained within a major version.
+  docs: https://docs.kugelaudio.com/api-reference/introduction
+deprecation:
+  policy_url: https://docs.kugelaudio.com/api-reference/introduction
+  policy:
+    - Deprecated features are announced 6 months in advance.
+    - Deprecated endpoints continue working for 12 months.
+    - Breaking changes only in major version updates.
+  announcement_window_months: 6
+  operation_window_months: 12
+  sunset_header: unknown
+  sunset_header_note: >-
+    No RFC 8594 Sunset or Deprecation response headers are documented, and none
+    are declared in the published OpenAPI.
+model_lifecycle:
+  current: kugel-3
+  legacy_accepted:
+    - kugel-2.5
+    - kugel-2-turbo
+  legacy_policy: >-
+    Legacy model IDs remain accepted for backwards compatibility and may route
+    through the current production model, but billing and Dashboard usage keep
+    the requested model ID. New integrations should use kugel-3.
+  docs: https://docs.kugelaudio.com/models
+status_page: https://www.kugelaudio.com/status
+status_page_source: https://www.kugelaudio.com/.well-known/api-catalog
+sla:
+  url: null
+  uptime_target: null
+  note: >-
+    No public SLA or uptime target was found. Enterprise plans advertise 24/7
+    support and a dedicated account manager but publish no numeric commitment.
+deprecated_operations: []
+deprecated_operations_note: >-
+  No operation in https://api.kugelaudio.com/openapi.json carries deprecated: true.
+changelog:
+  url: null
+  note: >-
+    No dated public changelog or release-notes page was found on the marketing
+    site or the docs host as of 2026-07-19.

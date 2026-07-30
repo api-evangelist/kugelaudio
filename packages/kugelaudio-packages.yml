@@ -1,0 +1,46 @@
+generated: '2026-07-19'
+method: searched
+source: https://docs.kugelaudio.com/api-reference/introduction
+notes: >-
+  Registry-verified first-party SDKs. npm and PyPI both publish under the
+  "kugelaudio" name and both point their repository metadata at
+  https://github.com/Kugelaudio/KugelAudio, confirming first-party status.
+  A Java SDK is documented at https://docs.kugelaudio.com/sdks/java/quickstart
+  but no matching Maven Central coordinates were found on 2026-07-19
+  (search.maven.org returned 0 results for "kugelaudio"), so it is recorded as
+  documented-but-unpublished rather than as a package.
+packages:
+  - language: javascript
+    registry: npm
+    name: kugelaudio
+    version: 0.9.0
+    url: https://www.npmjs.com/package/kugelaudio
+    install: npm install kugelaudio
+    repository: https://github.com/Kugelaudio/KugelAudio
+    description: Official JavaScript/TypeScript SDK for KugelAudio TTS API
+    docs: https://docs.kugelaudio.com/sdks/javascript/quickstart
+    official: true
+  - language: python
+    registry: pypi
+    name: kugelaudio
+    version: 1.6.0
+    url: https://pypi.org/project/kugelaudio/
+    install: pip install kugelaudio
+    repository: https://github.com/Kugelaudio/KugelAudio
+    description: Official Python SDK for KugelAudio TTS API
+    docs: https://docs.kugelaudio.com/sdks/python/quickstart
+    official: true
+documented_not_published:
+  - language: java
+    docs: https://docs.kugelaudio.com/sdks/java/quickstart
+    status: no-registry-artifact-found
+    checked: maven-central
+    checked_on: '2026-07-19'
+registries_checked:
+  - {registry: npm, result: found}
+  - {registry: pypi, result: found}
+  - {registry: maven-central, result: none}
+  - {registry: nuget, result: none}
+  - {registry: rubygems, result: none}
+  - {registry: crates.io, result: none}
+  - {registry: pkg.go.dev, result: none}

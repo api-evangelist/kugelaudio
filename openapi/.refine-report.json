@@ -1,0 +1,40 @@
+{
+  "provider": "kugelaudio",
+  "sources": [
+    "kugelaudio-11labs-api-openapi.yml",
+    "kugelaudio-audio-api-openapi.yml",
+    "kugelaudio-billing-api-openapi.yml",
+    "kugelaudio-dictionaries-api-openapi.yml",
+    "kugelaudio-health-api-openapi.yml",
+    "kugelaudio-license-api-openapi.yml",
+    "kugelaudio-models-api-openapi.yml",
+    "kugelaudio-normalize-api-openapi.yml",
+    "kugelaudio-post-overrides-api-openapi.yml",
+    "kugelaudio-predict-api-openapi.yml",
+    "kugelaudio-ready-api-openapi.yml",
+    "kugelaudio-tts-api-openapi.yml",
+    "kugelaudio-vapi-api-openapi.yml",
+    "kugelaudio-voices-api-openapi.yml"
+  ],
+  "outputs": [
+    "kugelaudio-11labs-api-openapi.yml",
+    "kugelaudio-audio-api-openapi.yml",
+    "kugelaudio-billing-api-openapi.yml",
+    "kugelaudio-dictionaries-api-openapi.yml",
+    "kugelaudio-health-api-openapi.yml",
+    "kugelaudio-license-api-openapi.yml",
+    "kugelaudio-models-api-openapi.yml",
+    "kugelaudio-normalize-api-openapi.yml",
+    "kugelaudio-post-overrides-api-openapi.yml",
+    "kugelaudio-predict-api-openapi.yml",
+    "kugelaudio-ready-api-openapi.yml",
+    "kugelaudio-tts-api-openapi.yml",
+    "kugelaudio-vapi-api-openapi.yml",
+    "kugelaudio-voices-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

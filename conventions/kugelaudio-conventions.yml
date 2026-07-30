@@ -1,0 +1,140 @@
+generated: '2026-07-19'
+method: searched
+source: https://docs.kugelaudio.com/api-reference/introduction
+also_derived_from: openapi/kugelaudio-tts-openapi-original.json
+base_urls:
+  canonical: https://api.kugelaudio.com
+  direct_eu: https://api.eu.kugelaudio.com
+  websocket: wss://api.kugelaudio.com
+  routing: >-
+    The canonical host is geo-routed. Prefixing the API key with `eu-` pins
+    traffic to the direct EU endpoint. See https://docs.kugelaudio.com/guides/regions.
+authentication:
+  style: api-key
+  header: 'Authorization: Bearer YOUR_API_KEY'
+  alternate_header: x-api-key
+  websocket: query parameter api_key
+  oauth2: false
+  scopes: false
+  detail: authentication/kugelaudio-authentication.yml
+idempotency:
+  supported: false
+  header: null
+  note: >-
+    No idempotency key, request-replay, or safe-retry contract is documented
+    anywhere in the KugelAudio docs, and no Idempotency-Key parameter appears in
+    the published OpenAPI. Writes (voice create, dictionary create, reference
+    upload) are therefore not safely retryable without client-side dedup. This
+    is a genuine gap, not an omission in this capture — no Idempotency pointer
+    is emitted in apis.yml.
+pagination:
+  style: offset-limit
+  applies_to:
+    - GET /v1/voices
+  request_params:
+    limit: {type: integer, default: 20, range: 1-100}
+    offset: {type: integer, default: 0}
+  response_fields: [total, limit, offset]
+  cursor: false
+  note: >-
+    Only the voices collection documents pagination. Dictionary and model
+    collections return unpaginated lists.
+filtering:
+  applies_to:
+    - GET /v1/voices
+  params:
+    language: ISO 639-1 language code filter
+    category: 'premade | cloned | generated'
+    include_public: {type: boolean, default: true}
+field_expansion:
+  supported: false
+sparse_fieldsets:
+  supported: false
+metadata:
+  supported: false
+  note: >-
+    No general-purpose user metadata field. Voice creation takes a structured
+    `metadata` multipart JSON part, but that is typed voice attributes
+    (name/sex/category/age/quality/supported_languages), not free-form metadata.
+request_tracing:
+  request_id_field: meta.request_id
+  location: JSON success envelope
+  header: null
+  example: '{"data": {}, "meta": {"request_id": "req_abc123"}}'
+  note: >-
+    A request_id is documented in the generic success envelope. No request-id
+    response header is documented, and binary audio responses (the primary TTS
+    path) carry no request-id header — only X-Sample-Rate and X-Audio-Format.
+response_envelopes:
+  json_success: '{"data": {...}, "meta": {"request_id": "..."}}'
+  json_error: '{"error": "...", "error_code": "...", "code": 429}'
+  binary_audio:
+    media_type: audio/pcm
+    encoding: pcm_s16le
+    headers: [X-Sample-Rate, X-Audio-Format]
+  note: >-
+    Collection endpoints in practice return the collection at the top level
+    (e.g. {"voices": [...], "total": 83}) rather than under `data`.
+  detail: errors/kugelaudio-error-codes.yml
+versioning:
+  style: uri-path
+  current: /v1/
+  detail: lifecycle/kugelaudio-lifecycle.yml
+rate_limiting:
+  scope: organization
+  error_code: RATE_LIMITED
+  status: 429
+  retry_after_header: Retry-After
+  retry_after_in_body: false
+  websocket_close_code: 4029
+  published_numeric_limits: false
+  note: >-
+    Rate limits and concurrent-stream ceilings are described as plan-dependent;
+    no numeric limits are published, so no rate-limits/ artifact is emitted.
+  additional_limits:
+    max_input_characters: 10000
+    per_request_character_limit: tier-dependent (429 RATE_LIMITED when exceeded)
+content_negotiation:
+  request_content_type: application/json
+  charset_guidance: >-
+    Callers not using an SDK must send Content-Type application/json; charset=utf-8,
+    normalize text to Unicode NFC, and set `language` explicitly, or non-ASCII
+    characters may be garbled or mispronounced.
+  accept: application/json or audio/* for TTS endpoints
+streaming:
+  transport: websocket
+  endpoints: [/ws/tts, /ws/tts/stream, /ws/tts/multi]
+  turn_model: >-
+    One turn = one backend session. A turn ends on an explicit `flush`, or is
+    auto-flushed after roughly 5 seconds of input idle (which emits a `warning`
+    frame). WebSocket ping/keep-alive frames do not reset the idle timer.
+  barge_in: '{"cancel": true} abandons the in-flight turn without closing the socket'
+  session_reuse: true
+  max_concurrent_contexts: 20
+  sticky_settings: >-
+    update_settings sets sticky defaults for six generation parameters
+    (cfg_scale, temperature, speed, max_new_tokens, language, normalize).
+    Identity and audio-format fields are not updatable mid-connection.
+  detail: asyncapi/kugelaudio-tts-asyncapi.yml
+usage_reporting:
+  per_request: true
+  location: the WebSocket `final` message `usage` object
+  fields: [audio_seconds, characters, cost_cents, currency, model_id]
+  currency: eur
+  note: >-
+    cost_cents is the actual charge in EUR cents, or null with
+    cost_unavailable: true when the charge could not be determined — explicitly
+    never a misleading 0.
+compatibility_surfaces:
+  - name: ElevenLabs-compatible proxy
+    prefix: /11labs
+    docs: https://docs.kugelaudio.com/integrations/elevenlabs-proxy
+    note: Drop-in surface for ElevenLabs-compatible SDKs and integrations.
+  - name: Vapi custom TTS
+    prefix: /vapi
+    docs: https://docs.kugelaudio.com/integrations/vapi
+related:
+  - authentication/kugelaudio-authentication.yml
+  - errors/kugelaudio-error-codes.yml
+  - lifecycle/kugelaudio-lifecycle.yml
+  - data-model/kugelaudio-data-model.yml

@@ -1,0 +1,71 @@
+generated: '2026-07-19'
+method: searched
+source: https://docs.kugelaudio.com/api-reference/errors
+format: custom-envelope
+format_note: >-
+  Not RFC 9457. KugelAudio uses a flat custom JSON envelope shared by HTTP
+  responses and WebSocket error frames. No application/problem+json is served.
+envelope:
+  media_type: application/json
+  shape:
+    error: {type: string, description: 'Safe client-facing message. Not to be parsed for program logic.'}
+    error_code: {type: string, description: Stable machine-readable error category.}
+    code: {type: integer, description: HTTP-style status code for the error.}
+  example: |
+    {
+      "error": "Rate limit exceeded",
+      "error_code": "RATE_LIMITED",
+      "code": 429
+    }
+  guidance: >-
+    Use error_code and code for application logic; treat error as display text
+    only. retry_after is NOT in the JSON body — when retry timing is available
+    on an HTTP response it is sent as the Retry-After response header.
+error_code_classes:
+  - {error_code: VALIDATION_ERROR, statuses: [400], meaning: Malformed or invalid request payload or WebSocket message}
+  - {error_code: MISSING_VOICE_ID, statuses: [400], meaning: No voice_id supplied; there is no default voice}
+  - {error_code: UNAUTHORIZED, statuses: [401, 403], meaning: Key missing/invalid, or valid but not permitted for the resource}
+  - {error_code: INSUFFICIENT_CREDITS, statuses: [402], meaning: Organization lacks credits for the request}
+  - {error_code: NOT_FOUND, statuses: [404], meaning: Referenced voice, dictionary, entry, project, or reference does not exist or is not visible}
+  - {error_code: RATE_LIMITED, statuses: [429], meaning: Organization exceeded its rate limit or per-request character limit}
+  - {error_code: INTERNAL_ERROR, statuses: [500], meaning: Generation or metadata load failed server-side}
+  - {error_code: MODEL_UNAVAILABLE, statuses: [503], meaning: Model or cluster capacity temporarily unavailable}
+errors:
+  - {status: 400, error_code: VALIDATION_ERROR, message: Invalid request, meaning: The request payload or WebSocket message is malformed or invalid.}
+  - {status: 400, error_code: VALIDATION_ERROR, message: Invalid JSON body, meaning: The HTTP request body is not valid JSON.}
+  - {status: 400, error_code: VALIDATION_ERROR, message: text required, meaning: The request is missing text to synthesize.}
+  - {status: 400, error_code: MISSING_VOICE_ID, message: voice_id is required, meaning: 'No voice_id was supplied for synthesis. There is no default voice. Distinct from the 404 voice-does-not-exist case.', action: Set an explicit voice_id.}
+  - {status: 400, error_code: VALIDATION_ERROR, message: Unsupported audio format, meaning: Uploaded reference audio uses an unsupported file format.}
+  - {status: 400, error_code: VALIDATION_ERROR, message: Invalid voice metadata, meaning: Voice creation metadata could not be parsed or validated.}
+  - {status: 401, error_code: UNAUTHORIZED, message: Unauthorized, meaning: The API key is missing, invalid, or not accepted for this request.}
+  - {status: 402, error_code: INSUFFICIENT_CREDITS, message: Insufficient credits, meaning: The organization does not have enough credits for the request.}
+  - {status: 403, error_code: UNAUTHORIZED, message: Forbidden, meaning: The API key is valid, but it cannot access the requested resource.}
+  - {status: 404, error_code: NOT_FOUND, message: Voice not found, meaning: The requested voice does not exist or is not visible to the caller.}
+  - {status: 404, error_code: NOT_FOUND, message: Dictionary not found, meaning: The requested dictionary does not exist or is not visible to the caller.}
+  - {status: 404, error_code: NOT_FOUND, message: Entry not found, meaning: The requested dictionary entry does not exist or is not visible to the caller.}
+  - {status: 404, error_code: NOT_FOUND, message: Project not found, meaning: The requested project does not exist or is not visible to the caller.}
+  - {status: 404, error_code: NOT_FOUND, message: Reference not found, meaning: The requested voice reference does not exist or is not visible to the caller.}
+  - {status: 429, error_code: RATE_LIMITED, message: Rate limit exceeded, meaning: The organization exceeded its rate limit., action: 'Back off and retry; honour the Retry-After header when present.'}
+  - {status: 429, error_code: RATE_LIMITED, message: Request exceeds the maximum character limit, meaning: The text is longer than the organization tier allows for one request., action: Split the text into smaller requests.}
+  - {status: 500, error_code: INTERNAL_ERROR, message: Audio generation failed, meaning: The generation request failed before usable audio could be returned.}
+  - {status: 500, error_code: INTERNAL_ERROR, message: Sample generation failed, meaning: Voice sample generation failed.}
+  - {status: 500, error_code: INTERNAL_ERROR, message: Failed to fetch voice, meaning: Voice metadata could not be loaded.}
+  - {status: 503, error_code: MODEL_UNAVAILABLE, message: 'Model overloaded, please try again later.', meaning: Cluster capacity is temporarily full., action: Retry later with backoff.}
+  - {status: 503, error_code: MODEL_UNAVAILABLE, message: The requested model is temporarily unavailable. Please try again shortly., meaning: The selected model is temporarily unavailable., action: Retry later with backoff.}
+websocket_close_codes:
+  - {close_code: 4000, error_code: INTERNAL_ERROR, meaning: The connection closed because of a generic generation failure.}
+  - {close_code: 4001, error_code: UNAUTHORIZED, meaning: Authentication failed.}
+  - {close_code: 4003, error_code: INSUFFICIENT_CREDITS, meaning: The organization does not have enough credits.}
+  - {close_code: 4029, error_code: RATE_LIMITED, meaning: The organization exceeded its rate limit.}
+  - {close_code: 4500, error_code: MODEL_UNAVAILABLE, meaning: The selected model is temporarily unavailable or overloaded.}
+websocket_note: >-
+  WebSocket error frames carry the same JSON envelope as HTTP errors. When the
+  server closes the socket after sending an error, the WebSocket close code is
+  separate from the JSON `code` field.
+spec_coverage_note: >-
+  The published OpenAPI only models 422 HTTPValidationError responses; none of
+  the documented error codes above appear in the spec. The docs error reference
+  is the authoritative source.
+related:
+  - authentication/kugelaudio-authentication.yml
+  - conventions/kugelaudio-conventions.yml

@@ -1,0 +1,24 @@
+generated: '2026-07-19'
+method: searched
+source: https://www.kugelaudio.com/.well-known/agent-skills/index.json
+discovery:
+  schema: https://schemas.agentskills.io/discovery/0.2.0/schema.json
+  index: https://www.kugelaudio.com/.well-known/agent-skills/index.json
+  discovered_via: https://www.kugelaudio.com/.well-known/api-catalog
+  note: >-
+    KugelAudio publishes its own Agent Skill and advertises it through an
+    agent-skills rel in its RFC 9727 api-catalog linkset. The skill below is
+    saved verbatim; the digest published in the discovery index was verified
+    against the fetched file on 2026-07-19.
+skills:
+  - file: kugelaudio-api.md
+    name: kugelaudio-api
+    description: Integrate KugelAudio text-to-speech with its public API and SDKs.
+    url: https://www.kugelaudio.com/.well-known/agent-skills/kugelaudio-api/SKILL.md
+    type: skill-md
+    digest: sha256:f0cafcb78ddacb1aadd00a91c36667f6c89f41069174d9ae76eac90a2f680e85
+    digest_verified: true
+    digest_verified_on: '2026-07-19'
+    method: searched
+    official: true
+    api: openapi/kugelaudio-tts-openapi-original.json

@@ -1,0 +1,160 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for KugelAudio TTS API
+  version: 1.0.0
+extends: openapi/kugelaudio-tts-openapi-original.json
+x-apievangelist-generated: '2026-07-19'
+x-apievangelist-method: generated
+x-apievangelist-note: >-
+  Captures API Evangelist's enhancements to the harvested spec without mutating
+  it. The published document omits servers[] and securitySchemes entirely even
+  though every operation requires an API key, and it carries no tags on the
+  majority of its 51 operations. These actions add the documented production
+  hosts, the real auth schemes, and topical tags — all transcribed from
+  https://docs.kugelaudio.com, never invented.
+actions:
+  - target: $.info
+    description: Record provenance and cross-links to the sibling artifacts.
+    update:
+      x-apievangelist-rating-source: https://apis.io/provider/kugelaudio
+      x-apievangelist-docs: https://docs.kugelaudio.com/api-reference/introduction
+      x-apievangelist-api-catalog: https://www.kugelaudio.com/.well-known/api-catalog
+      x-apievangelist-artifacts:
+        errors: errors/kugelaudio-error-codes.yml
+        conventions: conventions/kugelaudio-conventions.yml
+        authentication: authentication/kugelaudio-authentication.yml
+        lifecycle: lifecycle/kugelaudio-lifecycle.yml
+        data-model: data-model/kugelaudio-data-model.yml
+        streaming: asyncapi/kugelaudio-tts-asyncapi.yml
+
+  - target: $
+    description: >-
+      Add the production servers the spec omits. Both hosts are published in the
+      API reference; the EU host is the direct (non-geo-routed) endpoint.
+    update:
+      servers:
+        - url: https://api.kugelaudio.com
+          description: Canonical geo-routed endpoint.
+        - url: https://api.eu.kugelaudio.com
+          description: Direct EU endpoint (also selected by prefixing the API key with "eu-").
+
+  - target: $.components
+    description: >-
+      Add the securitySchemes the published spec omits. Every documented
+      endpoint requires an API key in one of these three forms.
+    update:
+      securitySchemes:
+        BearerApiKey:
+          type: http
+          scheme: bearer
+          description: 'Authorization: Bearer YOUR_API_KEY — the primary documented form.'
+        ApiKeyHeader:
+          type: apiKey
+          in: header
+          name: x-api-key
+          description: Alternate header form documented on the raw-API page.
+        ApiKeyQuery:
+          type: apiKey
+          in: query
+          name: api_key
+          description: WebSocket handshake form; not used on the REST surface.
+
+  - target: $
+    description: Apply the API-key requirement globally, matching documented behaviour.
+    update:
+      security:
+        - BearerApiKey: []
+        - ApiKeyHeader: []
+
+  - target: $
+    description: Declare topical tags so the untagged operations can be grouped.
+    update:
+      tags:
+        - name: tts
+          description: Text-to-speech generation and text normalization.
+        - name: voices
+          description: Browse, create, clone, and publish voices and their reference audio.
+        - name: dictionaries
+          description: Per-project pronunciation and replacement dictionaries.
+        - name: models
+          description: Available TTS models and their limits.
+        - name: transcription
+          description: Speech-to-text transcription.
+        - name: compatibility
+          description: ElevenLabs-compatible and Vapi drop-in proxy surfaces.
+        - name: operations
+          description: Health and readiness probes.
+
+  - target: $.paths['/v1/tts/generate'].post
+    update:
+      tags: [tts]
+      summary: Generate speech from text
+      externalDocs:
+        url: https://docs.kugelaudio.com/api-reference/tts/generate
+  - target: $.paths['/v1/normalize'].post
+    update:
+      tags: [tts]
+      externalDocs:
+        url: https://docs.kugelaudio.com/features/text-processing
+  - target: $.paths['/v1/models'].get
+    update:
+      tags: [models]
+      externalDocs:
+        url: https://docs.kugelaudio.com/api-reference/endpoints/models
+  - target: $.paths['/v1/voices'].get
+    update:
+      tags: [voices]
+      externalDocs:
+        url: https://docs.kugelaudio.com/api-reference/endpoints/voices
+  - target: $.paths['/v1/voices'].post
+    update:
+      tags: [voices]
+  - target: $.paths['/v1/voices/{voice_id}'].get
+    update:
+      tags: [voices]
+  - target: $.paths['/v1/voices/{voice_id}'].patch
+    update:
+      tags: [voices]
+  - target: $.paths['/v1/voices/{voice_id}'].delete
+    update:
+      tags: [voices]
+  - target: $.paths['/v1/voices/{voice_id}/references'].get
+    update:
+      tags: [voices]
+  - target: $.paths['/v1/voices/{voice_id}/references'].post
+    update:
+      tags: [voices]
+  - target: $.paths['/v1/voices/{voice_id}/publish'].post
+    update:
+      tags: [voices]
+  - target: $.paths['/v1/voices/{voice_id}/generate-sample'].post
+    update:
+      tags: [voices]
+  - target: $.paths['/v1/dictionaries'].get
+    update:
+      tags: [dictionaries]
+      externalDocs:
+        url: https://docs.kugelaudio.com/features/dictionaries
+  - target: $.paths['/v1/dictionaries'].post
+    update:
+      tags: [dictionaries]
+  - target: $.paths['/v1/audio/transcriptions'].post
+    update:
+      tags: [transcription]
+  - target: $.paths['/health'].get
+    update:
+      tags: [operations]
+  - target: $.paths['/ready'].get
+    update:
+      tags: [operations]
+
+  - target: $.info
+    description: >-
+      Point at the streaming contract the OpenAPI cannot express. The three
+      WebSocket channels carry the provider's lowest-latency path and appear
+      nowhere in this document.
+    update:
+      x-apievangelist-streaming-channels:
+        - {address: /ws/tts, docs: 'https://docs.kugelaudio.com/api-reference/tts/stream'}
+        - {address: /ws/tts/stream, docs: 'https://docs.kugelaudio.com/api-reference/tts/stream-input'}
+        - {address: /ws/tts/multi, docs: 'https://docs.kugelaudio.com/api-reference/tts/multi-context'}

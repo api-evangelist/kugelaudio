@@ -1,0 +1,124 @@
+generated: '2026-07-19'
+method: derived
+source: openapi/kugelaudio-tts-openapi-original.json
+enriched_from:
+  - https://docs.kugelaudio.com/api-reference/endpoints/voices
+  - https://docs.kugelaudio.com/api-reference/endpoints/dictionaries
+  - https://docs.kugelaudio.com/api-reference/endpoints/models
+id_style:
+  type: integer
+  note: >-
+    Resource identifiers are plain integers, not prefixed string IDs. Models are
+    the exception: their id is a string slug (e.g. "kugel-3"). Voices
+    additionally carry optional `handle` and `public_id` string fields in the
+    spec that the docs do not describe.
+entities:
+  - name: Voice
+    schemas: [VoiceInfo, VoiceDetailInfo, VoiceResponse, VoicesResponse]
+    id_field: id
+    aliases: [voice_id]
+    alias_note: voice_id duplicates id for backward compatibility.
+    collection: /v1/voices
+    fields: [id, voice_id, handle, public_id, name, description, generative_voice_description,
+      category, sex, age, quality, supported_languages, is_public, verified,
+      pending_verification, sample_url, avatar_url, sample_text]
+    enums:
+      category: [premade, cloned, designed, conversational, narrative, narrative_story, characters]
+      sex: [male, female, neutral]
+      age: [young, middle_age, old]
+      quality: [low, mid, high]
+    operations:
+      - get_voices_v1_voices_get
+      - create_voice_v1_voices_post
+      - get_voice_by_id_v1_voices__voice_id__get
+      - update_voice_v1_voices__voice_id__patch
+      - delete_voice_v1_voices__voice_id__delete
+      - publish_voice_v1_voices__voice_id__publish_post
+      - generate_voice_sample_v1_voices__voice_id__generate_sample_post
+  - name: VoiceReference
+    schemas: [VoiceReferenceInfo, VoiceReferenceResponse]
+    id_field: id
+    collection: /v1/voices/{voice_id}/references
+    fields: [id, voice_id, name, reference_text, s3_path, audio_url, is_generated]
+    note: Reference audio uploaded to train or seed a cloned voice.
+    operations:
+      - list_voice_references_v1_voices__voice_id__references_get
+      - upload_voice_reference_v1_voices__voice_id__references_post
+      - delete_voice_reference_v1_voices__voice_id__references__ref_id__delete
+  - name: Dictionary
+    schemas: [DictionaryResponse, DictionaryListResponse]
+    id_field: id
+    collection: /v1/dictionaries
+    fields: [id, project_id, name, description, language, is_active, created_at, updated_at]
+    note: Per-project pronunciation and replacement lists, language-filtered by default.
+    operations:
+      - list_dictionaries_v1_dictionaries_get
+      - create_dictionary_v1_dictionaries_post
+      - get_dictionary_v1_dictionaries__dict_id__get
+      - update_dictionary_v1_dictionaries__dict_id__patch
+      - delete_dictionary_v1_dictionaries__dict_id__delete
+      - invalidate_dictionary_cache_v1_dictionaries__project_id__invalidate_post
+  - name: DictionaryEntry
+    schemas: [DictionaryEntryResponse, DictionaryEntryListResponse, EntryPayload]
+    id_field: id
+    collection: /v1/dictionaries/{dict_id}/entries
+    fields: [id, dictionary_id, word, replacement, ipa, case_sensitive, created_at, updated_at]
+    operations:
+      - list_entries_v1_dictionaries__dict_id__entries_get
+      - add_entry_v1_dictionaries__dict_id__entries_post
+      - bulk_replace_entries_v1_dictionaries__dict_id__entries_put
+      - update_entry_v1_dictionaries__dict_id__entries__entry_id__patch
+      - delete_entry_v1_dictionaries__dict_id__entries__entry_id__delete
+  - name: Project
+    schemas: []
+    id_field: project_id
+    note: >-
+      No Project resource is exposed by the API — there are no /v1/projects
+      operations and no Project schema. Project exists only as a referenced
+      scoping key (project_id on Dictionary, and the
+      /v1/dictionaries/{project_id}/invalidate path). Projects are managed in
+      the Dashboard.
+    inferred: true
+  - name: Model
+    schemas: [ModelInfo, ModelsResponse]
+    id_field: id
+    id_type: string
+    collection: /v1/models
+    fields: [id, model_id, name, description, parameters, max_input_length, sample_rate]
+    known_ids: [kugel-3, kugel-2.5, kugel-2-turbo]
+    operations:
+      - get_models_v1_models_get
+  - name: WordTimestamp
+    schemas: [WordTimestamp]
+    embedded: true
+    fields: [word, start_s, end_s, confidence]
+    note: >-
+      Value object emitted alongside streaming audio. The spec names the fields
+      start_s/end_s/confidence while the streaming docs show
+      start_ms/end_ms/char_start/char_end/score — a real spec-vs-docs drift.
+  - name: QuotaStatus
+    schemas: [QuotaStatus]
+    embedded: true
+    fields: [used_chars, used_seconds, quota_chars, quota_seconds, exceeded]
+  - name: BillingCreditState
+    schemas: [BillingCreditStateResponse]
+    embedded: true
+    fields: [has_access, remaining_cents]
+relationships:
+  - {from: Voice, to: VoiceReference, type: has_many, via: voice_id}
+  - {from: VoiceReference, to: Voice, type: belongs_to, via: voice_id}
+  - {from: Dictionary, to: DictionaryEntry, type: has_many, via: dictionary_id}
+  - {from: DictionaryEntry, to: Dictionary, type: belongs_to, via: dictionary_id}
+  - {from: Dictionary, to: Project, type: belongs_to, via: project_id}
+  - {from: Generation, to: Voice, type: references, via: voice_id, note: 'TTS requests select a voice by id; voice_id is required, there is no default.'}
+  - {from: Generation, to: Model, type: references, via: model_id}
+  - {from: Generation, to: Dictionary, type: references, via: dictionary_ids, cardinality: 'many (max 50)'}
+domains:
+  - {name: tts, entities: [Model], operations_prefix: /v1/tts}
+  - {name: voices, entities: [Voice, VoiceReference]}
+  - {name: dictionaries, entities: [Dictionary, DictionaryEntry]}
+  - {name: licensing, note: 'Self-hosted/on-premise licensing surface (/v1/license/*) — 12 operations, tagged "license".'}
+  - {name: billing, note: '/v1/billing/* — credit state and usage recording, tagged "billing".'}
+  - {name: compatibility, note: 'ElevenLabs-compatible (/11labs/*) and Vapi (/vapi/*) proxy surfaces reusing the same underlying entities.'}
+render: null
+render_note: No subway/ visual exists in this repo yet.

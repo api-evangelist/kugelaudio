@@ -1,0 +1,365 @@
+asyncapi: 3.0.0
+info:
+  title: KugelAudio TTS Streaming API
+  version: v1
+  description: >-
+    API Evangelist description of KugelAudio's documented WebSocket streaming
+    surface. KugelAudio publishes no AsyncAPI document of its own; this file is
+    GENERATED from the provider's own published wire-format reference and is not
+    an authoritative provider artifact. Every channel, message, and field below
+    is transcribed from the docs pages listed in x-apievangelist-sources — none
+    are invented. The three streaming channels are absent from the provider's
+    OpenAPI (https://api.kugelaudio.com/openapi.json), which covers only the
+    REST surface, so this is the only machine-readable description of the
+    streaming contract.
+  contact:
+    name: KugelAudio
+    url: https://docs.kugelaudio.com
+    email: hello@kugelaudio.com
+  x-apievangelist-generated: '2026-07-19'
+  x-apievangelist-method: generated
+  x-apievangelist-sources:
+    - https://docs.kugelaudio.com/api-reference/tts/stream
+    - https://docs.kugelaudio.com/api-reference/tts/stream-input
+    - https://docs.kugelaudio.com/api-reference/tts/multi-context
+    - https://docs.kugelaudio.com/api-reference/tts/audio-formats
+    - https://docs.kugelaudio.com/api-reference/errors
+servers:
+  production:
+    host: api.kugelaudio.com
+    protocol: wss
+    description: Canonical geo-routed WebSocket endpoint.
+    security:
+      - $ref: '#/components/securitySchemes/apiKeyQuery'
+  eu:
+    host: api.eu.kugelaudio.com
+    protocol: wss
+    description: Direct EU WebSocket endpoint.
+    security:
+      - $ref: '#/components/securitySchemes/apiKeyQuery'
+channels:
+  streamSpeech:
+    address: /ws/tts
+    title: Stream Speech
+    description: >-
+      One request per connection cycle; audio chunks stream back and the cycle
+      ends with a `final` message carrying stats and per-request usage. The
+      socket is reusable across requests.
+    messages:
+      generateRequest: {$ref: '#/components/messages/generateRequest'}
+      updateSettings: {$ref: '#/components/messages/updateSettings'}
+      audioChunk: {$ref: '#/components/messages/audioChunk'}
+      wordTimestamps: {$ref: '#/components/messages/wordTimestamps'}
+      settingsUpdated: {$ref: '#/components/messages/settingsUpdated'}
+      finalWithUsage: {$ref: '#/components/messages/finalWithUsage'}
+      errorFrame: {$ref: '#/components/messages/errorFrame'}
+  streamInput:
+    address: /ws/tts/stream
+    title: Stream Input
+    description: >-
+      Token-by-token text input for LLM agents. Send config once (sticky for the
+      connection), stream text, then flush to end the turn. One turn equals one
+      backend session; idle turns auto-flush after about 5 seconds and emit a
+      warning frame.
+    messages:
+      configMessage: {$ref: '#/components/messages/configMessage'}
+      textMessage: {$ref: '#/components/messages/textMessage'}
+      flushMessage: {$ref: '#/components/messages/flushMessage'}
+      cancelMessage: {$ref: '#/components/messages/cancelMessage'}
+      closeMessage: {$ref: '#/components/messages/closeMessage'}
+      updateSettings: {$ref: '#/components/messages/updateSettings'}
+      audioChunk: {$ref: '#/components/messages/audioChunk'}
+      wordTimestamps: {$ref: '#/components/messages/wordTimestamps'}
+      errorFrame: {$ref: '#/components/messages/errorFrame'}
+  multiContext:
+    address: /ws/tts/multi
+    title: Multi-Context Streaming
+    description: >-
+      Up to 20 independent audio streams over a single connection, each
+      addressed by context_id. Contexts auto-close after 20 seconds of
+      inactivity; an empty-text frame acts as a keep-alive.
+    messages:
+      contextText: {$ref: '#/components/messages/contextText'}
+      contextFlush: {$ref: '#/components/messages/contextFlush'}
+      closeContext: {$ref: '#/components/messages/closeContext'}
+      closeSocket: {$ref: '#/components/messages/closeSocket'}
+      updateSettings: {$ref: '#/components/messages/updateSettings'}
+      audioChunk: {$ref: '#/components/messages/audioChunk'}
+      errorFrame: {$ref: '#/components/messages/errorFrame'}
+operations:
+  sendGenerateRequest:
+    action: send
+    channel: {$ref: '#/channels/streamSpeech'}
+    messages:
+      - {$ref: '#/channels/streamSpeech/messages/generateRequest'}
+  receiveStreamedAudio:
+    action: receive
+    channel: {$ref: '#/channels/streamSpeech'}
+    messages:
+      - {$ref: '#/channels/streamSpeech/messages/audioChunk'}
+      - {$ref: '#/channels/streamSpeech/messages/finalWithUsage'}
+  sendTurnText:
+    action: send
+    channel: {$ref: '#/channels/streamInput'}
+    messages:
+      - {$ref: '#/channels/streamInput/messages/configMessage'}
+      - {$ref: '#/channels/streamInput/messages/textMessage'}
+      - {$ref: '#/channels/streamInput/messages/flushMessage'}
+  receiveTurnAudio:
+    action: receive
+    channel: {$ref: '#/channels/streamInput'}
+    messages:
+      - {$ref: '#/channels/streamInput/messages/audioChunk'}
+  sendContextText:
+    action: send
+    channel: {$ref: '#/channels/multiContext'}
+    messages:
+      - {$ref: '#/channels/multiContext/messages/contextText'}
+  receiveContextAudio:
+    action: receive
+    channel: {$ref: '#/channels/multiContext'}
+    messages:
+      - {$ref: '#/channels/multiContext/messages/audioChunk'}
+components:
+  securitySchemes:
+    apiKeyQuery:
+      type: httpApiKey
+      name: api_key
+      in: query
+      description: >-
+        API key supplied as the api_key query parameter on the WebSocket URL.
+        An Authorization Bearer header is also accepted where the client
+        supports setting headers on the handshake.
+  messages:
+    generateRequest:
+      name: generateRequest
+      title: Generation request
+      contentType: application/json
+      payload:
+        type: object
+        required: [text, voice_id]
+        properties:
+          text: {type: string, maxLength: 10000}
+          model_id: {type: string, default: kugel-3}
+          voice_id: {type: integer}
+          cfg_scale: {type: number, default: 2.0, minimum: 1.2, maximum: 2.5}
+          temperature: {type: number, default: 0.4, minimum: 0, maximum: 1}
+          max_new_tokens: {type: integer, default: 2048, minimum: 1, maximum: 8192}
+          sample_rate: {type: integer, default: 24000, enum: [8000, 16000, 22050, 24000]}
+          output_format: {type: string, description: 'Combined codec + rate token, e.g. ulaw_8000.'}
+          normalize: {type: boolean, default: true}
+          language: {type: string, description: ISO 639-1 code.}
+          speed: {type: number, default: 1.0, minimum: 0.8, maximum: 1.2}
+          word_timestamps: {type: boolean, default: false}
+          speaker_prefix: {type: boolean, default: true}
+          dictionary_ids: {type: array, maxItems: 50, items: {type: integer}}
+    configMessage:
+      name: configMessage
+      title: Session config
+      contentType: application/json
+      payload:
+        type: object
+        properties:
+          voice_id: {type: integer}
+          model_id: {type: string}
+          cfg_scale: {type: number}
+          temperature: {type: number, default: 0.4}
+          sample_rate: {type: integer, default: 24000}
+          normalize: {type: boolean, default: true}
+          language: {type: string}
+          word_timestamps: {type: boolean, default: false}
+          flush_timeout_ms: {type: integer, default: 500}
+          max_buffer_length: {type: integer, default: 1000}
+          chunk_length_schedule: {type: array, items: {type: integer}, default: [5, 80, 150, 250]}
+          auto_mode: {type: boolean, default: false}
+          speed: {type: number, default: 1.0}
+          dictionary_ids: {type: array, items: {type: integer}}
+    textMessage:
+      name: textMessage
+      contentType: application/json
+      payload:
+        type: object
+        required: [text]
+        properties:
+          text: {type: string}
+          flush: {type: boolean}
+    flushMessage:
+      name: flushMessage
+      contentType: application/json
+      payload:
+        type: object
+        properties:
+          flush: {type: boolean, const: true}
+    cancelMessage:
+      name: cancelMessage
+      title: Barge-in
+      description: Abandons the current turn immediately; the socket stays open.
+      contentType: application/json
+      payload:
+        type: object
+        properties:
+          cancel: {type: boolean, const: true}
+    closeMessage:
+      name: closeMessage
+      description: >-
+        Ends the current session while the WebSocket stays open.
+        {"end_session": true} is an accepted alias; {"close_socket": true} ends
+        the session and closes the connection.
+      contentType: application/json
+      payload:
+        type: object
+        properties:
+          close: {type: boolean, const: true}
+    contextText:
+      name: contextText
+      title: Context text frame
+      description: >-
+        Creates or addresses a context. An empty-text frame acts as a keep-alive
+        that resets the context inactivity timeout without generating audio.
+      contentType: application/json
+      payload:
+        type: object
+        required: [context_id]
+        properties:
+          context_id: {type: string}
+          text: {type: string}
+          flush: {type: boolean}
+          output_format: {type: string}
+          voice_settings:
+            type: object
+            properties:
+              voice_id: {type: integer}
+              cfg_scale: {type: number}
+              max_new_tokens: {type: integer}
+    contextFlush:
+      name: contextFlush
+      contentType: application/json
+      payload:
+        type: object
+        required: [context_id]
+        properties:
+          context_id: {type: string}
+          flush: {type: boolean, const: true}
+    closeContext:
+      name: closeContext
+      description: >-
+        Closes a context, letting queued sentences finish. With
+        "immediate": true it cancels in-flight generation and drops buffered
+        text (barge-in).
+      contentType: application/json
+      payload:
+        type: object
+        required: [context_id]
+        properties:
+          context_id: {type: string}
+          close_context: {type: boolean, const: true}
+          immediate: {type: boolean}
+    closeSocket:
+      name: closeSocket
+      contentType: application/json
+      payload:
+        type: object
+        properties:
+          close_socket: {type: boolean, const: true}
+    updateSettings:
+      name: updateSettings
+      description: >-
+        Sets sticky defaults for six generation parameters. Identity and
+        audio-format fields (voice_id, model_id, sample_rate, output_format,
+        dictionary_ids) are rejected with a VALIDATION_ERROR frame.
+      contentType: application/json
+      payload:
+        type: object
+        properties:
+          update_settings:
+            type: object
+            properties:
+              cfg_scale: {type: number}
+              temperature: {type: number}
+              speed: {type: number}
+              max_new_tokens: {type: integer}
+              language: {type: string}
+              normalize: {type: boolean}
+    settingsUpdated:
+      name: settingsUpdated
+      contentType: application/json
+      payload:
+        type: object
+        properties:
+          settings_updated: {type: boolean}
+          settings: {type: object}
+    audioChunk:
+      name: audioChunk
+      title: Audio chunk
+      contentType: application/json
+      payload:
+        type: object
+        properties:
+          audio: {type: string, contentEncoding: base64, description: Base64-encoded audio data.}
+          enc: {type: string, example: pcm_s16le}
+          idx: {type: integer, description: Zero-based chunk index.}
+          sr: {type: integer, description: Sample rate in Hz.}
+          samples: {type: integer}
+          context_id: {type: string, description: Present on the multi-context channel only.}
+    wordTimestamps:
+      name: wordTimestamps
+      description: >-
+        Emitted after audio chunks when word_timestamps is enabled. Note the
+        docs describe start_ms/end_ms/char_start/char_end/score while the
+        OpenAPI WordTimestamp schema names start_s/end_s/confidence — a
+        provider spec-vs-docs drift recorded in data-model/.
+      contentType: application/json
+      payload:
+        type: object
+        properties:
+          word_timestamps:
+            type: array
+            items:
+              type: object
+              properties:
+                word: {type: string}
+                start_ms: {type: integer}
+                end_ms: {type: integer}
+                char_start: {type: integer}
+                char_end: {type: integer}
+                score: {type: number}
+    finalWithUsage:
+      name: finalWithUsage
+      title: Request complete
+      description: >-
+        Sent on /ws/tts when the request completes, carrying stats and per-request
+        usage. The streaming channels emit a lighter end-of-audio `final` without
+        usage, followed by session_closed.
+      contentType: application/json
+      payload:
+        type: object
+        properties:
+          final: {type: boolean}
+          chunks: {type: integer}
+          total_samples: {type: integer}
+          dur_ms: {type: number}
+          gen_ms: {type: number}
+          rtf: {type: number, description: Real-time factor (gen_ms / dur_ms).}
+          usage:
+            type: object
+            properties:
+              audio_seconds: {type: number, description: The unit billing is based on.}
+              characters: {type: integer}
+              cost_cents: {type: ['number', 'null'], description: 'Actual charge in EUR cents; null with cost_unavailable when undeterminable.'}
+              currency: {type: string, example: eur}
+              model_id: {type: string}
+              cost_unavailable: {type: boolean}
+    errorFrame:
+      name: errorFrame
+      title: Error frame
+      description: >-
+        Same JSON envelope as HTTP errors. WebSocket close codes are separate
+        from the JSON code field — see errors/kugelaudio-error-codes.yml.
+      contentType: application/json
+      payload:
+        type: object
+        properties:
+          error: {type: string, description: Display text only; do not parse.}
+          error_code: {type: string, enum: [VALIDATION_ERROR, MISSING_VOICE_ID, UNAUTHORIZED, INSUFFICIENT_CREDITS, NOT_FOUND, RATE_LIMITED, INTERNAL_ERROR, MODEL_UNAVAILABLE, TOO_MANY_CONTEXTS]}
+          code: {type: integer}
+          context_id: {type: string}

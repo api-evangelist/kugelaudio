@@ -1,0 +1,86 @@
+generated: '2026-07-19'
+method: derived
+source: openapi/kugelaudio-tts-openapi-original.json
+enriched_from:
+  - https://docs.kugelaudio.com/api-reference/introduction
+  - https://www.kugelaudio.com/en
+  - https://www.kugelaudio.com/privacy
+standards:
+  - id: openapi-3.1
+    conforms: true
+    evidence: 'https://api.kugelaudio.com/openapi.json declares openapi: 3.1.0 with 40 paths and 51 operations.'
+  - id: rfc9727-api-catalog
+    conforms: true
+    evidence: 'https://www.kugelaudio.com/.well-known/api-catalog serves an application/linkset+json document with service-desc, service-doc, and status links.'
+  - id: rfc9116-security-txt
+    conforms: false
+    evidence: /.well-known/security.txt returns 404 on all four hosts probed.
+  - id: oauth2
+    conforms: false
+    evidence: API-key authentication only; no oauth2 security scheme and no authorization-server metadata.
+  - id: oidc
+    conforms: false
+    evidence: /.well-known/openid-configuration returns 404 on all hosts probed.
+  - id: rfc9457-problem-details
+    conforms: false
+    evidence: 'Errors use a custom flat envelope {error, error_code, code} served as application/json; no application/problem+json.'
+  - id: rfc8594-sunset-header
+    conforms: false
+    evidence: No Sunset or Deprecation headers documented or declared, though a 6/12-month deprecation policy is published in prose.
+  - id: rfc6585-retry-after
+    conforms: true
+    evidence: 'Docs state 429 responses carry retry timing in the HTTP Retry-After header when available.'
+  - id: json-api
+    conforms: false
+    evidence: Custom response shapes; no JSON:API media type or document structure.
+  - id: idempotency-key
+    conforms: false
+    evidence: No idempotency key header or replay contract documented; no Idempotency-Key parameter in the spec.
+  - id: pagination
+    conforms: partial
+    evidence: 'Offset/limit pagination with total/limit/offset on GET /v1/voices only; dictionary and model collections are unpaginated.'
+  - id: asyncapi
+    conforms: false
+    evidence: >-
+      Three documented WebSocket streaming channels but no published AsyncAPI
+      document. See asyncapi/kugelaudio-tts-asyncapi.yml for an
+      API-Evangelist-generated description of the documented wire format.
+  - id: iso-639-1
+    conforms: true
+    evidence: Voice supported_languages and the TTS `language` parameter use ISO 639-1 codes.
+  - id: g711
+    conforms: true
+    evidence: 'output_format supports G.711 telephony codecs (e.g. ulaw_8000) — https://docs.kugelaudio.com/api-reference/tts/audio-formats.'
+  - id: gdpr
+    conforms: claimed
+    evidence: >-
+      Marketing site states "fully GDPR compliant" and "Built, trained and hosted
+      in the EU — outside the reach of the US Cloud Act". A published privacy
+      policy exists at https://www.kugelaudio.com/privacy. This is a
+      self-declared compliance claim, not a third-party certification.
+  - id: soc2
+    conforms: false
+    evidence: No SOC 2 report or attestation published.
+  - id: iso-27001
+    conforms: false
+    evidence: No ISO 27001 certificate published.
+  - id: hipaa
+    conforms: false
+    evidence: No HIPAA claim published.
+certifications: []
+certifications_note: >-
+  No third-party audited certifications (SOC 2, ISO 27001, PCI DSS, HIPAA,
+  FedRAMP) are published, and no trust center exists. The only compliance
+  posture published is a self-declared GDPR / EU-data-residency claim. Because
+  no audited compliance program is published, no `Compliance` pointer is emitted
+  in apis.yml.
+data_residency:
+  region: EU
+  claims:
+    - Built, trained and hosted in the EU
+    - EU jurisdiction only
+    - Outside the reach of the US Cloud Act
+  direct_eu_endpoint: https://api.eu.kugelaudio.com
+  on_premise_available: true
+  on_premise_docs: https://docs.kugelaudio.com/guides/self-hosted
+  entity: KugelAudio GmbH, Germany

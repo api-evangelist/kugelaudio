@@ -1,0 +1,1 @@
+{"$schema":"https://schemas.agentskills.io/discovery/0.2.0/schema.json","skills":[{"name":"kugelaudio-api","type":"skill-md","description":"Integrate KugelAudio text-to-speech with its public API and SDKs.","url":"https://www.kugelaudio.com/.well-known/agent-skills/kugelaudio-api/SKILL.md","digest":"sha256:f0cafcb78ddacb1aadd00a91c36667f6c89f41069174d9ae76eac90a2f680e85"}]}

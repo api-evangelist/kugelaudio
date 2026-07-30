@@ -1,0 +1,134 @@
+generated: '2026-07-19'
+method: derived
+source: openapi/kugelaudio-tts-openapi-original.json
+status: candidate
+searched:
+  result: none
+  checked:
+    - https://docs.kugelaudio.com/llms.txt
+    - https://www.kugelaudio.com/.well-known/api-catalog
+    - https://registry.npmjs.org/kugelaudio
+  note: >-
+    No official hosted or remote MCP server was found. KugelAudio does publish an
+    Agent Skill (see skills/), discoverable via its api-catalog linkset, which is
+    its current agent-facing surface.
+server:
+  name: kugelaudio
+  transport: http
+  url: null
+  auth:
+    type: api-key
+    header: 'Authorization: Bearer'
+    env: KUGELAUDIO_API_KEY
+  base_url: https://api.kugelaudio.com
+tools:
+  - name: generate_speech
+    description: Generate speech audio from text using a KugelAudio voice and model.
+    source_operation: openapi/kugelaudio-tts-openapi-original.json#generate_v1_tts_generate_post
+    consequence: write
+  - name: list_models
+    description: List the available TTS models.
+    source_operation: openapi/kugelaudio-tts-openapi-original.json#get_models_v1_models_get
+    consequence: read
+  - name: normalize_text
+    description: Convert numbers, dates, and symbols in text into spoken words.
+    source_operation: openapi/kugelaudio-tts-openapi-original.json#normalize_v1_normalize_post
+    consequence: read
+  - name: transcribe_audio
+    description: Transcribe an audio file to text.
+    source_operation: openapi/kugelaudio-tts-openapi-original.json#transcribe_v1_audio_transcriptions_post
+    consequence: write
+  - name: list_voices
+    description: List available voices, optionally filtered by language and category.
+    source_operation: openapi/kugelaudio-tts-openapi-original.json#get_voices_v1_voices_get
+    consequence: read
+  - name: get_voice
+    description: Get details for a single voice by id.
+    source_operation: openapi/kugelaudio-tts-openapi-original.json#get_voice_by_id_v1_voices__voice_id__get
+    consequence: read
+  - name: create_voice
+    description: Create a voice, optionally with reference audio for cloning.
+    source_operation: openapi/kugelaudio-tts-openapi-original.json#create_voice_v1_voices_post
+    consequence: write
+  - name: update_voice
+    description: Update voice metadata.
+    source_operation: openapi/kugelaudio-tts-openapi-original.json#update_voice_v1_voices__voice_id__patch
+    consequence: write
+  - name: delete_voice
+    description: Delete a voice you own.
+    source_operation: openapi/kugelaudio-tts-openapi-original.json#delete_voice_v1_voices__voice_id__delete
+    consequence: destructive
+  - name: list_voice_references
+    description: List the reference audio files attached to a voice.
+    source_operation: openapi/kugelaudio-tts-openapi-original.json#list_voice_references_v1_voices__voice_id__references_get
+    consequence: read
+  - name: upload_voice_reference
+    description: Upload a reference audio file to a voice.
+    source_operation: openapi/kugelaudio-tts-openapi-original.json#upload_voice_reference_v1_voices__voice_id__references_post
+    consequence: write
+  - name: delete_voice_reference
+    description: Remove a reference audio file from a voice.
+    source_operation: openapi/kugelaudio-tts-openapi-original.json#delete_voice_reference_v1_voices__voice_id__references__ref_id__delete
+    consequence: destructive
+  - name: publish_voice
+    description: Request publication of a voice, making it public and pending verification.
+    source_operation: openapi/kugelaudio-tts-openapi-original.json#publish_voice_v1_voices__voice_id__publish_post
+    consequence: write
+    note: Makes a voice publicly visible — recommend human confirmation before invoking.
+  - name: generate_voice_sample
+    description: Trigger sample audio generation for a voice.
+    source_operation: openapi/kugelaudio-tts-openapi-original.json#generate_voice_sample_v1_voices__voice_id__generate_sample_post
+    consequence: write
+  - name: list_dictionaries
+    description: List pronunciation dictionaries for the project.
+    source_operation: openapi/kugelaudio-tts-openapi-original.json#list_dictionaries_v1_dictionaries_get
+    consequence: read
+  - name: create_dictionary
+    description: Create a pronunciation dictionary.
+    source_operation: openapi/kugelaudio-tts-openapi-original.json#create_dictionary_v1_dictionaries_post
+    consequence: write
+  - name: get_dictionary
+    description: Get a single dictionary by id.
+    source_operation: openapi/kugelaudio-tts-openapi-original.json#get_dictionary_v1_dictionaries__dict_id__get
+    consequence: read
+  - name: update_dictionary
+    description: Update dictionary metadata.
+    source_operation: openapi/kugelaudio-tts-openapi-original.json#update_dictionary_v1_dictionaries__dict_id__patch
+    consequence: write
+  - name: delete_dictionary
+    description: Delete a dictionary.
+    source_operation: openapi/kugelaudio-tts-openapi-original.json#delete_dictionary_v1_dictionaries__dict_id__delete
+    consequence: destructive
+  - name: list_dictionary_entries
+    description: List the word entries in a dictionary.
+    source_operation: openapi/kugelaudio-tts-openapi-original.json#list_entries_v1_dictionaries__dict_id__entries_get
+    consequence: read
+  - name: add_dictionary_entry
+    description: Add a word/replacement or IPA entry to a dictionary.
+    source_operation: openapi/kugelaudio-tts-openapi-original.json#add_entry_v1_dictionaries__dict_id__entries_post
+    consequence: write
+  - name: bulk_replace_dictionary_entries
+    description: Replace every entry in a dictionary in one call.
+    source_operation: openapi/kugelaudio-tts-openapi-original.json#bulk_replace_entries_v1_dictionaries__dict_id__entries_put
+    consequence: destructive
+    note: Replaces the entire entry set — recommend human confirmation before invoking.
+  - name: update_dictionary_entry
+    description: Update a single dictionary entry.
+    source_operation: openapi/kugelaudio-tts-openapi-original.json#update_entry_v1_dictionaries__dict_id__entries__entry_id__patch
+    consequence: write
+  - name: delete_dictionary_entry
+    description: Delete a single dictionary entry.
+    source_operation: openapi/kugelaudio-tts-openapi-original.json#delete_entry_v1_dictionaries__dict_id__entries__entry_id__delete
+    consequence: destructive
+excluded_operations:
+  reason: >-
+    The /v1/license/* (12 ops), /v1/billing/* (2 ops), /health, /ready, /predict,
+    /v1/post-overrides/reload, and the /11labs/* and /vapi/* compatibility-proxy
+    operations are deployment, billing, or drop-in-compatibility surfaces rather
+    than developer-facing tools, so they are not proposed as MCP tools.
+notes: >-
+  Candidate only — not published by KugelAudio. Every source_operation above is
+  a verbatim operationId from the published OpenAPI. The three WebSocket
+  streaming channels (/ws/tts, /ws/tts/stream, /ws/tts/multi) are absent from
+  the OpenAPI and are therefore not represented as tools; see
+  asyncapi/kugelaudio-tts-asyncapi.yml.
