@@ -278,6 +278,10 @@ apis:
   - type: DataModel
     url: data-model/kugelaudio-data-model.yml
 common:
+- type: MCPServer
+  url: mcp/kugelaudio-mcp.yml
+- type: Overlay
+  url: overlays/kugelaudio-tts-overlay.yaml
 - type: DomainSecurity
   url: security/kugelaudio-domain-security.yml
 - type: Website
