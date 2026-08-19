@@ -1,0 +1,123 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "KugelAudio TTS 11labs API",
+    "version": "2.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "11labs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Text To Speech",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/11labs/v1/text-to-speech/:voice_id",
+            "params": [
+              {
+                "name": "voice_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "output_format",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generate speech from text (ElevenLabs compatible)."
+        },
+        {
+          "info": {
+            "name": "Text To Speech Stream",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/11labs/v1/text-to-speech/:voice_id/stream",
+            "params": [
+              {
+                "name": "voice_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "output_format",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Streaming alias — same audio stream as the non-stream endpoint."
+        },
+        {
+          "info": {
+            "name": "Get Voices",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/11labs/v1/voices"
+          },
+          "docs": "All voices visible to the caller: public catalog + own org voices."
+        },
+        {
+          "info": {
+            "name": "Get Voice",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/11labs/v1/voices/:voice_id",
+            "params": [
+              {
+                "name": "voice_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get one voice by handle or legacy numeric id."
+        },
+        {
+          "info": {
+            "name": "Get Models",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/11labs/v1/models"
+          },
+          "docs": "Available models in the ElevenLabs shape, one entry per alias.\n\nReturns a bare JSON array — the official API shape; the official SDK\n(``client.models.list()``) parses ``List[Model]`` and breaks on any\nwrapper object."
+        },
+        {
+          "info": {
+            "name": "Health",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/11labs/health"
+          },
+          "docs": "Health"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,33 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "KugelAudio TTS 11labs Predict API",
+    "version": "2.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Predict",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Predict",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/predict",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Legacy alias for ``/v1/tts/generate``."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

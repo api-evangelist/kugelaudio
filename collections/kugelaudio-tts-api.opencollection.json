@@ -1,0 +1,33 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "KugelAudio 11labs Tts API",
+    "version": "2.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Tts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Generate",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/tts/generate",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Synthesize complete text and stream PCM16 audio."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,279 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "KugelAudio TTS 11labs license API",
+    "version": "2.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "license",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "License Health",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/license/health"
+          },
+          "docs": "License Health"
+        },
+        {
+          "info": {
+            "name": "Deployment Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/license/deployment-status",
+            "headers": [
+              {
+                "name": "X-Kugel-License-Key",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "Lightweight deployment-license validation for remote ingress monitors."
+        },
+        {
+          "info": {
+            "name": "Activate",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/license/activate",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Activate"
+        },
+        {
+          "info": {
+            "name": "Get File",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/license/files",
+            "headers": [
+              {
+                "name": "X-Kugel-License-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "path",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Presigned URL for any license-owned file in the weights bucket."
+        },
+        {
+          "info": {
+            "name": "Validate",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/license/validate",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Validate"
+        },
+        {
+          "info": {
+            "name": "Usage",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/license/usage",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Usage"
+        },
+        {
+          "info": {
+            "name": "Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/license/status",
+            "params": [
+              {
+                "name": "license_key",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "instance_id",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Status"
+        },
+        {
+          "info": {
+            "name": "Revoke",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/license/revoke",
+            "headers": [
+              {
+                "name": "X-Api-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Revoke"
+        },
+        {
+          "info": {
+            "name": "Resolve Api Key",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/license/resolve-api-key",
+            "headers": [
+              {
+                "name": "X-Kugel-License-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Resolve a customer API key — used by on-prem ingress proxies."
+        },
+        {
+          "info": {
+            "name": "List Voices",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/license/voices",
+            "params": [
+              {
+                "name": "license_key",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "instance_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "model_id",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List Voices"
+        },
+        {
+          "info": {
+            "name": "Get Voice",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/license/voices/:voice_id",
+            "params": [
+              {
+                "name": "voice_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "license_key",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "instance_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "model_id",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get Voice"
+        },
+        {
+          "info": {
+            "name": "Upload Voice Encoding",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/v1/license/voices/:voice_id/references/:reference_id/encoding",
+            "params": [
+              {
+                "name": "voice_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "reference_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "license_key",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "instance_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "model_id",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Upload Voice Encoding"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

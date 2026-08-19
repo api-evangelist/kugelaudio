@@ -1,0 +1,51 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "KugelAudio TTS 11labs Vapi API",
+    "version": "2.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Vapi",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Vapi Synthesize",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/vapi/synthesize",
+            "headers": [
+              {
+                "name": "x-voice-id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "voice_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "model_id",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Vapi custom TTS webhook.\n\nWith ``message.call.id``: clause POSTs of one agent turn share a\nTTS session (KV continuation). Without it (test harness, non-Vapi\ncallers): a stateless one-shot synthesis."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,94 @@
+{
+  "item": [
+    {
+      "id": "6a1d0c1b-d459-4f2c-9fe8-e05b38e5a199",
+      "name": "Post Overrides",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "b913bb46-a990-4e62-8b1e-846ce36be150",
+          "name": "Reload Post Overrides",
+          "request": {
+            "name": "Reload Post Overrides",
+            "description": {
+              "content": "Drop the post-override snapshot cache for immediate effect.\n\nCalled by the admin web app after a rule changes so the next\n``/v1/normalize`` observes it instead of waiting out the early TTL.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "post-overrides",
+                "reload"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "67f4ae59-4d2b-4634-8c0e-d9914db3a4e5",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "post-overrides",
+                    "reload"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "POST",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "80b99256-3b8e-4303-9d32-6996ac5f6226",
+    "name": "KugelAudio TTS 11labs Post Overrides API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Unified API: REST + WebSocket + ElevenLabs + Vapi",
+      "type": "text/plain"
+    }
+  }
+}

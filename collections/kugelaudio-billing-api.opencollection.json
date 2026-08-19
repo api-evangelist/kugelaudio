@@ -1,0 +1,71 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "KugelAudio TTS 11labs billing API",
+    "version": "2.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "billing",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Billing Credit State",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/billing/credit-state",
+            "headers": [
+              {
+                "name": "X-Kugel-License-Key",
+                "value": ""
+              },
+              {
+                "name": "x-api-key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "org_id",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Billing Credit State"
+        },
+        {
+          "info": {
+            "name": "Record Billing Usage",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/billing/record-usage",
+            "headers": [
+              {
+                "name": "X-Kugel-License-Key",
+                "value": ""
+              },
+              {
+                "name": "x-api-key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Record Billing Usage"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

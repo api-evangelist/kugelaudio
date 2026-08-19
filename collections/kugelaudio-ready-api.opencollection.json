@@ -1,0 +1,29 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "KugelAudio TTS 11labs Ready API",
+    "version": "2.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Ready",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Ready",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/ready"
+          },
+          "docs": "Readiness — gates on the backends selected for this deployment.\n\nThe selection comes from ``KUGELAUDIO_READINESS_BACKENDS`` via the\nruntime settings (e.g. ``tts`` on a deployment with an ASR URL\nconfigured but no ASR service running)."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

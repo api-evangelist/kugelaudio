@@ -1,0 +1,172 @@
+{
+  "item": [
+    {
+      "id": "4bececfc-f149-415c-b930-89c1c2e2ba5d",
+      "name": "Tts",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "4e82ba1a-2c4a-46ae-bfd7-b0c922d37313",
+          "name": "Generate",
+          "request": {
+            "name": "Generate",
+            "description": {
+              "content": "Synthesize complete text and stream PCM16 audio.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "tts",
+                "generate"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"<string>\",\n  \"voice_id\": \"<integer>\",\n  \"cfg_scale\": 2,\n  \"temperature\": 0.4,\n  \"max_new_tokens\": 2048,\n  \"sample_rate\": 24000,\n  \"language\": \"<string>\",\n  \"model_id\": \"<string>\",\n  \"normalize\": true,\n  \"project_id\": \"<integer>\",\n  \"dictionary_ids\": [\n    \"<integer>\",\n    \"<integer>\"\n  ],\n  \"speed\": 1,\n  \"output_format\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "d086932c-5703-4723-8d05-f667adac6825",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tts",
+                    "generate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"<string>\",\n  \"voice_id\": \"<integer>\",\n  \"cfg_scale\": 2,\n  \"temperature\": 0.4,\n  \"max_new_tokens\": 2048,\n  \"sample_rate\": 24000,\n  \"language\": \"<string>\",\n  \"model_id\": \"<string>\",\n  \"normalize\": true,\n  \"project_id\": \"<integer>\",\n  \"dictionary_ids\": [\n    \"<integer>\",\n    \"<integer>\"\n  ],\n  \"speed\": 1,\n  \"output_format\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2b69a382-ee26-4e45-bb93-2e9cfb8ee11a",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tts",
+                    "generate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"<string>\",\n  \"voice_id\": \"<integer>\",\n  \"cfg_scale\": 2,\n  \"temperature\": 0.4,\n  \"max_new_tokens\": 2048,\n  \"sample_rate\": 24000,\n  \"language\": \"<string>\",\n  \"model_id\": \"<string>\",\n  \"normalize\": true,\n  \"project_id\": \"<integer>\",\n  \"dictionary_ids\": [\n    \"<integer>\",\n    \"<integer>\"\n  ],\n  \"speed\": 1,\n  \"output_format\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "d3f15e70-5c55-45b1-bb9e-f04515ad1ef4",
+    "name": "KugelAudio 11labs Tts API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Unified API: REST + WebSocket + ElevenLabs + Vapi",
+      "type": "text/plain"
+    }
+  }
+}

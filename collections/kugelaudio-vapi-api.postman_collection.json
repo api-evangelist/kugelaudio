@@ -1,0 +1,216 @@
+{
+  "item": [
+    {
+      "id": "be4be872-923d-42b8-800c-c9ba2fdbe614",
+      "name": "Vapi",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "4f1de8b6-b338-4bbd-9acc-9ac03ef64263",
+          "name": "Vapi Synthesize",
+          "request": {
+            "name": "Vapi Synthesize",
+            "description": {
+              "content": "Vapi custom TTS webhook.\n\nWith ``message.call.id``: clause POSTs of one agent turn share a\nTTS session (KV continuation). Without it (test harness, non-Vapi\ncallers): a stateless one-shot synthesis.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "vapi",
+                "synthesize"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "voice_id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "model_id",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "key": "x-voice-id",
+                "value": "<string>",
+                "description": ""
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"message\": {\n    \"text\": \"<string>\",\n    \"sampleRate\": \"<integer>\",\n    \"type\": \"voice-request\",\n    \"call\": {\n      \"id\": \"<string>\",\n      \"orgId\": \"<string>\"\n    },\n    \"artifact\": {}\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "408339e1-0d97-4a1a-be75-9d05129f0e7a",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "vapi",
+                    "synthesize"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "voice_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "model_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "key": "x-voice-id",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"message\": {\n    \"text\": \"string\",\n    \"sampleRate\": 5988,\n    \"type\": \"voice-request\",\n    \"call\": {\n      \"id\": \"string\",\n      \"orgId\": \"string\"\n    },\n    \"artifact\": {}\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7ed1899a-50f4-448b-8f52-8abf2b90834c",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "vapi",
+                    "synthesize"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "voice_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "model_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "key": "x-voice-id",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"message\": {\n    \"text\": \"string\",\n    \"sampleRate\": 5988,\n    \"type\": \"voice-request\",\n    \"call\": {\n      \"id\": \"string\",\n      \"orgId\": \"string\"\n    },\n    \"artifact\": {}\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "df82eeb4-ee13-41cd-94f1-743f75638c23",
+    "name": "KugelAudio TTS 11labs Vapi API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Unified API: REST + WebSocket + ElevenLabs + Vapi",
+      "type": "text/plain"
+    }
+  }
+}

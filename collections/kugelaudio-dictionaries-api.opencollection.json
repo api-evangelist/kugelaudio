@@ -1,0 +1,301 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "KugelAudio TTS 11labs Dictionaries API",
+    "version": "2.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Dictionaries",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Dictionaries",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/dictionaries",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List every dictionary belonging to the caller's project."
+        },
+        {
+          "info": {
+            "name": "Create Dictionary",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/dictionaries",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new dictionary scoped to the caller's project."
+        },
+        {
+          "info": {
+            "name": "Get Dictionary",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/dictionaries/:dict_id",
+            "params": [
+              {
+                "name": "dict_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Fetch a single dictionary by ID."
+        },
+        {
+          "info": {
+            "name": "Update Dictionary",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/v1/dictionaries/:dict_id",
+            "params": [
+              {
+                "name": "dict_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update name / description / language / is_active."
+        },
+        {
+          "info": {
+            "name": "Delete Dictionary",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/v1/dictionaries/:dict_id",
+            "params": [
+              {
+                "name": "dict_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Delete a dictionary (cascades to its entries)."
+        },
+        {
+          "info": {
+            "name": "List Entries",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/dictionaries/:dict_id/entries",
+            "params": [
+              {
+                "name": "dict_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List entries in a dictionary with optional search and pagination."
+        },
+        {
+          "info": {
+            "name": "Add Entry",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/dictionaries/:dict_id/entries",
+            "params": [
+              {
+                "name": "dict_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add a single entry to a dictionary."
+        },
+        {
+          "info": {
+            "name": "Bulk Replace Entries",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/v1/dictionaries/:dict_id/entries",
+            "params": [
+              {
+                "name": "dict_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Replace all entries in the dictionary with the supplied list.\n\nAtomic semantics: upsert every supplied entry by\n``(dictionary_id, word)``, then delete any existing entries whose\nword is not in the payload. The cache is invalidated once at the\nend."
+        },
+        {
+          "info": {
+            "name": "Update Entry",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/v1/dictionaries/:dict_id/entries/:entry_id",
+            "params": [
+              {
+                "name": "dict_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "entry_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update an entry's word / replacement / ipa / case_sensitive."
+        },
+        {
+          "info": {
+            "name": "Delete Entry",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/v1/dictionaries/:dict_id/entries/:entry_id",
+            "params": [
+              {
+                "name": "dict_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "entry_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Delete a single entry."
+        },
+        {
+          "info": {
+            "name": "Invalidate Dictionary Cache",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/dictionaries/:project_id/invalidate",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Invalidate cached dictionary entries for a project.\n\nInternal endpoint — requires master-key authentication. Called by\nthe web app after dictionary mutations so the TTS backend picks up\nchanges immediately instead of waiting for the cache TTL to expire."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

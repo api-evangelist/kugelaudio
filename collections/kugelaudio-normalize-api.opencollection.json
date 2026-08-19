@@ -1,0 +1,33 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "KugelAudio TTS 11labs Normalize API",
+    "version": "2.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Normalize",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Normalize",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/normalize",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Run text through the TN pipeline (admin testing surface).\n\nThe admin web app uses this to test post-override rules: normalize,\ndiff, add a rule, ``/v1/post-overrides/reload``, normalize again.\nThe LM path is used when wired; on LM failure the heuristic path\nanswers instead so the testing surface stays available (matching\nv1). Post-overrides apply on both paths via the runtime's wrapped\nnormalizers."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
