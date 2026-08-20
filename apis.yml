@@ -38,6 +38,22 @@ created: '2026-07-17'
 modified: '2026-07-19'
 tags:
 - Voice
+- Text-to-Speech
+- Speech Synthesis
+- Voice AI
+- Voice Cloning
+- Audio
+- Artificial Intelligence
+- Machine-Learning
+- Streaming
+- Real-Time
+- Conversational AI
+- Europe
+- Data Sovereignty
+- GDPR
+- Company
+tags_raw:
+- Voice
 - Text to Speech
 - Speech Synthesis
 - Voice AI
@@ -91,6 +107,8 @@ apis:
   humanURL: https://docs.kugelaudio.com/api-reference/introduction
   baseURL: https://api.kugelaudio.com
   tags:
+  - Billing
+  tags_raw:
   - billing
   properties:
   - type: OpenAPI
@@ -139,6 +157,8 @@ apis:
   humanURL: https://docs.kugelaudio.com/api-reference/introduction
   baseURL: https://api.kugelaudio.com
   tags:
+  - License
+  tags_raw:
   - license
   properties:
   - type: OpenAPI
@@ -235,6 +255,8 @@ apis:
   humanURL: https://docs.kugelaudio.com/api-reference/introduction
   baseURL: https://api.kugelaudio.com
   tags:
+  - TTS
+  tags_raw:
   - Tts
   properties:
   - type: OpenAPI
