@@ -312,6 +312,9 @@ apis:
   - type: DataModel
     url: data-model/kugelaudio-data-model.yml
 common:
+- type: CapabilityMap
+  url: capabilities/kugelaudio-capability-edges.yml
+  name: KugelAudio Business Capability Map
 - type: MCPServer
   url: mcp/kugelaudio-mcp.yml
 - type: Overlay
