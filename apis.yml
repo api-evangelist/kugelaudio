@@ -15,6 +15,18 @@ description: >-
   20 concurrent contexts per connection. Drop-in compatibility surfaces let
   ElevenLabs-compatible SDKs, LiveKit, PipeCat, and Vapi integrations point at
   KugelAudio without rewrites.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: unknown
   onboarding: self-serve
