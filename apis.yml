@@ -302,6 +302,8 @@ apis:
   humanURL: https://docs.kugelaudio.com/api-reference/introduction
   baseURL: https://api.kugelaudio.com
   tags:
+  - Voice
+  tags_raw:
   - Voices
   properties:
   - type: OpenAPI
