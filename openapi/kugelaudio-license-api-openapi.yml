@@ -1,15 +1,15 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: KugelAudio TTS 11labs license API
+  title: KugelAudio TTS License API
   description: 'Unified API: REST + WebSocket + ElevenLabs + Vapi'
   version: 2.0.0
 tags:
-- name: license
+- name: License
 paths:
   /v1/license/health:
     get:
       tags:
-      - license
+      - License
       summary: License Health
       operationId: license_health_v1_license_health_get
       responses:
@@ -25,7 +25,7 @@ paths:
   /v1/license/deployment-status:
     get:
       tags:
-      - license
+      - License
       summary: Deployment Status
       description: Lightweight deployment-license validation for remote ingress monitors.
       operationId: deployment_status_v1_license_deployment_status_get
@@ -52,7 +52,7 @@ paths:
   /v1/license/activate:
     post:
       tags:
-      - license
+      - License
       summary: Activate
       operationId: activate_v1_license_activate_post
       requestBody:
@@ -77,7 +77,7 @@ paths:
   /v1/license/files:
     get:
       tags:
-      - license
+      - License
       summary: Get File
       description: Presigned URL for any license-owned file in the weights bucket.
       operationId: get_file_v1_license_files_get
@@ -110,7 +110,7 @@ paths:
   /v1/license/validate:
     post:
       tags:
-      - license
+      - License
       summary: Validate
       operationId: validate_v1_license_validate_post
       requestBody:
@@ -135,7 +135,7 @@ paths:
   /v1/license/usage:
     post:
       tags:
-      - license
+      - License
       summary: Usage
       operationId: usage_v1_license_usage_post
       requestBody:
@@ -160,7 +160,7 @@ paths:
   /v1/license/status:
     get:
       tags:
-      - license
+      - License
       summary: Status
       operationId: status_v1_license_status_get
       parameters:
@@ -194,7 +194,7 @@ paths:
   /v1/license/revoke:
     post:
       tags:
-      - license
+      - License
       summary: Revoke
       operationId: revoke_v1_license_revoke_post
       parameters:
@@ -222,7 +222,7 @@ paths:
   /v1/license/resolve-api-key:
     post:
       tags:
-      - license
+      - License
       summary: Resolve Api Key
       description: Resolve a customer API key — used by on-prem ingress proxies.
       operationId: resolve_api_key_v1_license_resolve_api_key_post
@@ -255,7 +255,7 @@ paths:
   /v1/license/voices:
     get:
       tags:
-      - license
+      - License
       summary: List Voices
       operationId: list_voices_v1_license_voices_get
       parameters:
@@ -298,7 +298,7 @@ paths:
   /v1/license/voices/{voice_id}:
     get:
       tags:
-      - license
+      - License
       summary: Get Voice
       operationId: get_voice_v1_license_voices__voice_id__get
       parameters:
@@ -344,7 +344,7 @@ paths:
   /v1/license/voices/{voice_id}/references/{reference_id}/encoding:
     put:
       tags:
-      - license
+      - License
       summary: Upload Voice Encoding
       operationId: upload_voice_encoding_v1_license_voices__voice_id__references__reference_id__encoding_put
       parameters:
@@ -389,91 +389,33 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    DeploymentLicenseStatusResponse:
+    QuotaStatus:
       properties:
-        valid:
+        used_chars:
+          type: integer
+          title: Used Chars
+        used_seconds:
+          type: number
+          title: Used Seconds
+        quota_chars:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Quota Chars
+        quota_seconds:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Quota Seconds
+        exceeded:
           type: boolean
-          title: Valid
-          default: true
-        max_concurrent_generations:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Max Concurrent Generations
-      type: object
-      title: DeploymentLicenseStatusResponse
-    ActivateRequest:
-      properties:
-        license_key:
-          type: string
-          title: License Key
-        model_id:
-          type: string
-          title: Model Id
-        instance_id:
-          type: string
-          title: Instance Id
+          title: Exceeded
       type: object
       required:
-      - license_key
-      - model_id
-      - instance_id
-      title: ActivateRequest
-    ResolveApiKeyResponse:
-      properties:
-        org_id:
-          type: integer
-          title: Org Id
-        api_key_id:
-          type: integer
-          title: Api Key Id
-        user_id:
-          type: string
-          title: User Id
-        project_id:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Project Id
-      type: object
-      required:
-      - org_id
-      - api_key_id
-      - user_id
-      title: ResolveApiKeyResponse
-    ActivateResponse:
-      properties:
-        file_encryption_key:
-          type: string
-          title: File Encryption Key
-        offline_token:
-          type: string
-          title: Offline Token
-        public_key_pem:
-          type: string
-          title: Public Key Pem
-        hmac_key:
-          type: string
-          title: Hmac Key
-        customer_id:
-          type: integer
-          title: Customer Id
-      type: object
-      required:
-      - file_encryption_key
-      - offline_token
-      - public_key_pem
-      - hmac_key
-      - customer_id
-      title: ActivateResponse
-    UsageResponse:
-      properties:
-        quota:
-          $ref: '#/components/schemas/QuotaStatus'
-      type: object
-      required:
-      - quota
-      title: UsageResponse
+      - used_chars
+      - used_seconds
+      - exceeded
+      title: QuotaStatus
     ValidateRequest:
       properties:
         license_key:
@@ -487,20 +429,19 @@ components:
       - license_key
       - instance_id
       title: ValidateRequest
-    RevokeRequest:
+    DeploymentLicenseStatusResponse:
       properties:
-        license_key:
-          type: string
-          title: License Key
-        instance_id:
+        valid:
+          type: boolean
+          title: Valid
+          default: true
+        max_concurrent_generations:
           anyOf:
-          - type: string
+          - type: integer
           - type: 'null'
-          title: Instance Id
+          title: Max Concurrent Generations
       type: object
-      required:
-      - license_key
-      title: RevokeRequest
+      title: DeploymentLicenseStatusResponse
     ValidationError:
       properties:
         loc:
@@ -579,6 +520,108 @@ components:
       - id
       - name
       title: VoiceResponse
+    VoiceReferenceResponse:
+      properties:
+        id:
+          type: integer
+          title: Id
+        audio_url:
+          type: string
+          title: Audio Url
+        encoding_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Encoding Url
+      type: object
+      required:
+      - id
+      - audio_url
+      title: VoiceReferenceResponse
+    UsageResponse:
+      properties:
+        quota:
+          $ref: '#/components/schemas/QuotaStatus'
+      type: object
+      required:
+      - quota
+      title: UsageResponse
+    ActivateRequest:
+      properties:
+        license_key:
+          type: string
+          title: License Key
+        model_id:
+          type: string
+          title: Model Id
+        instance_id:
+          type: string
+          title: Instance Id
+      type: object
+      required:
+      - license_key
+      - model_id
+      - instance_id
+      title: ActivateRequest
+    ValidateResponse:
+      properties:
+        offline_token:
+          type: string
+          title: Offline Token
+        quota:
+          anyOf:
+          - $ref: '#/components/schemas/QuotaStatus'
+          - type: 'null'
+      type: object
+      required:
+      - offline_token
+      title: ValidateResponse
+    RevokeRequest:
+      properties:
+        license_key:
+          type: string
+          title: License Key
+        instance_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Instance Id
+      type: object
+      required:
+      - license_key
+      title: RevokeRequest
+    FileResponse:
+      properties:
+        download_url:
+          type: string
+          title: Download Url
+        size_bytes:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Size Bytes
+      type: object
+      required:
+      - download_url
+      title: FileResponse
+    ResolveApiKeyRequest:
+      properties:
+        api_key:
+          type: string
+          title: Api Key
+      type: object
+      required:
+      - api_key
+      title: ResolveApiKeyRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     UsageRequest:
       properties:
         license_key:
@@ -608,93 +651,50 @@ components:
       - audio_seconds
       - reported_at
       title: UsageRequest
-    ResolveApiKeyRequest:
+    ActivateResponse:
       properties:
-        api_key:
+        file_encryption_key:
           type: string
-          title: Api Key
-      type: object
-      required:
-      - api_key
-      title: ResolveApiKeyRequest
-    VoiceReferenceResponse:
-      properties:
-        id:
-          type: integer
-          title: Id
-        audio_url:
-          type: string
-          title: Audio Url
-        encoding_url:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Encoding Url
-      type: object
-      required:
-      - id
-      - audio_url
-      title: VoiceReferenceResponse
-    FileResponse:
-      properties:
-        download_url:
-          type: string
-          title: Download Url
-        size_bytes:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Size Bytes
-      type: object
-      required:
-      - download_url
-      title: FileResponse
-    QuotaStatus:
-      properties:
-        used_chars:
-          type: integer
-          title: Used Chars
-        used_seconds:
-          type: number
-          title: Used Seconds
-        quota_chars:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Quota Chars
-        quota_seconds:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Quota Seconds
-        exceeded:
-          type: boolean
-          title: Exceeded
-      type: object
-      required:
-      - used_chars
-      - used_seconds
-      - exceeded
-      title: QuotaStatus
-    ValidateResponse:
-      properties:
+          title: File Encryption Key
         offline_token:
           type: string
           title: Offline Token
-        quota:
-          anyOf:
-          - $ref: '#/components/schemas/QuotaStatus'
-          - type: 'null'
+        public_key_pem:
+          type: string
+          title: Public Key Pem
+        hmac_key:
+          type: string
+          title: Hmac Key
+        customer_id:
+          type: integer
+          title: Customer Id
       type: object
       required:
+      - file_encryption_key
       - offline_token
-      title: ValidateResponse
-    HTTPValidationError:
+      - public_key_pem
+      - hmac_key
+      - customer_id
+      title: ActivateResponse
+    ResolveApiKeyResponse:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
+        org_id:
+          type: integer
+          title: Org Id
+        api_key_id:
+          type: integer
+          title: Api Key Id
+        user_id:
+          type: string
+          title: User Id
+        project_id:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Project Id
       type: object
-      title: HTTPValidationError
+      required:
+      - org_id
+      - api_key_id
+      - user_id
+      title: ResolveApiKeyResponse

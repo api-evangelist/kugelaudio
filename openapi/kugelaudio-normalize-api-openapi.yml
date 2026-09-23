@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: KugelAudio TTS 11labs Normalize API
+  title: KugelAudio TTS Normalize API
   description: 'Unified API: REST + WebSocket + ElevenLabs + Vapi'
   version: 2.0.0
 tags:
@@ -47,6 +47,32 @@ paths:
       - Normalize
 components:
   schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    NormalizeRequest:
+      properties:
+        text:
+          type: string
+          maxLength: 10000
+          minLength: 1
+          title: Text
+        language:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Language
+      type: object
+      required:
+      - text
+      title: NormalizeRequest
+      description: Admin TN test request (``POST /v1/normalize``).
     NormalizeResponse:
       properties:
         text:
@@ -65,23 +91,6 @@ components:
       - time_ms
       title: NormalizeResponse
       description: Admin TN test response.
-    NormalizeRequest:
-      properties:
-        text:
-          type: string
-          maxLength: 10000
-          minLength: 1
-          title: Text
-        language:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Language
-      type: object
-      required:
-      - text
-      title: NormalizeRequest
-      description: Admin TN test request (``POST /v1/normalize``).
     ValidationError:
       properties:
         loc:
@@ -108,12 +117,3 @@ components:
       - msg
       - type
       title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
