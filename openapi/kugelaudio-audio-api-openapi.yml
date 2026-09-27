@@ -58,48 +58,15 @@ components:
       - msg
       - type
       title: ValidationError
-    TranscriptionResponse:
+    HTTPValidationError:
       properties:
-        transcript:
-          type: string
-          title: Transcript
-        language:
-          type: string
-          title: Language
-        duration_s:
-          type: number
-          title: Duration S
-        word_timestamps:
+        detail:
           items:
-            $ref: '#/components/schemas/WordTimestamp'
+            $ref: '#/components/schemas/ValidationError'
           type: array
-          title: Word Timestamps
-        hints:
-          $ref: '#/components/schemas/ResponseHints'
-        model:
-          type: string
-          title: Model
-          default: parakeet-tdt-0.6b-v3
-        processing_ms:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Processing Ms
-      additionalProperties: true
+          title: Detail
       type: object
-      required:
-      - transcript
-      - language
-      - duration_s
-      title: TranscriptionResponse
-      description: 'Response from ``POST /v1/audio/transcriptions``.
-
-
-        Fields beyond this declared subset (e.g. ``entities``,
-
-        ``audio_quality``) are preserved by ``extra="allow"`` and reach the
-
-        caller verbatim — the ingress is a passthrough.'
+      title: HTTPValidationError
     Body_transcribe_v1_audio_transcriptions_post:
       properties:
         file:
@@ -150,15 +117,48 @@ components:
       - confidence
       title: WordTimestamp
       description: One transcribed word with timing and confidence.
-    HTTPValidationError:
+    TranscriptionResponse:
       properties:
-        detail:
+        transcript:
+          type: string
+          title: Transcript
+        language:
+          type: string
+          title: Language
+        duration_s:
+          type: number
+          title: Duration S
+        word_timestamps:
           items:
-            $ref: '#/components/schemas/ValidationError'
+            $ref: '#/components/schemas/WordTimestamp'
           type: array
-          title: Detail
+          title: Word Timestamps
+        hints:
+          $ref: '#/components/schemas/ResponseHints'
+        model:
+          type: string
+          title: Model
+          default: parakeet-tdt-0.6b-v3
+        processing_ms:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Processing Ms
+      additionalProperties: true
       type: object
-      title: HTTPValidationError
+      required:
+      - transcript
+      - language
+      - duration_s
+      title: TranscriptionResponse
+      description: 'Response from ``POST /v1/audio/transcriptions``.
+
+
+        Fields beyond this declared subset (e.g. ``entities``,
+
+        ``audio_quality``) are preserved by ``extra="allow"`` and reach the
+
+        caller verbatim — the ingress is a passthrough.'
     ResponseHints:
       properties:
         entity_in_progress:

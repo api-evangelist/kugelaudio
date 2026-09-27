@@ -169,6 +169,63 @@ paths:
       - 11labs
 components:
   schemas:
+    ElevenLabsModel:
+      properties:
+        model_id:
+          type: string
+          title: Model Id
+        name:
+          type: string
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        can_be_finetuned:
+          type: boolean
+          title: Can Be Finetuned
+          default: false
+        can_do_text_to_speech:
+          type: boolean
+          title: Can Do Text To Speech
+          default: true
+        can_do_voice_conversion:
+          type: boolean
+          title: Can Do Voice Conversion
+          default: false
+        token_cost_factor:
+          type: number
+          title: Token Cost Factor
+          default: 1.0
+      type: object
+      required:
+      - model_id
+      - name
+      title: ElevenLabsModel
+      description: One model in the ElevenLabs catalog shape.
+    ElevenLabsTTSRequest:
+      properties:
+        text:
+          type: string
+          maxLength: 10000
+          minLength: 1
+          title: Text
+        model_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Model Id
+          default: eleven_monolingual_v1
+        voice_settings:
+          anyOf:
+          - $ref: '#/components/schemas/ElevenLabsVoiceSettings'
+          - type: 'null'
+      type: object
+      required:
+      - text
+      title: ElevenLabsTTSRequest
+      description: ElevenLabs-compatible TTS request body.
     ValidationError:
       properties:
         loc:
@@ -195,6 +252,33 @@ components:
       - msg
       - type
       title: ValidationError
+    ElevenLabsVoiceSettings:
+      properties:
+        stability:
+          type: number
+          maximum: 1.0
+          minimum: 0.0
+          title: Stability
+          default: 0.5
+        similarity_boost:
+          type: number
+          maximum: 1.0
+          minimum: 0.0
+          title: Similarity Boost
+          default: 0.75
+        style:
+          type: number
+          maximum: 1.0
+          minimum: 0.0
+          title: Style
+          default: 0.0
+        use_speaker_boost:
+          type: boolean
+          title: Use Speaker Boost
+          default: true
+      type: object
+      title: ElevenLabsVoiceSettings
+      description: ElevenLabs voice settings (mapped onto KugelAudio params).
     ElevenLabsVoice:
       properties:
         voice_id:
@@ -248,87 +332,3 @@ components:
       required:
       - voices
       title: ElevenLabsVoicesResponse
-    ElevenLabsModel:
-      properties:
-        model_id:
-          type: string
-          title: Model Id
-        name:
-          type: string
-          title: Name
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-        can_be_finetuned:
-          type: boolean
-          title: Can Be Finetuned
-          default: false
-        can_do_text_to_speech:
-          type: boolean
-          title: Can Do Text To Speech
-          default: true
-        can_do_voice_conversion:
-          type: boolean
-          title: Can Do Voice Conversion
-          default: false
-        token_cost_factor:
-          type: number
-          title: Token Cost Factor
-          default: 1.0
-      type: object
-      required:
-      - model_id
-      - name
-      title: ElevenLabsModel
-      description: One model in the ElevenLabs catalog shape.
-    ElevenLabsVoiceSettings:
-      properties:
-        stability:
-          type: number
-          maximum: 1.0
-          minimum: 0.0
-          title: Stability
-          default: 0.5
-        similarity_boost:
-          type: number
-          maximum: 1.0
-          minimum: 0.0
-          title: Similarity Boost
-          default: 0.75
-        style:
-          type: number
-          maximum: 1.0
-          minimum: 0.0
-          title: Style
-          default: 0.0
-        use_speaker_boost:
-          type: boolean
-          title: Use Speaker Boost
-          default: true
-      type: object
-      title: ElevenLabsVoiceSettings
-      description: ElevenLabs voice settings (mapped onto KugelAudio params).
-    ElevenLabsTTSRequest:
-      properties:
-        text:
-          type: string
-          maxLength: 10000
-          minLength: 1
-          title: Text
-        model_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Model Id
-          default: eleven_monolingual_v1
-        voice_settings:
-          anyOf:
-          - $ref: '#/components/schemas/ElevenLabsVoiceSettings'
-          - type: 'null'
-      type: object
-      required:
-      - text
-      title: ElevenLabsTTSRequest
-      description: ElevenLabs-compatible TTS request body.

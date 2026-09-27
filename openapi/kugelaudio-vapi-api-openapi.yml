@@ -65,22 +65,6 @@ paths:
       - Vapi
 components:
   schemas:
-    VapiCall:
-      properties:
-        id:
-          type: string
-          minLength: 1
-          title: Id
-        orgId:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Orgid
-      type: object
-      required:
-      - id
-      title: VapiCall
-      description: Subset of Vapi's ``call`` object — only the stable id.
     ValidationError:
       properties:
         loc:
@@ -107,6 +91,15 @@ components:
       - msg
       - type
       title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     VapiTTSRequest:
       properties:
         message:
@@ -130,15 +123,22 @@ components:
         ``len(messages)`` is the turn id: stable across POSTs of one agent
 
         turn, grows between turns. Items are never introspected.'
-    HTTPValidationError:
+    VapiCall:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
+        id:
+          type: string
+          minLength: 1
+          title: Id
+        orgId:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Orgid
       type: object
-      title: HTTPValidationError
+      required:
+      - id
+      title: VapiCall
+      description: Subset of Vapi's ``call`` object — only the stable id.
     VapiMessage:
       properties:
         type:

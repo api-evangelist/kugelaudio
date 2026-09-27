@@ -57,7 +57,7 @@ tags:
 - Voice Cloning
 - Audio
 - Artificial Intelligence
-- Machine-Learning
+- Machine Learning
 - Streaming
 - Real-Time
 - Conversational AI
@@ -81,6 +81,7 @@ tags_raw:
 - Data Sovereignty
 - GDPR
 - Company
+- Machine-Learning
 apis:
 - aid: kugelaudio:kugelaudio-11labs-api
   name: KugelAudio 11labs API
@@ -115,7 +116,7 @@ apis:
   - type: DataModel
     url: data-model/kugelaudio-data-model.yml
 - aid: kugelaudio:kugelaudio-billing-api
-  name: KugelAudio billing API
+  name: KugelAudio Billing API
   description: The billing API from KugelAudio — 2 operation(s) for billing.
   humanURL: https://docs.kugelaudio.com/api-reference/introduction
   baseURL: https://api.kugelaudio.com
@@ -165,7 +166,7 @@ apis:
   - type: DataModel
     url: data-model/kugelaudio-data-model.yml
 - aid: kugelaudio:kugelaudio-license-api
-  name: KugelAudio license API
+  name: KugelAudio License API
   description: The license API from KugelAudio — 12 operation(s) for license.
   humanURL: https://docs.kugelaudio.com/api-reference/introduction
   baseURL: https://api.kugelaudio.com
