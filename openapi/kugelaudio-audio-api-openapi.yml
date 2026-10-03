@@ -58,15 +58,6 @@ components:
       - msg
       - type
       title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     Body_transcribe_v1_audio_transcriptions_post:
       properties:
         file:
@@ -92,31 +83,25 @@ components:
           title: Response Format
       type: object
       title: Body_transcribe_v1_audio_transcriptions_post
-    WordTimestamp:
+    HTTPValidationError:
       properties:
-        word:
-          type: string
-          title: Word
-        start_s:
-          type: number
-          title: Start S
-        end_s:
-          type: number
-          title: End S
-        confidence:
-          type: number
-          maximum: 1.0
-          minimum: 0.0
-          title: Confidence
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ResponseHints:
+      properties:
+        entity_in_progress:
+          type: boolean
+          title: Entity In Progress
+          default: false
       additionalProperties: true
       type: object
-      required:
-      - word
-      - start_s
-      - end_s
-      - confidence
-      title: WordTimestamp
-      description: One transcribed word with timing and confidence.
+      title: ResponseHints
+      description: Protocol hints for the voice-agent consumer.
     TranscriptionResponse:
       properties:
         transcript:
@@ -159,13 +144,28 @@ components:
         ``audio_quality``) are preserved by ``extra="allow"`` and reach the
 
         caller verbatim — the ingress is a passthrough.'
-    ResponseHints:
+    WordTimestamp:
       properties:
-        entity_in_progress:
-          type: boolean
-          title: Entity In Progress
-          default: false
+        word:
+          type: string
+          title: Word
+        start_s:
+          type: number
+          title: Start S
+        end_s:
+          type: number
+          title: End S
+        confidence:
+          type: number
+          maximum: 1.0
+          minimum: 0.0
+          title: Confidence
       additionalProperties: true
       type: object
-      title: ResponseHints
-      description: Protocol hints for the voice-agent consumer.
+      required:
+      - word
+      - start_s
+      - end_s
+      - confidence
+      title: WordTimestamp
+      description: One transcribed word with timing and confidence.

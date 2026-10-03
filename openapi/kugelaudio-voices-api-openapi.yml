@@ -319,63 +319,32 @@ paths:
       - Voices
 components:
   schemas:
-    UpdateVoiceRequest:
+    ValidationError:
       properties:
-        name:
-          anyOf:
-          - type: string
-            maxLength: 200
-            minLength: 1
-          - type: 'null'
-          title: Name
-        description:
-          anyOf:
-          - type: string
-            maxLength: 2000
-          - type: 'null'
-          title: Description
-        generative_voice_description:
-          anyOf:
-          - type: string
-            maxLength: 2000
-          - type: 'null'
-          title: Generative Voice Description
-        supported_languages:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Supported Languages
-        category:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Category
-        age:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Age
-        sex:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Sex
-        quality:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Quality
-        sample_text:
-          anyOf:
-          - type: string
-            maxLength: 2000
-          - type: 'null'
-          title: Sample Text
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
       type: object
-      title: UpdateVoiceRequest
-      description: Request body for updating an existing voice (partial update).
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     VoiceReferenceInfo:
       properties:
         id:
@@ -411,32 +380,29 @@ components:
       - voice_id
       title: VoiceReferenceInfo
       description: Voice reference audio metadata.
-    ValidationError:
+    HTTPValidationError:
       properties:
-        loc:
+        detail:
           items:
-            anyOf:
-            - type: string
-            - type: integer
+            $ref: '#/components/schemas/ValidationError'
           type: array
-          title: Location
-        msg:
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    Body_upload_voice_reference_v1_voices__voice_id__references_post:
+      properties:
+        file:
           type: string
-          title: Message
-        type:
+          contentMediaType: application/octet-stream
+          title: File
+        reference_text:
           type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
+          title: Reference Text
+          default: ''
       type: object
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+      - file
+      title: Body_upload_voice_reference_v1_voices__voice_id__references_post
     VoiceInfo:
       properties:
         id:
@@ -504,29 +470,30 @@ components:
       - name
       title: VoiceInfo
       description: Voice metadata.
-    Body_upload_voice_reference_v1_voices__voice_id__references_post:
+    VoicesResponse:
       properties:
-        file:
-          type: string
-          contentMediaType: application/octet-stream
-          title: File
-        reference_text:
-          type: string
-          title: Reference Text
-          default: ''
+        voices:
+          items:
+            $ref: '#/components/schemas/VoiceInfo'
+          type: array
+          title: Voices
+        total:
+          type: integer
+          title: Total
+          default: 0
+        limit:
+          type: integer
+          title: Limit
+          default: 20
+        offset:
+          type: integer
+          title: Offset
+          default: 0
       type: object
       required:
-      - file
-      title: Body_upload_voice_reference_v1_voices__voice_id__references_post
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
+      - voices
+      title: VoicesResponse
+      description: List of available voices.
     VoiceDetailInfo:
       properties:
         id:
@@ -613,27 +580,60 @@ components:
       - name
       title: VoiceDetailInfo
       description: Extended voice metadata returned by CRUD endpoints.
-    VoicesResponse:
+    UpdateVoiceRequest:
       properties:
-        voices:
-          items:
-            $ref: '#/components/schemas/VoiceInfo'
-          type: array
-          title: Voices
-        total:
-          type: integer
-          title: Total
-          default: 0
-        limit:
-          type: integer
-          title: Limit
-          default: 20
-        offset:
-          type: integer
-          title: Offset
-          default: 0
+        name:
+          anyOf:
+          - type: string
+            maxLength: 200
+            minLength: 1
+          - type: 'null'
+          title: Name
+        description:
+          anyOf:
+          - type: string
+            maxLength: 2000
+          - type: 'null'
+          title: Description
+        generative_voice_description:
+          anyOf:
+          - type: string
+            maxLength: 2000
+          - type: 'null'
+          title: Generative Voice Description
+        supported_languages:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Supported Languages
+        category:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Category
+        age:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Age
+        sex:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Sex
+        quality:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Quality
+        sample_text:
+          anyOf:
+          - type: string
+            maxLength: 2000
+          - type: 'null'
+          title: Sample Text
       type: object
-      required:
-      - voices
-      title: VoicesResponse
-      description: List of available voices.
+      title: UpdateVoiceRequest
+      description: Request body for updating an existing voice (partial update).

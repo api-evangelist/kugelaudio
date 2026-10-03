@@ -447,95 +447,24 @@ paths:
       - Dictionaries
 components:
   schemas:
-    CreateDictionaryRequest:
+    BulkReplaceResponse:
       properties:
-        name:
-          type: string
-          maxLength: 200
-          minLength: 1
-          title: Name
-        description:
-          anyOf:
-          - type: string
-            maxLength: 2000
-          - type: 'null'
-          title: Description
-        language:
-          anyOf:
-          - type: string
-            maxLength: 16
-          - type: 'null'
-          title: Language
-          description: BCP-47 language tag (e.g. 'en', 'de-DE'). Omit for all languages.
-      additionalProperties: false
-      type: object
-      required:
-      - name
-      title: CreateDictionaryRequest
-      description: Create a new dictionary scoped to a project.
-    DictionaryEntryResponse:
-      properties:
-        id:
+        upserted:
           type: integer
-          title: Id
-        dictionary_id:
+          title: Upserted
+        deleted:
           type: integer
-          title: Dictionary Id
-        word:
-          type: string
-          title: Word
-        replacement:
-          type: string
-          title: Replacement
-        ipa:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Ipa
-        case_sensitive:
-          type: boolean
-          title: Case Sensitive
-        created_at:
-          type: string
-          title: Created At
-        updated_at:
-          type: string
-          title: Updated At
-      type: object
-      required:
-      - id
-      - dictionary_id
-      - word
-      - replacement
-      - case_sensitive
-      - created_at
-      - updated_at
-      title: DictionaryEntryResponse
-      description: A single dictionary entry.
-    DictionaryEntryListResponse:
-      properties:
-        entries:
-          items:
-            $ref: '#/components/schemas/DictionaryEntryResponse'
-          type: array
-          title: Entries
+          title: Deleted
         total:
           type: integer
           title: Total
-        limit:
-          type: integer
-          title: Limit
-        offset:
-          type: integer
-          title: Offset
       type: object
       required:
-      - entries
+      - upserted
+      - deleted
       - total
-      - limit
-      - offset
-      title: DictionaryEntryListResponse
-      description: Paginated list of dictionary entries.
+      title: BulkReplaceResponse
+      description: Counts of what changed during bulk replace.
     ValidationError:
       properties:
         loc:
@@ -562,157 +491,15 @@ components:
       - msg
       - type
       title: ValidationError
-    EntryPayload:
+    DeleteResponse:
       properties:
-        word:
-          type: string
-          maxLength: 200
-          minLength: 1
-          title: Word
-        replacement:
-          type: string
-          maxLength: 1000
-          minLength: 1
-          title: Replacement
-        ipa:
-          anyOf:
-          - type: string
-            maxLength: 200
-          - type: 'null'
-          title: Ipa
-        case_sensitive:
-          type: boolean
-          title: Case Sensitive
-          default: false
-      additionalProperties: false
-      type: object
-      required:
-      - word
-      - replacement
-      title: EntryPayload
-      description: Fields shared by single-entry create and bulk-replace items.
-    UpdateDictionaryRequest:
-      properties:
-        name:
-          anyOf:
-          - type: string
-            maxLength: 200
-            minLength: 1
-          - type: 'null'
-          title: Name
-        description:
-          anyOf:
-          - type: string
-            maxLength: 2000
-          - type: 'null'
-          title: Description
-        language:
-          anyOf:
-          - type: string
-            maxLength: 16
-          - type: 'null'
-          title: Language
-        is_active:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: Is Active
-      additionalProperties: false
-      type: object
-      title: UpdateDictionaryRequest
-      description: Patch an existing dictionary. project_id cannot be changed.
-    BulkReplaceEntriesRequest:
-      properties:
-        entries:
-          items:
-            $ref: '#/components/schemas/EntryPayload'
-          type: array
-          title: Entries
-      additionalProperties: false
-      type: object
-      required:
-      - entries
-      title: BulkReplaceEntriesRequest
-      description: 'Atomic upsert + delete-missing replacement of all entries in a dictionary.
-
-
-        Idempotent: callers sending the same payload twice converge to the
-
-        same final state. Entries in the existing dictionary whose ``word``
-
-        is not in ``entries`` are deleted; entries whose ``word`` matches
-
-        are upserted.'
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    BulkReplaceResponse:
-      properties:
-        upserted:
-          type: integer
-          title: Upserted
         deleted:
-          type: integer
+          type: boolean
           title: Deleted
-        total:
-          type: integer
-          title: Total
+          default: true
       type: object
-      required:
-      - upserted
-      - deleted
-      - total
-      title: BulkReplaceResponse
-      description: Counts of what changed during bulk replace.
-    DictionaryListResponse:
-      properties:
-        dictionaries:
-          items:
-            $ref: '#/components/schemas/DictionaryResponse'
-          type: array
-          title: Dictionaries
-      type: object
-      required:
-      - dictionaries
-      title: DictionaryListResponse
-      description: List of dictionaries for a project.
-    UpdateEntryRequest:
-      properties:
-        word:
-          anyOf:
-          - type: string
-            maxLength: 200
-            minLength: 1
-          - type: 'null'
-          title: Word
-        replacement:
-          anyOf:
-          - type: string
-            maxLength: 1000
-            minLength: 1
-          - type: 'null'
-          title: Replacement
-        ipa:
-          anyOf:
-          - type: string
-            maxLength: 200
-          - type: 'null'
-          title: Ipa
-        case_sensitive:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: Case Sensitive
-      additionalProperties: false
-      type: object
-      title: UpdateEntryRequest
-      description: Patch an existing entry.
+      title: DeleteResponse
+      description: Response for delete operations (200 + body so JS SDKs can JSON-parse).
     DictionaryResponse:
       properties:
         id:
@@ -753,12 +540,225 @@ components:
       - updated_at
       title: DictionaryResponse
       description: A single dictionary record.
-    DeleteResponse:
+    EntryPayload:
       properties:
-        deleted:
+        word:
+          type: string
+          maxLength: 200
+          minLength: 1
+          title: Word
+        replacement:
+          type: string
+          maxLength: 1000
+          minLength: 1
+          title: Replacement
+        ipa:
+          anyOf:
+          - type: string
+            maxLength: 200
+          - type: 'null'
+          title: Ipa
+        case_sensitive:
           type: boolean
-          title: Deleted
-          default: true
+          title: Case Sensitive
+          default: false
+      additionalProperties: false
       type: object
-      title: DeleteResponse
-      description: Response for delete operations (200 + body so JS SDKs can JSON-parse).
+      required:
+      - word
+      - replacement
+      title: EntryPayload
+      description: Fields shared by single-entry create and bulk-replace items.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    BulkReplaceEntriesRequest:
+      properties:
+        entries:
+          items:
+            $ref: '#/components/schemas/EntryPayload'
+          type: array
+          title: Entries
+      additionalProperties: false
+      type: object
+      required:
+      - entries
+      title: BulkReplaceEntriesRequest
+      description: 'Atomic upsert + delete-missing replacement of all entries in a dictionary.
+
+
+        Idempotent: callers sending the same payload twice converge to the
+
+        same final state. Entries in the existing dictionary whose ``word``
+
+        is not in ``entries`` are deleted; entries whose ``word`` matches
+
+        are upserted.'
+    CreateDictionaryRequest:
+      properties:
+        name:
+          type: string
+          maxLength: 200
+          minLength: 1
+          title: Name
+        description:
+          anyOf:
+          - type: string
+            maxLength: 2000
+          - type: 'null'
+          title: Description
+        language:
+          anyOf:
+          - type: string
+            maxLength: 16
+          - type: 'null'
+          title: Language
+          description: BCP-47 language tag (e.g. 'en', 'de-DE'). Omit for all languages.
+      additionalProperties: false
+      type: object
+      required:
+      - name
+      title: CreateDictionaryRequest
+      description: Create a new dictionary scoped to a project.
+    DictionaryEntryListResponse:
+      properties:
+        entries:
+          items:
+            $ref: '#/components/schemas/DictionaryEntryResponse'
+          type: array
+          title: Entries
+        total:
+          type: integer
+          title: Total
+        limit:
+          type: integer
+          title: Limit
+        offset:
+          type: integer
+          title: Offset
+      type: object
+      required:
+      - entries
+      - total
+      - limit
+      - offset
+      title: DictionaryEntryListResponse
+      description: Paginated list of dictionary entries.
+    UpdateEntryRequest:
+      properties:
+        word:
+          anyOf:
+          - type: string
+            maxLength: 200
+            minLength: 1
+          - type: 'null'
+          title: Word
+        replacement:
+          anyOf:
+          - type: string
+            maxLength: 1000
+            minLength: 1
+          - type: 'null'
+          title: Replacement
+        ipa:
+          anyOf:
+          - type: string
+            maxLength: 200
+          - type: 'null'
+          title: Ipa
+        case_sensitive:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Case Sensitive
+      additionalProperties: false
+      type: object
+      title: UpdateEntryRequest
+      description: Patch an existing entry.
+    UpdateDictionaryRequest:
+      properties:
+        name:
+          anyOf:
+          - type: string
+            maxLength: 200
+            minLength: 1
+          - type: 'null'
+          title: Name
+        description:
+          anyOf:
+          - type: string
+            maxLength: 2000
+          - type: 'null'
+          title: Description
+        language:
+          anyOf:
+          - type: string
+            maxLength: 16
+          - type: 'null'
+          title: Language
+        is_active:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Is Active
+      additionalProperties: false
+      type: object
+      title: UpdateDictionaryRequest
+      description: Patch an existing dictionary. project_id cannot be changed.
+    DictionaryEntryResponse:
+      properties:
+        id:
+          type: integer
+          title: Id
+        dictionary_id:
+          type: integer
+          title: Dictionary Id
+        word:
+          type: string
+          title: Word
+        replacement:
+          type: string
+          title: Replacement
+        ipa:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Ipa
+        case_sensitive:
+          type: boolean
+          title: Case Sensitive
+        created_at:
+          type: string
+          title: Created At
+        updated_at:
+          type: string
+          title: Updated At
+      type: object
+      required:
+      - id
+      - dictionary_id
+      - word
+      - replacement
+      - case_sensitive
+      - created_at
+      - updated_at
+      title: DictionaryEntryResponse
+      description: A single dictionary entry.
+    DictionaryListResponse:
+      properties:
+        dictionaries:
+          items:
+            $ref: '#/components/schemas/DictionaryResponse'
+          type: array
+          title: Dictionaries
+      type: object
+      required:
+      - dictionaries
+      title: DictionaryListResponse
+      description: List of dictionaries for a project.

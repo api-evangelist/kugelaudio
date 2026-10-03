@@ -56,23 +56,6 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    NormalizeRequest:
-      properties:
-        text:
-          type: string
-          maxLength: 10000
-          minLength: 1
-          title: Text
-        language:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Language
-      type: object
-      required:
-      - text
-      title: NormalizeRequest
-      description: Admin TN test request (``POST /v1/normalize``).
     NormalizeResponse:
       properties:
         text:
@@ -117,3 +100,20 @@ components:
       - msg
       - type
       title: ValidationError
+    NormalizeRequest:
+      properties:
+        text:
+          type: string
+          maxLength: 10000
+          minLength: 1
+          title: Text
+        language:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Language
+      type: object
+      required:
+      - text
+      title: NormalizeRequest
+      description: Admin TN test request (``POST /v1/normalize``).

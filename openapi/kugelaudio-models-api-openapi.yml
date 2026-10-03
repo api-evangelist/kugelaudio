@@ -22,18 +22,6 @@ paths:
       - Models
 components:
   schemas:
-    ModelsResponse:
-      properties:
-        models:
-          items:
-            $ref: '#/components/schemas/ModelInfo'
-          type: array
-          title: Models
-      type: object
-      required:
-      - models
-      title: ModelsResponse
-      description: List of available models.
     ModelInfo:
       properties:
         id:
@@ -70,3 +58,15 @@ components:
       - name
       title: ModelInfo
       description: Public catalog entry for one TTS model.
+    ModelsResponse:
+      properties:
+        models:
+          items:
+            $ref: '#/components/schemas/ModelInfo'
+          type: array
+          title: Models
+      type: object
+      required:
+      - models
+      title: ModelsResponse
+      description: List of available models.

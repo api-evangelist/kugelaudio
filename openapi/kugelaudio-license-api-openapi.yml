@@ -389,33 +389,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ValidateResponse:
-      properties:
-        offline_token:
-          type: string
-          title: Offline Token
-        quota:
-          anyOf:
-          - $ref: '#/components/schemas/QuotaStatus'
-          - type: 'null'
-      type: object
-      required:
-      - offline_token
-      title: ValidateResponse
-    RevokeRequest:
-      properties:
-        license_key:
-          type: string
-          title: License Key
-        instance_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Instance Id
-      type: object
-      required:
-      - license_key
-      title: RevokeRequest
     ValidationError:
       properties:
         loc:
@@ -442,6 +415,83 @@ components:
       - msg
       - type
       title: ValidationError
+    UsageRequest:
+      properties:
+        license_key:
+          type: string
+          title: License Key
+        instance_id:
+          type: string
+          title: Instance Id
+        chars:
+          type: integer
+          title: Chars
+        audio_seconds:
+          type: number
+          title: Audio Seconds
+        reported_at:
+          type: number
+          title: Reported At
+        signature:
+          type: string
+          title: Signature
+          default: ''
+      type: object
+      required:
+      - license_key
+      - instance_id
+      - chars
+      - audio_seconds
+      - reported_at
+      title: UsageRequest
+    RevokeRequest:
+      properties:
+        license_key:
+          type: string
+          title: License Key
+        instance_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Instance Id
+      type: object
+      required:
+      - license_key
+      title: RevokeRequest
+    ActivateResponse:
+      properties:
+        file_encryption_key:
+          type: string
+          title: File Encryption Key
+        offline_token:
+          type: string
+          title: Offline Token
+        public_key_pem:
+          type: string
+          title: Public Key Pem
+        hmac_key:
+          type: string
+          title: Hmac Key
+        customer_id:
+          type: integer
+          title: Customer Id
+      type: object
+      required:
+      - file_encryption_key
+      - offline_token
+      - public_key_pem
+      - hmac_key
+      - customer_id
+      title: ActivateResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     VoiceResponse:
       properties:
         id:
@@ -494,14 +544,50 @@ components:
       - id
       - name
       title: VoiceResponse
-    UsageResponse:
+    ValidateResponse:
       properties:
+        offline_token:
+          type: string
+          title: Offline Token
         quota:
-          $ref: '#/components/schemas/QuotaStatus'
+          anyOf:
+          - $ref: '#/components/schemas/QuotaStatus'
+          - type: 'null'
       type: object
       required:
-      - quota
-      title: UsageResponse
+      - offline_token
+      title: ValidateResponse
+    ResolveApiKeyResponse:
+      properties:
+        org_id:
+          type: integer
+          title: Org Id
+        api_key_id:
+          type: integer
+          title: Api Key Id
+        user_id:
+          type: string
+          title: User Id
+        project_id:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Project Id
+      type: object
+      required:
+      - org_id
+      - api_key_id
+      - user_id
+      title: ResolveApiKeyResponse
+    ResolveApiKeyRequest:
+      properties:
+        api_key:
+          type: string
+          title: Api Key
+      type: object
+      required:
+      - api_key
+      title: ResolveApiKeyRequest
     ActivateRequest:
       properties:
         license_key:
@@ -519,40 +605,14 @@ components:
       - model_id
       - instance_id
       title: ActivateRequest
-    ActivateResponse:
+    UsageResponse:
       properties:
-        file_encryption_key:
-          type: string
-          title: File Encryption Key
-        offline_token:
-          type: string
-          title: Offline Token
-        public_key_pem:
-          type: string
-          title: Public Key Pem
-        hmac_key:
-          type: string
-          title: Hmac Key
-        customer_id:
-          type: integer
-          title: Customer Id
+        quota:
+          $ref: '#/components/schemas/QuotaStatus'
       type: object
       required:
-      - file_encryption_key
-      - offline_token
-      - public_key_pem
-      - hmac_key
-      - customer_id
-      title: ActivateResponse
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
+      - quota
+      title: UsageResponse
     QuotaStatus:
       properties:
         used_chars:
@@ -580,6 +640,19 @@ components:
       - used_seconds
       - exceeded
       title: QuotaStatus
+    ValidateRequest:
+      properties:
+        license_key:
+          type: string
+          title: License Key
+        instance_id:
+          type: string
+          title: Instance Id
+      type: object
+      required:
+      - license_key
+      - instance_id
+      title: ValidateRequest
     DeploymentLicenseStatusResponse:
       properties:
         valid:
@@ -611,28 +684,6 @@ components:
       - id
       - audio_url
       title: VoiceReferenceResponse
-    ResolveApiKeyResponse:
-      properties:
-        org_id:
-          type: integer
-          title: Org Id
-        api_key_id:
-          type: integer
-          title: Api Key Id
-        user_id:
-          type: string
-          title: User Id
-        project_id:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Project Id
-      type: object
-      required:
-      - org_id
-      - api_key_id
-      - user_id
-      title: ResolveApiKeyResponse
     FileResponse:
       properties:
         download_url:
@@ -647,54 +698,3 @@ components:
       required:
       - download_url
       title: FileResponse
-    UsageRequest:
-      properties:
-        license_key:
-          type: string
-          title: License Key
-        instance_id:
-          type: string
-          title: Instance Id
-        chars:
-          type: integer
-          title: Chars
-        audio_seconds:
-          type: number
-          title: Audio Seconds
-        reported_at:
-          type: number
-          title: Reported At
-        signature:
-          type: string
-          title: Signature
-          default: ''
-      type: object
-      required:
-      - license_key
-      - instance_id
-      - chars
-      - audio_seconds
-      - reported_at
-      title: UsageRequest
-    ResolveApiKeyRequest:
-      properties:
-        api_key:
-          type: string
-          title: Api Key
-      type: object
-      required:
-      - api_key
-      title: ResolveApiKeyRequest
-    ValidateRequest:
-      properties:
-        license_key:
-          type: string
-          title: License Key
-        instance_id:
-          type: string
-          title: Instance Id
-      type: object
-      required:
-      - license_key
-      - instance_id
-      title: ValidateRequest
