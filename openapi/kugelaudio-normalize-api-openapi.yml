@@ -56,24 +56,6 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    NormalizeResponse:
-      properties:
-        text:
-          type: string
-          title: Text
-        language:
-          type: string
-          title: Language
-        time_ms:
-          type: number
-          title: Time Ms
-      type: object
-      required:
-      - text
-      - language
-      - time_ms
-      title: NormalizeResponse
-      description: Admin TN test response.
     ValidationError:
       properties:
         loc:
@@ -117,3 +99,21 @@ components:
       - text
       title: NormalizeRequest
       description: Admin TN test request (``POST /v1/normalize``).
+    NormalizeResponse:
+      properties:
+        text:
+          type: string
+          title: Text
+        language:
+          type: string
+          title: Language
+        time_ms:
+          type: number
+          title: Time Ms
+      type: object
+      required:
+      - text
+      - language
+      - time_ms
+      title: NormalizeResponse
+      description: Admin TN test response.

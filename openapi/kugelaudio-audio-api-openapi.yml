@@ -32,6 +32,31 @@ paths:
       - Audio
 components:
   schemas:
+    Body_transcribe_v1_audio_transcriptions_post:
+      properties:
+        file:
+          anyOf:
+          - type: string
+            contentMediaType: application/octet-stream
+          - type: 'null'
+          title: File
+        language:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Language
+        prompt:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Prompt
+        response_format:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Response Format
+      type: object
+      title: Body_transcribe_v1_audio_transcriptions_post
     ValidationError:
       properties:
         loc:
@@ -58,40 +83,6 @@ components:
       - msg
       - type
       title: ValidationError
-    Body_transcribe_v1_audio_transcriptions_post:
-      properties:
-        file:
-          anyOf:
-          - type: string
-            contentMediaType: application/octet-stream
-          - type: 'null'
-          title: File
-        language:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Language
-        prompt:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Prompt
-        response_format:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Response Format
-      type: object
-      title: Body_transcribe_v1_audio_transcriptions_post
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     ResponseHints:
       properties:
         entity_in_progress:
@@ -102,6 +93,15 @@ components:
       type: object
       title: ResponseHints
       description: Protocol hints for the voice-agent consumer.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     TranscriptionResponse:
       properties:
         transcript:

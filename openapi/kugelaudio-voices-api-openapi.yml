@@ -319,90 +319,6 @@ paths:
       - Voices
 components:
   schemas:
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    VoiceReferenceInfo:
-      properties:
-        id:
-          type: integer
-          title: Id
-        voice_id:
-          type: integer
-          title: Voice Id
-        name:
-          type: string
-          title: Name
-          default: ''
-        reference_text:
-          type: string
-          title: Reference Text
-          default: ''
-        s3_path:
-          type: string
-          title: S3 Path
-          default: ''
-        audio_url:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Audio Url
-        is_generated:
-          type: boolean
-          title: Is Generated
-          default: false
-      type: object
-      required:
-      - id
-      - voice_id
-      title: VoiceReferenceInfo
-      description: Voice reference audio metadata.
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    Body_upload_voice_reference_v1_voices__voice_id__references_post:
-      properties:
-        file:
-          type: string
-          contentMediaType: application/octet-stream
-          title: File
-        reference_text:
-          type: string
-          title: Reference Text
-          default: ''
-      type: object
-      required:
-      - file
-      title: Body_upload_voice_reference_v1_voices__voice_id__references_post
     VoiceInfo:
       properties:
         id:
@@ -470,6 +386,46 @@ components:
       - name
       title: VoiceInfo
       description: Voice metadata.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    Body_upload_voice_reference_v1_voices__voice_id__references_post:
+      properties:
+        file:
+          type: string
+          contentMediaType: application/octet-stream
+          title: File
+        reference_text:
+          type: string
+          title: Reference Text
+          default: ''
+      type: object
+      required:
+      - file
+      title: Body_upload_voice_reference_v1_voices__voice_id__references_post
     VoicesResponse:
       properties:
         voices:
@@ -637,3 +593,47 @@ components:
       type: object
       title: UpdateVoiceRequest
       description: Request body for updating an existing voice (partial update).
+    VoiceReferenceInfo:
+      properties:
+        id:
+          type: integer
+          title: Id
+        voice_id:
+          type: integer
+          title: Voice Id
+        name:
+          type: string
+          title: Name
+          default: ''
+        reference_text:
+          type: string
+          title: Reference Text
+          default: ''
+        s3_path:
+          type: string
+          title: S3 Path
+          default: ''
+        audio_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Audio Url
+        is_generated:
+          type: boolean
+          title: Is Generated
+          default: false
+      type: object
+      required:
+      - id
+      - voice_id
+      title: VoiceReferenceInfo
+      description: Voice reference audio metadata.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

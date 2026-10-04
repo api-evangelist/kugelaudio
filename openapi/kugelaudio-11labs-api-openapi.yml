@@ -169,6 +169,17 @@ paths:
       - 11labs
 components:
   schemas:
+    ElevenLabsVoicesResponse:
+      properties:
+        voices:
+          items:
+            $ref: '#/components/schemas/ElevenLabsVoice'
+          type: array
+          title: Voices
+      type: object
+      required:
+      - voices
+      title: ElevenLabsVoicesResponse
     ValidationError:
       properties:
         loc:
@@ -195,26 +206,6 @@ components:
       - msg
       - type
       title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    ElevenLabsVoicesResponse:
-      properties:
-        voices:
-          items:
-            $ref: '#/components/schemas/ElevenLabsVoice'
-          type: array
-          title: Voices
-      type: object
-      required:
-      - voices
-      title: ElevenLabsVoicesResponse
     ElevenLabsModel:
       properties:
         model_id:
@@ -250,55 +241,6 @@ components:
       - name
       title: ElevenLabsModel
       description: One model in the ElevenLabs catalog shape.
-    ElevenLabsTTSRequest:
-      properties:
-        text:
-          type: string
-          maxLength: 10000
-          minLength: 1
-          title: Text
-        model_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Model Id
-          default: eleven_monolingual_v1
-        voice_settings:
-          anyOf:
-          - $ref: '#/components/schemas/ElevenLabsVoiceSettings'
-          - type: 'null'
-      type: object
-      required:
-      - text
-      title: ElevenLabsTTSRequest
-      description: ElevenLabs-compatible TTS request body.
-    ElevenLabsVoiceSettings:
-      properties:
-        stability:
-          type: number
-          maximum: 1.0
-          minimum: 0.0
-          title: Stability
-          default: 0.5
-        similarity_boost:
-          type: number
-          maximum: 1.0
-          minimum: 0.0
-          title: Similarity Boost
-          default: 0.75
-        style:
-          type: number
-          maximum: 1.0
-          minimum: 0.0
-          title: Style
-          default: 0.0
-        use_speaker_boost:
-          type: boolean
-          title: Use Speaker Boost
-          default: true
-      type: object
-      title: ElevenLabsVoiceSettings
-      description: ElevenLabs voice settings (mapped onto KugelAudio params).
     ElevenLabsVoice:
       properties:
         voice_id:
@@ -332,3 +274,61 @@ components:
       - name
       title: ElevenLabsVoice
       description: One voice in the ElevenLabs catalog shape.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ElevenLabsVoiceSettings:
+      properties:
+        stability:
+          type: number
+          maximum: 1.0
+          minimum: 0.0
+          title: Stability
+          default: 0.5
+        similarity_boost:
+          type: number
+          maximum: 1.0
+          minimum: 0.0
+          title: Similarity Boost
+          default: 0.75
+        style:
+          type: number
+          maximum: 1.0
+          minimum: 0.0
+          title: Style
+          default: 0.0
+        use_speaker_boost:
+          type: boolean
+          title: Use Speaker Boost
+          default: true
+      type: object
+      title: ElevenLabsVoiceSettings
+      description: ElevenLabs voice settings (mapped onto KugelAudio params).
+    ElevenLabsTTSRequest:
+      properties:
+        text:
+          type: string
+          maxLength: 10000
+          minLength: 1
+          title: Text
+        model_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Model Id
+          default: eleven_monolingual_v1
+        voice_settings:
+          anyOf:
+          - $ref: '#/components/schemas/ElevenLabsVoiceSettings'
+          - type: 'null'
+      type: object
+      required:
+      - text
+      title: ElevenLabsTTSRequest
+      description: ElevenLabs-compatible TTS request body.

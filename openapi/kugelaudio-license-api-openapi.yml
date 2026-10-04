@@ -389,32 +389,71 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ValidationError:
+    ResolveApiKeyRequest:
       properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
+        api_key:
           type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
+          title: Api Key
       type: object
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+      - api_key
+      title: ResolveApiKeyRequest
+    FileResponse:
+      properties:
+        download_url:
+          type: string
+          title: Download Url
+        size_bytes:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Size Bytes
+      type: object
+      required:
+      - download_url
+      title: FileResponse
+    ActivateResponse:
+      properties:
+        file_encryption_key:
+          type: string
+          title: File Encryption Key
+        offline_token:
+          type: string
+          title: Offline Token
+        public_key_pem:
+          type: string
+          title: Public Key Pem
+        hmac_key:
+          type: string
+          title: Hmac Key
+        customer_id:
+          type: integer
+          title: Customer Id
+      type: object
+      required:
+      - file_encryption_key
+      - offline_token
+      - public_key_pem
+      - hmac_key
+      - customer_id
+      title: ActivateResponse
+    ActivateRequest:
+      properties:
+        license_key:
+          type: string
+          title: License Key
+        model_id:
+          type: string
+          title: Model Id
+        instance_id:
+          type: string
+          title: Instance Id
+      type: object
+      required:
+      - license_key
+      - model_id
+      - instance_id
+      title: ActivateRequest
     UsageRequest:
       properties:
         license_key:
@@ -444,54 +483,32 @@ components:
       - audio_seconds
       - reported_at
       title: UsageRequest
-    RevokeRequest:
+    ValidationError:
       properties:
-        license_key:
-          type: string
-          title: License Key
-        instance_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Instance Id
-      type: object
-      required:
-      - license_key
-      title: RevokeRequest
-    ActivateResponse:
-      properties:
-        file_encryption_key:
-          type: string
-          title: File Encryption Key
-        offline_token:
-          type: string
-          title: Offline Token
-        public_key_pem:
-          type: string
-          title: Public Key Pem
-        hmac_key:
-          type: string
-          title: Hmac Key
-        customer_id:
-          type: integer
-          title: Customer Id
-      type: object
-      required:
-      - file_encryption_key
-      - offline_token
-      - public_key_pem
-      - hmac_key
-      - customer_id
-      title: ActivateResponse
-    HTTPValidationError:
-      properties:
-        detail:
+        loc:
           items:
-            $ref: '#/components/schemas/ValidationError'
+            anyOf:
+            - type: string
+            - type: integer
           type: array
-          title: Detail
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
       type: object
-      title: HTTPValidationError
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     VoiceResponse:
       properties:
         id:
@@ -544,75 +561,20 @@ components:
       - id
       - name
       title: VoiceResponse
-    ValidateResponse:
-      properties:
-        offline_token:
-          type: string
-          title: Offline Token
-        quota:
-          anyOf:
-          - $ref: '#/components/schemas/QuotaStatus'
-          - type: 'null'
-      type: object
-      required:
-      - offline_token
-      title: ValidateResponse
-    ResolveApiKeyResponse:
-      properties:
-        org_id:
-          type: integer
-          title: Org Id
-        api_key_id:
-          type: integer
-          title: Api Key Id
-        user_id:
-          type: string
-          title: User Id
-        project_id:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Project Id
-      type: object
-      required:
-      - org_id
-      - api_key_id
-      - user_id
-      title: ResolveApiKeyResponse
-    ResolveApiKeyRequest:
-      properties:
-        api_key:
-          type: string
-          title: Api Key
-      type: object
-      required:
-      - api_key
-      title: ResolveApiKeyRequest
-    ActivateRequest:
+    RevokeRequest:
       properties:
         license_key:
           type: string
           title: License Key
-        model_id:
-          type: string
-          title: Model Id
         instance_id:
-          type: string
+          anyOf:
+          - type: string
+          - type: 'null'
           title: Instance Id
       type: object
       required:
       - license_key
-      - model_id
-      - instance_id
-      title: ActivateRequest
-    UsageResponse:
-      properties:
-        quota:
-          $ref: '#/components/schemas/QuotaStatus'
-      type: object
-      required:
-      - quota
-      title: UsageResponse
+      title: RevokeRequest
     QuotaStatus:
       properties:
         used_chars:
@@ -640,6 +602,14 @@ components:
       - used_seconds
       - exceeded
       title: QuotaStatus
+    UsageResponse:
+      properties:
+        quota:
+          $ref: '#/components/schemas/QuotaStatus'
+      type: object
+      required:
+      - quota
+      title: UsageResponse
     ValidateRequest:
       properties:
         license_key:
@@ -653,6 +623,37 @@ components:
       - license_key
       - instance_id
       title: ValidateRequest
+    ResolveApiKeyResponse:
+      properties:
+        org_id:
+          type: integer
+          title: Org Id
+        api_key_id:
+          type: integer
+          title: Api Key Id
+        user_id:
+          type: string
+          title: User Id
+        project_id:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Project Id
+      type: object
+      required:
+      - org_id
+      - api_key_id
+      - user_id
+      title: ResolveApiKeyResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     DeploymentLicenseStatusResponse:
       properties:
         valid:
@@ -684,17 +685,16 @@ components:
       - id
       - audio_url
       title: VoiceReferenceResponse
-    FileResponse:
+    ValidateResponse:
       properties:
-        download_url:
+        offline_token:
           type: string
-          title: Download Url
-        size_bytes:
+          title: Offline Token
+        quota:
           anyOf:
-          - type: integer
+          - $ref: '#/components/schemas/QuotaStatus'
           - type: 'null'
-          title: Size Bytes
       type: object
       required:
-      - download_url
-      title: FileResponse
+      - offline_token
+      title: ValidateResponse
