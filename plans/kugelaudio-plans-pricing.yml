@@ -1,0 +1,46 @@
+# Pricing transcribed from the provider's own page — see provenance. Numbers are quoted, not derived.
+generated: '2026-10-07'
+method: searched
+source: https://www.kugelaudio.com/en#pricing
+sources:
+- https://www.kugelaudio.com/en#pricing
+- https://www.kugelaudio.com/#pricing
+provenance:
+  tool: all/0-working/economics/harvest_pricing.py
+  run: 20261007T104522
+  grounding: every price_text was found verbatim in the fetched page text
+audience: developer-api
+pricing_basis: usage-other
+delivery:
+  delivery: managed+licensed
+  method: page
+  read: '2026-10-07'
+  evidence: Enterprise On-premise & dedicated deployment
+  managed_tier: kugel-2-turbo
+published: true
+note: TTS priced per audio minute, billed by the second; VAT-inclusive variants also shown. Enterprise
+  on-premise is negotiated.
+plan_count: 3
+currency: EUR
+plans:
+- name: kugel-2-turbo
+  price_text: €0.035 / min excl. VAT
+  price: 0.035
+  currency: EUR
+  period: per-use
+  unit: audio minute
+  included_quota: ~40–50 ms TTFA, EU hosting, EU Sovereign Cloud (EU/EEA), normalizer, voice cloning,
+    speed control, break tokens, word-level timestamps, dictionaries
+- name: kugel-3
+  price_text: €0.07 / min excl. VAT
+  price: 0.07
+  currency: EUR
+  period: per-use
+  unit: audio minute
+  included_quota: ~60–80 ms TTFA, EU hosting, EU Sovereign Cloud (EU/EEA), normalizer, voice cloning,
+    speed control, break tokens, word-level timestamps, dictionaries, IPA notations
+- name: Enterprise
+  price_text: Talk to us
+  period: none
+  included_quota: On-premise & dedicated deployment, higher custom concurrency limits, 24/7 support, dedicated
+    account manager, lower rates with committed usage
