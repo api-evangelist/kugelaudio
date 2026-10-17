@@ -169,6 +169,39 @@ paths:
       - 11labs
 components:
   schemas:
+    ElevenLabsVoice:
+      properties:
+        voice_id:
+          type: string
+          title: Voice Id
+        name:
+          type: string
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        category:
+          type: string
+          title: Category
+          default: cloned
+        labels:
+          additionalProperties: true
+          type: object
+          title: Labels
+          default: {}
+        preview_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Preview Url
+      type: object
+      required:
+      - voice_id
+      - name
+      title: ElevenLabsVoice
+      description: One voice in the ElevenLabs catalog shape.
     ElevenLabsVoicesResponse:
       properties:
         voices:
@@ -180,32 +213,15 @@ components:
       required:
       - voices
       title: ElevenLabsVoicesResponse
-    ValidationError:
+    HTTPValidationError:
       properties:
-        loc:
+        detail:
           items:
-            anyOf:
-            - type: string
-            - type: integer
+            $ref: '#/components/schemas/ValidationError'
           type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
+          title: Detail
       type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+      title: HTTPValidationError
     ElevenLabsModel:
       properties:
         model_id:
@@ -241,48 +257,6 @@ components:
       - name
       title: ElevenLabsModel
       description: One model in the ElevenLabs catalog shape.
-    ElevenLabsVoice:
-      properties:
-        voice_id:
-          type: string
-          title: Voice Id
-        name:
-          type: string
-          title: Name
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-        category:
-          type: string
-          title: Category
-          default: cloned
-        labels:
-          additionalProperties: true
-          type: object
-          title: Labels
-          default: {}
-        preview_url:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Preview Url
-      type: object
-      required:
-      - voice_id
-      - name
-      title: ElevenLabsVoice
-      description: One voice in the ElevenLabs catalog shape.
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     ElevenLabsVoiceSettings:
       properties:
         stability:
@@ -332,3 +306,29 @@ components:
       - text
       title: ElevenLabsTTSRequest
       description: ElevenLabs-compatible TTS request body.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError

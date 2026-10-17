@@ -319,6 +319,231 @@ paths:
       - Voices
 components:
   schemas:
+    UpdateVoiceRequest:
+      properties:
+        name:
+          anyOf:
+          - type: string
+            maxLength: 200
+            minLength: 1
+          - type: 'null'
+          title: Name
+        description:
+          anyOf:
+          - type: string
+            maxLength: 2000
+          - type: 'null'
+          title: Description
+        generative_voice_description:
+          anyOf:
+          - type: string
+            maxLength: 2000
+          - type: 'null'
+          title: Generative Voice Description
+        supported_languages:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Supported Languages
+        category:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Category
+        age:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Age
+        sex:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Sex
+        quality:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Quality
+        sample_text:
+          anyOf:
+          - type: string
+            maxLength: 2000
+          - type: 'null'
+          title: Sample Text
+      type: object
+      title: UpdateVoiceRequest
+      description: Request body for updating an existing voice (partial update).
+    Body_upload_voice_reference_v1_voices__voice_id__references_post:
+      properties:
+        file:
+          type: string
+          contentMediaType: application/octet-stream
+          title: File
+        reference_text:
+          type: string
+          title: Reference Text
+          default: ''
+      type: object
+      required:
+      - file
+      title: Body_upload_voice_reference_v1_voices__voice_id__references_post
+    VoiceReferenceInfo:
+      properties:
+        id:
+          type: integer
+          title: Id
+        voice_id:
+          type: integer
+          title: Voice Id
+        name:
+          type: string
+          title: Name
+          default: ''
+        reference_text:
+          type: string
+          title: Reference Text
+          default: ''
+        s3_path:
+          type: string
+          title: S3 Path
+          default: ''
+        audio_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Audio Url
+        is_generated:
+          type: boolean
+          title: Is Generated
+          default: false
+      type: object
+      required:
+      - id
+      - voice_id
+      title: VoiceReferenceInfo
+      description: Voice reference audio metadata.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    VoiceDetailInfo:
+      properties:
+        id:
+          type: integer
+          title: Id
+        voice_id:
+          type: integer
+          title: Voice Id
+        handle:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Handle
+        public_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Public Id
+        name:
+          type: string
+          title: Name
+        description:
+          type: string
+          title: Description
+          default: ''
+        generative_voice_description:
+          type: string
+          title: Generative Voice Description
+          default: ''
+        supported_languages:
+          items:
+            type: string
+          type: array
+          title: Supported Languages
+          default: []
+        category:
+          type: string
+          title: Category
+          default: cloned
+        age:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Age
+        sex:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Sex
+        quality:
+          type: string
+          title: Quality
+          default: mid
+        is_public:
+          type: boolean
+          title: Is Public
+          default: false
+        verified:
+          type: boolean
+          title: Verified
+          default: false
+        pending_verification:
+          type: boolean
+          title: Pending Verification
+          default: false
+        sample_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Sample Url
+        avatar_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Avatar Url
+        sample_text:
+          type: string
+          title: Sample Text
+          default: ''
+      type: object
+      required:
+      - id
+      - voice_id
+      - name
+      title: VoiceDetailInfo
+      description: Extended voice metadata returned by CRUD endpoints.
+    VoicesResponse:
+      properties:
+        voices:
+          items:
+            $ref: '#/components/schemas/VoiceInfo'
+          type: array
+          title: Voices
+        total:
+          type: integer
+          title: Total
+          default: 0
+        limit:
+          type: integer
+          title: Limit
+          default: 20
+        offset:
+          type: integer
+          title: Offset
+          default: 0
+      type: object
+      required:
+      - voices
+      title: VoicesResponse
+      description: List of available voices.
     VoiceInfo:
       properties:
         id:
@@ -412,228 +637,3 @@ components:
       - msg
       - type
       title: ValidationError
-    Body_upload_voice_reference_v1_voices__voice_id__references_post:
-      properties:
-        file:
-          type: string
-          contentMediaType: application/octet-stream
-          title: File
-        reference_text:
-          type: string
-          title: Reference Text
-          default: ''
-      type: object
-      required:
-      - file
-      title: Body_upload_voice_reference_v1_voices__voice_id__references_post
-    VoicesResponse:
-      properties:
-        voices:
-          items:
-            $ref: '#/components/schemas/VoiceInfo'
-          type: array
-          title: Voices
-        total:
-          type: integer
-          title: Total
-          default: 0
-        limit:
-          type: integer
-          title: Limit
-          default: 20
-        offset:
-          type: integer
-          title: Offset
-          default: 0
-      type: object
-      required:
-      - voices
-      title: VoicesResponse
-      description: List of available voices.
-    VoiceDetailInfo:
-      properties:
-        id:
-          type: integer
-          title: Id
-        voice_id:
-          type: integer
-          title: Voice Id
-        handle:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Handle
-        public_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Public Id
-        name:
-          type: string
-          title: Name
-        description:
-          type: string
-          title: Description
-          default: ''
-        generative_voice_description:
-          type: string
-          title: Generative Voice Description
-          default: ''
-        supported_languages:
-          items:
-            type: string
-          type: array
-          title: Supported Languages
-          default: []
-        category:
-          type: string
-          title: Category
-          default: cloned
-        age:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Age
-        sex:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Sex
-        quality:
-          type: string
-          title: Quality
-          default: mid
-        is_public:
-          type: boolean
-          title: Is Public
-          default: false
-        verified:
-          type: boolean
-          title: Verified
-          default: false
-        pending_verification:
-          type: boolean
-          title: Pending Verification
-          default: false
-        sample_url:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Sample Url
-        avatar_url:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Avatar Url
-        sample_text:
-          type: string
-          title: Sample Text
-          default: ''
-      type: object
-      required:
-      - id
-      - voice_id
-      - name
-      title: VoiceDetailInfo
-      description: Extended voice metadata returned by CRUD endpoints.
-    UpdateVoiceRequest:
-      properties:
-        name:
-          anyOf:
-          - type: string
-            maxLength: 200
-            minLength: 1
-          - type: 'null'
-          title: Name
-        description:
-          anyOf:
-          - type: string
-            maxLength: 2000
-          - type: 'null'
-          title: Description
-        generative_voice_description:
-          anyOf:
-          - type: string
-            maxLength: 2000
-          - type: 'null'
-          title: Generative Voice Description
-        supported_languages:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Supported Languages
-        category:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Category
-        age:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Age
-        sex:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Sex
-        quality:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Quality
-        sample_text:
-          anyOf:
-          - type: string
-            maxLength: 2000
-          - type: 'null'
-          title: Sample Text
-      type: object
-      title: UpdateVoiceRequest
-      description: Request body for updating an existing voice (partial update).
-    VoiceReferenceInfo:
-      properties:
-        id:
-          type: integer
-          title: Id
-        voice_id:
-          type: integer
-          title: Voice Id
-        name:
-          type: string
-          title: Name
-          default: ''
-        reference_text:
-          type: string
-          title: Reference Text
-          default: ''
-        s3_path:
-          type: string
-          title: S3 Path
-          default: ''
-        audio_url:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Audio Url
-        is_generated:
-          type: boolean
-          title: Is Generated
-          default: false
-      type: object
-      required:
-      - id
-      - voice_id
-      title: VoiceReferenceInfo
-      description: Voice reference audio metadata.
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError

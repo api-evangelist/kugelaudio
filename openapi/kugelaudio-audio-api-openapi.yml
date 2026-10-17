@@ -32,6 +32,92 @@ paths:
       - Audio
 components:
   schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    WordTimestamp:
+      properties:
+        word:
+          type: string
+          title: Word
+        start_s:
+          type: number
+          title: Start S
+        end_s:
+          type: number
+          title: End S
+        confidence:
+          type: number
+          maximum: 1.0
+          minimum: 0.0
+          title: Confidence
+      additionalProperties: true
+      type: object
+      required:
+      - word
+      - start_s
+      - end_s
+      - confidence
+      title: WordTimestamp
+      description: One transcribed word with timing and confidence.
+    ResponseHints:
+      properties:
+        entity_in_progress:
+          type: boolean
+          title: Entity In Progress
+          default: false
+      additionalProperties: true
+      type: object
+      title: ResponseHints
+      description: Protocol hints for the voice-agent consumer.
+    TranscriptionResponse:
+      properties:
+        transcript:
+          type: string
+          title: Transcript
+        language:
+          type: string
+          title: Language
+        duration_s:
+          type: number
+          title: Duration S
+        word_timestamps:
+          items:
+            $ref: '#/components/schemas/WordTimestamp'
+          type: array
+          title: Word Timestamps
+        hints:
+          $ref: '#/components/schemas/ResponseHints'
+        model:
+          type: string
+          title: Model
+          default: parakeet-tdt-0.6b-v3
+        processing_ms:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Processing Ms
+      additionalProperties: true
+      type: object
+      required:
+      - transcript
+      - language
+      - duration_s
+      title: TranscriptionResponse
+      description: 'Response from ``POST /v1/audio/transcriptions``.
+
+
+        Fields beyond this declared subset (e.g. ``entities``,
+
+        ``audio_quality``) are preserved by ``extra="allow"`` and reach the
+
+        caller verbatim — the ingress is a passthrough.'
     Body_transcribe_v1_audio_transcriptions_post:
       properties:
         file:
@@ -83,89 +169,3 @@ components:
       - msg
       - type
       title: ValidationError
-    ResponseHints:
-      properties:
-        entity_in_progress:
-          type: boolean
-          title: Entity In Progress
-          default: false
-      additionalProperties: true
-      type: object
-      title: ResponseHints
-      description: Protocol hints for the voice-agent consumer.
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    TranscriptionResponse:
-      properties:
-        transcript:
-          type: string
-          title: Transcript
-        language:
-          type: string
-          title: Language
-        duration_s:
-          type: number
-          title: Duration S
-        word_timestamps:
-          items:
-            $ref: '#/components/schemas/WordTimestamp'
-          type: array
-          title: Word Timestamps
-        hints:
-          $ref: '#/components/schemas/ResponseHints'
-        model:
-          type: string
-          title: Model
-          default: parakeet-tdt-0.6b-v3
-        processing_ms:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Processing Ms
-      additionalProperties: true
-      type: object
-      required:
-      - transcript
-      - language
-      - duration_s
-      title: TranscriptionResponse
-      description: 'Response from ``POST /v1/audio/transcriptions``.
-
-
-        Fields beyond this declared subset (e.g. ``entities``,
-
-        ``audio_quality``) are preserved by ``extra="allow"`` and reach the
-
-        caller verbatim — the ingress is a passthrough.'
-    WordTimestamp:
-      properties:
-        word:
-          type: string
-          title: Word
-        start_s:
-          type: number
-          title: Start S
-        end_s:
-          type: number
-          title: End S
-        confidence:
-          type: number
-          maximum: 1.0
-          minimum: 0.0
-          title: Confidence
-      additionalProperties: true
-      type: object
-      required:
-      - word
-      - start_s
-      - end_s
-      - confidence
-      title: WordTimestamp
-      description: One transcribed word with timing and confidence.

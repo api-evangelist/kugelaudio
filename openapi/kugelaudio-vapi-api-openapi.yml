@@ -90,20 +90,6 @@ components:
       - message
       title: VapiTTSRequest
       description: Vapi custom TTS webhook request body.
-    VapiArtifact:
-      properties:
-        messages:
-          items: {}
-          type: array
-          title: Messages
-      type: object
-      title: VapiArtifact
-      description: 'Subset of Vapi''s ``artifact`` — only the transcript length.
-
-
-        ``len(messages)`` is the turn id: stable across POSTs of one agent
-
-        turn, grows between turns. Items are never introspected.'
     ValidationError:
       properties:
         loc:
@@ -130,6 +116,29 @@ components:
       - msg
       - type
       title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    VapiArtifact:
+      properties:
+        messages:
+          items: {}
+          type: array
+          title: Messages
+      type: object
+      title: VapiArtifact
+      description: 'Subset of Vapi''s ``artifact`` — only the transcript length.
+
+
+        ``len(messages)`` is the turn id: stable across POSTs of one agent
+
+        turn, grows between turns. Items are never introspected.'
     VapiMessage:
       properties:
         type:
@@ -159,12 +168,3 @@ components:
       - sampleRate
       title: VapiMessage
       description: The ``message`` object Vapi sends in every custom TTS webhook.
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError

@@ -127,6 +127,15 @@ components:
       - audio_seconds
       title: RecordBillingUsageRequest
       description: One finished TTS generation — same fields as :class:`UsageReport`.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     BillingCreditStateResponse:
       properties:
         has_access:
@@ -141,6 +150,29 @@ components:
       required:
       - has_access
       title: BillingCreditStateResponse
+    RecordBillingUsageResponse:
+      properties:
+        success:
+          type: boolean
+          title: Success
+        cost_cents:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Cost Cents
+        error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error
+        currency:
+          type: string
+          title: Currency
+          default: eur
+      type: object
+      required:
+      - success
+      title: RecordBillingUsageResponse
     ValidationError:
       properties:
         loc:
@@ -167,35 +199,3 @@ components:
       - msg
       - type
       title: ValidationError
-    RecordBillingUsageResponse:
-      properties:
-        success:
-          type: boolean
-          title: Success
-        cost_cents:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Cost Cents
-        error:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Error
-        currency:
-          type: string
-          title: Currency
-          default: eur
-      type: object
-      required:
-      - success
-      title: RecordBillingUsageResponse
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
