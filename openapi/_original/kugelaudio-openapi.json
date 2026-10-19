@@ -1,0 +1,3567 @@
+{
+  "components": {
+    "schemas": {
+      "ApiKeyResponse": {
+        "properties": {
+          "created_at": {
+            "title": "Created At",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "key_last4": {
+            "title": "Key Last4",
+            "type": "string"
+          },
+          "key_prefix": {
+            "title": "Key Prefix",
+            "type": "string"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "permissions": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Permissions"
+          },
+          "project_id": {
+            "title": "Project Id",
+            "type": "integer"
+          },
+          "secret": {
+            "description": "The full API key. Shown once; store it now.",
+            "title": "Secret",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "project_id",
+          "key_prefix",
+          "key_last4",
+          "created_at",
+          "secret"
+        ],
+        "title": "ApiKeyResponse",
+        "type": "object"
+      },
+      "Body_upload_voice_avatar_v1_voices__voice_id__avatar_put": {
+        "properties": {
+          "file": {
+            "contentMediaType": "application/octet-stream",
+            "title": "File",
+            "type": "string"
+          }
+        },
+        "required": [
+          "file"
+        ],
+        "title": "Body_upload_voice_avatar_v1_voices__voice_id__avatar_put",
+        "type": "object"
+      },
+      "Body_upload_voice_reference_v1_voices__voice_id__references_post": {
+        "properties": {
+          "file": {
+            "contentMediaType": "application/octet-stream",
+            "title": "File",
+            "type": "string"
+          },
+          "reference_text": {
+            "default": "",
+            "title": "Reference Text",
+            "type": "string"
+          },
+          "speaker_consent": {
+            "default": false,
+            "title": "Speaker Consent",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "file"
+        ],
+        "title": "Body_upload_voice_reference_v1_voices__voice_id__references_post",
+        "type": "object"
+      },
+      "BulkReplaceEntriesRequest": {
+        "additionalProperties": false,
+        "description": "Atomic upsert + delete-missing replacement of all entries in a dictionary.\n\nIdempotent: callers sending the same payload twice converge to the\nsame final state. Entries in the existing dictionary whose ``word``\nis not in ``entries`` are deleted; entries whose ``word`` matches\nare upserted.",
+        "properties": {
+          "entries": {
+            "items": {
+              "$ref": "#/components/schemas/EntryPayload"
+            },
+            "title": "Entries",
+            "type": "array"
+          }
+        },
+        "required": [
+          "entries"
+        ],
+        "title": "BulkReplaceEntriesRequest",
+        "type": "object"
+      },
+      "BulkReplaceResponse": {
+        "description": "Counts of what changed during bulk replace.",
+        "properties": {
+          "deleted": {
+            "title": "Deleted",
+            "type": "integer"
+          },
+          "total": {
+            "title": "Total",
+            "type": "integer"
+          },
+          "upserted": {
+            "title": "Upserted",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "upserted",
+          "deleted",
+          "total"
+        ],
+        "title": "BulkReplaceResponse",
+        "type": "object"
+      },
+      "CreateDictionaryRequest": {
+        "additionalProperties": false,
+        "description": "Create a new dictionary scoped to a project.",
+        "properties": {
+          "description": {
+            "anyOf": [
+              {
+                "maxLength": 2000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "language": {
+            "anyOf": [
+              {
+                "maxLength": 16,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "BCP-47 language tag (e.g. 'en', 'de-DE'). Omit for all languages.",
+            "title": "Language"
+          },
+          "name": {
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "CreateDictionaryRequest",
+        "type": "object"
+      },
+      "CreateProjectRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "CreateProjectRequest",
+        "type": "object"
+      },
+      "DictionaryEntryListResponse": {
+        "description": "Paginated list of dictionary entries.",
+        "properties": {
+          "entries": {
+            "items": {
+              "$ref": "#/components/schemas/DictionaryEntryResponse"
+            },
+            "title": "Entries",
+            "type": "array"
+          },
+          "limit": {
+            "title": "Limit",
+            "type": "integer"
+          },
+          "offset": {
+            "title": "Offset",
+            "type": "integer"
+          },
+          "total": {
+            "title": "Total",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "entries",
+          "total",
+          "limit",
+          "offset"
+        ],
+        "title": "DictionaryEntryListResponse",
+        "type": "object"
+      },
+      "DictionaryEntryResponse": {
+        "description": "A single dictionary entry.",
+        "properties": {
+          "case_sensitive": {
+            "title": "Case Sensitive",
+            "type": "boolean"
+          },
+          "created_at": {
+            "title": "Created At",
+            "type": "string"
+          },
+          "dictionary_id": {
+            "title": "Dictionary Id",
+            "type": "integer"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "ipa": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ipa"
+          },
+          "replacement": {
+            "title": "Replacement",
+            "type": "string"
+          },
+          "updated_at": {
+            "title": "Updated At",
+            "type": "string"
+          },
+          "word": {
+            "title": "Word",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "dictionary_id",
+          "word",
+          "replacement",
+          "case_sensitive",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "DictionaryEntryResponse",
+        "type": "object"
+      },
+      "DictionaryListResponse": {
+        "description": "List of dictionaries for a project.",
+        "properties": {
+          "dictionaries": {
+            "items": {
+              "$ref": "#/components/schemas/DictionaryResponse"
+            },
+            "title": "Dictionaries",
+            "type": "array"
+          }
+        },
+        "required": [
+          "dictionaries"
+        ],
+        "title": "DictionaryListResponse",
+        "type": "object"
+      },
+      "DictionaryResponse": {
+        "description": "A single dictionary record.",
+        "properties": {
+          "created_at": {
+            "title": "Created At",
+            "type": "string"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "is_active": {
+            "title": "Is Active",
+            "type": "boolean"
+          },
+          "language": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Language"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "project_id": {
+            "title": "Project Id",
+            "type": "integer"
+          },
+          "updated_at": {
+            "title": "Updated At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "project_id",
+          "name",
+          "is_active",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "DictionaryResponse",
+        "type": "object"
+      },
+      "ElevenLabsModel": {
+        "description": "One model in the ElevenLabs catalog shape.",
+        "properties": {
+          "can_be_finetuned": {
+            "default": false,
+            "title": "Can Be Finetuned",
+            "type": "boolean"
+          },
+          "can_do_text_to_speech": {
+            "default": true,
+            "title": "Can Do Text To Speech",
+            "type": "boolean"
+          },
+          "can_do_voice_conversion": {
+            "default": false,
+            "title": "Can Do Voice Conversion",
+            "type": "boolean"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "model_id": {
+            "title": "Model Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "token_cost_factor": {
+            "default": 1,
+            "title": "Token Cost Factor",
+            "type": "number"
+          }
+        },
+        "required": [
+          "model_id",
+          "name"
+        ],
+        "title": "ElevenLabsModel",
+        "type": "object"
+      },
+      "ElevenLabsTTSRequest": {
+        "description": "ElevenLabs-compatible TTS request body.",
+        "properties": {
+          "model_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": "eleven_monolingual_v1",
+            "title": "Model Id"
+          },
+          "text": {
+            "maxLength": 10000,
+            "minLength": 1,
+            "title": "Text",
+            "type": "string"
+          },
+          "voice_settings": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ElevenLabsVoiceSettings"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "text"
+        ],
+        "title": "ElevenLabsTTSRequest",
+        "type": "object"
+      },
+      "ElevenLabsVoice": {
+        "description": "One voice in the ElevenLabs catalog shape.",
+        "properties": {
+          "category": {
+            "default": "cloned",
+            "title": "Category",
+            "type": "string"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "labels": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Labels",
+            "type": "object"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "preview_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Preview Url"
+          },
+          "voice_id": {
+            "title": "Voice Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "voice_id",
+          "name"
+        ],
+        "title": "ElevenLabsVoice",
+        "type": "object"
+      },
+      "ElevenLabsVoiceSettings": {
+        "description": "ElevenLabs voice settings (mapped onto KugelAudio params).",
+        "properties": {
+          "similarity_boost": {
+            "default": 0.75,
+            "maximum": 1,
+            "minimum": 0,
+            "title": "Similarity Boost",
+            "type": "number"
+          },
+          "stability": {
+            "default": 0.5,
+            "maximum": 1,
+            "minimum": 0,
+            "title": "Stability",
+            "type": "number"
+          },
+          "style": {
+            "default": 0,
+            "maximum": 1,
+            "minimum": 0,
+            "title": "Style",
+            "type": "number"
+          },
+          "use_speaker_boost": {
+            "default": true,
+            "title": "Use Speaker Boost",
+            "type": "boolean"
+          }
+        },
+        "title": "ElevenLabsVoiceSettings",
+        "type": "object"
+      },
+      "ElevenLabsVoicesResponse": {
+        "properties": {
+          "voices": {
+            "items": {
+              "$ref": "#/components/schemas/ElevenLabsVoice"
+            },
+            "title": "Voices",
+            "type": "array"
+          }
+        },
+        "required": [
+          "voices"
+        ],
+        "title": "ElevenLabsVoicesResponse",
+        "type": "object"
+      },
+      "EntryPayload": {
+        "additionalProperties": false,
+        "description": "Fields shared by single-entry create and bulk-replace items.",
+        "properties": {
+          "case_sensitive": {
+            "default": false,
+            "title": "Case Sensitive",
+            "type": "boolean"
+          },
+          "ipa": {
+            "anyOf": [
+              {
+                "maxLength": 200,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ipa"
+          },
+          "replacement": {
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Replacement",
+            "type": "string"
+          },
+          "word": {
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Word",
+            "type": "string"
+          }
+        },
+        "required": [
+          "word",
+          "replacement"
+        ],
+        "title": "EntryPayload",
+        "type": "object"
+      },
+      "GeneratedSampleInfo": {
+        "description": "Stored sample location returned after free sample synthesis.",
+        "properties": {
+          "sample_s3_path": {
+            "title": "Sample S3 Path",
+            "type": "string"
+          },
+          "sample_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sample Url"
+          }
+        },
+        "required": [
+          "sample_s3_path"
+        ],
+        "title": "GeneratedSampleInfo",
+        "type": "object"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "title": "Detail",
+            "type": "array"
+          }
+        },
+        "title": "HTTPValidationError",
+        "type": "object"
+      },
+      "IssueApiKeyRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "anyOf": [
+              {
+                "maxLength": 200,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "permissions": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Resource to level, e.g. {'tts': 'write'}; omit for full access to the project.",
+            "title": "Permissions"
+          }
+        },
+        "title": "IssueApiKeyRequest",
+        "type": "object"
+      },
+      "ModelInfo": {
+        "description": "Public catalog entry for one TTS model.",
+        "properties": {
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "max_input_length": {
+            "default": 5000,
+            "title": "Max Input Length",
+            "type": "integer"
+          },
+          "model_id": {
+            "title": "Model Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "parameters": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parameters"
+          },
+          "sample_rate": {
+            "default": 24000,
+            "title": "Sample Rate",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "model_id",
+          "name"
+        ],
+        "title": "ModelInfo",
+        "type": "object"
+      },
+      "ModelsResponse": {
+        "description": "List of available models.",
+        "properties": {
+          "models": {
+            "items": {
+              "$ref": "#/components/schemas/ModelInfo"
+            },
+            "title": "Models",
+            "type": "array"
+          }
+        },
+        "required": [
+          "models"
+        ],
+        "title": "ModelsResponse",
+        "type": "object"
+      },
+      "ProjectListResponse": {
+        "properties": {
+          "projects": {
+            "items": {
+              "$ref": "#/components/schemas/ProjectResponse"
+            },
+            "title": "Projects",
+            "type": "array"
+          }
+        },
+        "required": [
+          "projects"
+        ],
+        "title": "ProjectListResponse",
+        "type": "object"
+      },
+      "ProjectResponse": {
+        "properties": {
+          "created_at": {
+            "title": "Created At",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "slug": {
+            "title": "Slug",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "slug",
+          "created_at"
+        ],
+        "title": "ProjectResponse",
+        "type": "object"
+      },
+      "SynthesizeRequest": {
+        "additionalProperties": false,
+        "description": "One-shot synthesis request (REST and single-request WebSocket).",
+        "properties": {
+          "cfg_scale": {
+            "default": 2,
+            "description": "Classifier-free guidance scale (clamped to 1.2–2.5)",
+            "title": "Cfg Scale",
+            "type": "number"
+          },
+          "dictionary_ids": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "integer"
+                },
+                "maxItems": 50,
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Per-request dictionary selection. Omit for the default behavior (all active dictionaries of the project apply, filtered by language). An empty list disables dictionaries for this request. A list of dictionary IDs applies exactly those dictionaries — including inactive ones — bypassing the language filter.",
+            "title": "Dictionary Ids"
+          },
+          "language": {
+            "anyOf": [
+              {
+                "maxLength": 10,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Language code (e.g., 'en', 'de')",
+            "title": "Language"
+          },
+          "max_new_tokens": {
+            "default": 2048,
+            "description": "Maximum tokens to generate",
+            "maximum": 2048,
+            "minimum": 1,
+            "title": "Max New Tokens",
+            "type": "integer"
+          },
+          "model_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Model to use",
+            "title": "Model Id"
+          },
+          "normalize": {
+            "default": true,
+            "description": "Enable text normalization",
+            "title": "Normalize",
+            "type": "boolean"
+          },
+          "output_format": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Combined codec+rate token (e.g. 'pcm_8000', 'ulaw_8000', 'alaw_8000'). Opt-in; when set it is authoritative and must not contradict 'sample_rate'. Absent ⇒ legacy 'sample_rate' path (linear PCM16).",
+            "title": "Output Format"
+          },
+          "project_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Project ID for custom dictionary lookup",
+            "title": "Project Id"
+          },
+          "sample_rate": {
+            "default": 24000,
+            "description": "Output sample rate in Hz",
+            "title": "Sample Rate",
+            "type": "integer"
+          },
+          "speed": {
+            "default": 1,
+            "description": "Playback speed multiplier (0.8 = slower, 1.2 = faster)",
+            "maximum": 1.2,
+            "minimum": 0.8,
+            "title": "Speed",
+            "type": "number"
+          },
+          "temperature": {
+            "anyOf": [
+              {
+                "maximum": 1,
+                "minimum": 0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Sampling variance. 0 = most stable, 1 = most variance. Omit to use the engine default.",
+            "title": "Temperature"
+          },
+          "text": {
+            "description": "Text to synthesize",
+            "maxLength": 10000,
+            "minLength": 2,
+            "title": "Text",
+            "type": "string"
+          },
+          "voice_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Voice handle or legacy numeric ID for cloning",
+            "title": "Voice Id"
+          }
+        },
+        "required": [
+          "text"
+        ],
+        "title": "SynthesizeRequest",
+        "type": "object"
+      },
+      "UpdateDictionaryRequest": {
+        "additionalProperties": false,
+        "description": "Patch an existing dictionary. project_id cannot be changed.",
+        "properties": {
+          "description": {
+            "anyOf": [
+              {
+                "maxLength": 2000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "is_active": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Is Active"
+          },
+          "language": {
+            "anyOf": [
+              {
+                "maxLength": 16,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Language"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "maxLength": 200,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          }
+        },
+        "title": "UpdateDictionaryRequest",
+        "type": "object"
+      },
+      "UpdateEntryRequest": {
+        "additionalProperties": false,
+        "description": "Patch an existing entry.",
+        "properties": {
+          "case_sensitive": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Case Sensitive"
+          },
+          "ipa": {
+            "anyOf": [
+              {
+                "maxLength": 200,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ipa"
+          },
+          "replacement": {
+            "anyOf": [
+              {
+                "maxLength": 1000,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Replacement"
+          },
+          "word": {
+            "anyOf": [
+              {
+                "maxLength": 200,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Word"
+          }
+        },
+        "title": "UpdateEntryRequest",
+        "type": "object"
+      },
+      "UpdateVoiceRequest": {
+        "description": "Request body for updating an existing voice (partial update).",
+        "properties": {
+          "age": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Age"
+          },
+          "category": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "maxLength": 2000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "generative_voice_description": {
+            "anyOf": [
+              {
+                "maxLength": 2000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Generative Voice Description"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "maxLength": 200,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "quality": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quality"
+          },
+          "sample_text": {
+            "anyOf": [
+              {
+                "maxLength": 2000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sample Text"
+          },
+          "sex": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sex"
+          },
+          "supported_languages": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Supported Languages"
+          }
+        },
+        "title": "UpdateVoiceRequest",
+        "type": "object"
+      },
+      "UploadedAvatarInfo": {
+        "description": "Stored avatar location returned after upload.",
+        "properties": {
+          "avatar_s3_path": {
+            "title": "Avatar S3 Path",
+            "type": "string"
+          }
+        },
+        "required": [
+          "avatar_s3_path"
+        ],
+        "title": "UploadedAvatarInfo",
+        "type": "object"
+      },
+      "ValidationError": {
+        "properties": {
+          "ctx": {
+            "title": "Context",
+            "type": "object"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "title": "Location",
+            "type": "array"
+          },
+          "msg": {
+            "title": "Message",
+            "type": "string"
+          },
+          "type": {
+            "title": "Error Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError",
+        "type": "object"
+      },
+      "VoiceDetailInfo": {
+        "description": "Extended voice metadata returned by CRUD endpoints.",
+        "properties": {
+          "age": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Age"
+          },
+          "avatar_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Avatar Url"
+          },
+          "category": {
+            "default": "cloned",
+            "title": "Category",
+            "type": "string"
+          },
+          "description": {
+            "default": "",
+            "title": "Description",
+            "type": "string"
+          },
+          "generative_voice_description": {
+            "default": "",
+            "title": "Generative Voice Description",
+            "type": "string"
+          },
+          "handle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Handle"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "is_public": {
+            "default": false,
+            "title": "Is Public",
+            "type": "boolean"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "pending_verification": {
+            "default": false,
+            "title": "Pending Verification",
+            "type": "boolean"
+          },
+          "public_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Public Id"
+          },
+          "quality": {
+            "default": "mid",
+            "title": "Quality",
+            "type": "string"
+          },
+          "sample_text": {
+            "default": "",
+            "title": "Sample Text",
+            "type": "string"
+          },
+          "sample_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sample Url"
+          },
+          "sex": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sex"
+          },
+          "supported_languages": {
+            "default": [],
+            "items": {
+              "type": "string"
+            },
+            "title": "Supported Languages",
+            "type": "array"
+          },
+          "verified": {
+            "default": false,
+            "title": "Verified",
+            "type": "boolean"
+          },
+          "voice_id": {
+            "title": "Voice Id",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "voice_id",
+          "name"
+        ],
+        "title": "VoiceDetailInfo",
+        "type": "object"
+      },
+      "VoiceInfo": {
+        "description": "Voice metadata.",
+        "properties": {
+          "age": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Age"
+          },
+          "avatar_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Avatar Url"
+          },
+          "category": {
+            "default": "cloned",
+            "title": "Category",
+            "type": "string"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "handle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Handle"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "public_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Public Id"
+          },
+          "quality": {
+            "default": "mid",
+            "title": "Quality",
+            "type": "string"
+          },
+          "sample_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sample Url"
+          },
+          "sex": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sex"
+          },
+          "supported_languages": {
+            "default": [],
+            "items": {
+              "type": "string"
+            },
+            "title": "Supported Languages",
+            "type": "array"
+          },
+          "voice_id": {
+            "title": "Voice Id",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "voice_id",
+          "name"
+        ],
+        "title": "VoiceInfo",
+        "type": "object"
+      },
+      "VoiceReferenceInfo": {
+        "description": "Voice reference audio metadata.",
+        "properties": {
+          "audio_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Audio Url"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "is_generated": {
+            "default": false,
+            "title": "Is Generated",
+            "type": "boolean"
+          },
+          "name": {
+            "default": "",
+            "title": "Name",
+            "type": "string"
+          },
+          "reference_text": {
+            "default": "",
+            "title": "Reference Text",
+            "type": "string"
+          },
+          "s3_path": {
+            "default": "",
+            "title": "S3 Path",
+            "type": "string"
+          },
+          "voice_id": {
+            "title": "Voice Id",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "voice_id"
+        ],
+        "title": "VoiceReferenceInfo",
+        "type": "object"
+      },
+      "VoicesResponse": {
+        "description": "List of available voices.",
+        "properties": {
+          "limit": {
+            "default": 20,
+            "title": "Limit",
+            "type": "integer"
+          },
+          "offset": {
+            "default": 0,
+            "title": "Offset",
+            "type": "integer"
+          },
+          "total": {
+            "default": 0,
+            "title": "Total",
+            "type": "integer"
+          },
+          "voices": {
+            "items": {
+              "$ref": "#/components/schemas/VoiceInfo"
+            },
+            "title": "Voices",
+            "type": "array"
+          }
+        },
+        "required": [
+          "voices"
+        ],
+        "title": "VoicesResponse",
+        "type": "object"
+      },
+      "ingress__routes__dictionaries__DeleteResponse": {
+        "description": "Response for delete operations (200 + body so JS SDKs can JSON-parse).",
+        "properties": {
+          "deleted": {
+            "default": true,
+            "title": "Deleted",
+            "type": "boolean"
+          }
+        },
+        "title": "DeleteResponse",
+        "type": "object"
+      },
+      "ingress__routes__projects__DeleteResponse": {
+        "properties": {
+          "deleted": {
+            "default": true,
+            "title": "Deleted",
+            "type": "boolean"
+          }
+        },
+        "title": "DeleteResponse",
+        "type": "object"
+      }
+    },
+    "securitySchemes": {
+      "ApiKeyHeader": {
+        "description": "Your API key in the `X-API-Key` header.",
+        "in": "header",
+        "name": "X-API-Key",
+        "type": "apiKey"
+      },
+      "BearerAuth": {
+        "description": "Your API key as `Authorization: Bearer YOUR_API_KEY`.",
+        "scheme": "bearer",
+        "type": "http"
+      },
+      "ElevenLabsApiKey": {
+        "description": "Your KugelAudio API key in the ElevenLabs `xi-api-key` header.",
+        "in": "header",
+        "name": "xi-api-key",
+        "type": "apiKey"
+      }
+    }
+  },
+  "externalDocs": {
+    "url": "https://docs.kugelaudio.com/api-reference/introduction"
+  },
+  "info": {
+    "description": "The public REST API of KugelAudio text to speech: synthesis, models, voices, pronunciation dictionaries, projects, and the ElevenLabs-compatible endpoints. Streaming over WebSocket (`/ws/tts`, `/ws/tts/stream`, `/ws/tts/multi`) is described in the API reference, not here. Guides and examples: https://docs.kugelaudio.com/api-reference/introduction",
+    "title": "KugelAudio API",
+    "version": "v1"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/11labs/v1/models": {
+      "get": {
+        "description": "Reference: https://docs.kugelaudio.com/integrations/elevenlabs-proxy",
+        "operationId": "get_models_11labs_v1_models_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ElevenLabsModel"
+                  },
+                  "title": "Response Get Models 11Labs V1 Models Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [],
+        "summary": "Get Models",
+        "tags": [
+          "ElevenLabs compatible"
+        ]
+      }
+    },
+    "/11labs/v1/text-to-speech/{voice_id}": {
+      "post": {
+        "description": "Reference: https://docs.kugelaudio.com/integrations/elevenlabs-proxy",
+        "operationId": "text_to_speech_11labs_v1_text_to_speech__voice_id__post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "voice_id",
+            "required": true,
+            "schema": {
+              "title": "Voice Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "output_format",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Output Format"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ElevenLabsTTSRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "ElevenLabsApiKey": []
+          }
+        ],
+        "summary": "Text To Speech",
+        "tags": [
+          "ElevenLabs compatible"
+        ]
+      }
+    },
+    "/11labs/v1/text-to-speech/{voice_id}/stream": {
+      "post": {
+        "description": "Reference: https://docs.kugelaudio.com/integrations/elevenlabs-proxy",
+        "operationId": "text_to_speech_stream_11labs_v1_text_to_speech__voice_id__stream_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "voice_id",
+            "required": true,
+            "schema": {
+              "title": "Voice Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "output_format",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Output Format"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ElevenLabsTTSRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "ElevenLabsApiKey": []
+          }
+        ],
+        "summary": "Text To Speech Stream",
+        "tags": [
+          "ElevenLabs compatible"
+        ]
+      }
+    },
+    "/11labs/v1/voices": {
+      "get": {
+        "description": "Reference: https://docs.kugelaudio.com/integrations/elevenlabs-proxy",
+        "operationId": "get_voices_11labs_v1_voices_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ElevenLabsVoicesResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "ElevenLabsApiKey": []
+          }
+        ],
+        "summary": "Get Voices",
+        "tags": [
+          "ElevenLabs compatible"
+        ]
+      }
+    },
+    "/11labs/v1/voices/{voice_id}": {
+      "get": {
+        "description": "Reference: https://docs.kugelaudio.com/integrations/elevenlabs-proxy",
+        "operationId": "get_voice_11labs_v1_voices__voice_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "voice_id",
+            "required": true,
+            "schema": {
+              "title": "Voice Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ElevenLabsVoice"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "ElevenLabsApiKey": []
+          }
+        ],
+        "summary": "Get Voice",
+        "tags": [
+          "ElevenLabs compatible"
+        ]
+      }
+    },
+    "/v1/dictionaries": {
+      "get": {
+        "description": "Reference: https://docs.kugelaudio.com/api-reference/endpoints/dictionaries",
+        "operationId": "list_dictionaries_v1_dictionaries_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "project_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DictionaryListResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyHeader": []
+          }
+        ],
+        "summary": "List Dictionaries",
+        "tags": [
+          "Dictionaries"
+        ]
+      },
+      "post": {
+        "description": "Reference: https://docs.kugelaudio.com/api-reference/endpoints/dictionaries",
+        "operationId": "create_dictionary_v1_dictionaries_post",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "project_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateDictionaryRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DictionaryResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyHeader": []
+          }
+        ],
+        "summary": "Create Dictionary",
+        "tags": [
+          "Dictionaries"
+        ]
+      }
+    },
+    "/v1/dictionaries/{dict_id}": {
+      "delete": {
+        "description": "Reference: https://docs.kugelaudio.com/api-reference/endpoints/dictionaries",
+        "operationId": "delete_dictionary_v1_dictionaries__dict_id__delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "dict_id",
+            "required": true,
+            "schema": {
+              "title": "Dict Id",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "project_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ingress__routes__dictionaries__DeleteResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyHeader": []
+          }
+        ],
+        "summary": "Delete Dictionary",
+        "tags": [
+          "Dictionaries"
+        ]
+      },
+      "get": {
+        "description": "Reference: https://docs.kugelaudio.com/api-reference/endpoints/dictionaries",
+        "operationId": "get_dictionary_v1_dictionaries__dict_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "dict_id",
+            "required": true,
+            "schema": {
+              "title": "Dict Id",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "project_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DictionaryResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyHeader": []
+          }
+        ],
+        "summary": "Get Dictionary",
+        "tags": [
+          "Dictionaries"
+        ]
+      },
+      "patch": {
+        "description": "Reference: https://docs.kugelaudio.com/api-reference/endpoints/dictionaries",
+        "operationId": "update_dictionary_v1_dictionaries__dict_id__patch",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "dict_id",
+            "required": true,
+            "schema": {
+              "title": "Dict Id",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "project_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateDictionaryRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DictionaryResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyHeader": []
+          }
+        ],
+        "summary": "Update Dictionary",
+        "tags": [
+          "Dictionaries"
+        ]
+      }
+    },
+    "/v1/dictionaries/{dict_id}/entries": {
+      "get": {
+        "description": "Reference: https://docs.kugelaudio.com/api-reference/endpoints/dictionaries",
+        "operationId": "list_entries_v1_dictionaries__dict_id__entries_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "dict_id",
+            "required": true,
+            "schema": {
+              "title": "Dict Id",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "project_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Project Id"
+            }
+          },
+          {
+            "in": "query",
+            "name": "search",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 200,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Search"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 100,
+              "maximum": 500,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DictionaryEntryListResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyHeader": []
+          }
+        ],
+        "summary": "List Entries",
+        "tags": [
+          "Dictionaries"
+        ]
+      },
+      "post": {
+        "description": "Reference: https://docs.kugelaudio.com/api-reference/endpoints/dictionaries",
+        "operationId": "add_entry_v1_dictionaries__dict_id__entries_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "dict_id",
+            "required": true,
+            "schema": {
+              "title": "Dict Id",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "project_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EntryPayload"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DictionaryEntryResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyHeader": []
+          }
+        ],
+        "summary": "Add Entry",
+        "tags": [
+          "Dictionaries"
+        ]
+      },
+      "put": {
+        "description": "Reference: https://docs.kugelaudio.com/api-reference/endpoints/dictionaries",
+        "operationId": "bulk_replace_entries_v1_dictionaries__dict_id__entries_put",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "dict_id",
+            "required": true,
+            "schema": {
+              "title": "Dict Id",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "project_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BulkReplaceEntriesRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BulkReplaceResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyHeader": []
+          }
+        ],
+        "summary": "Bulk Replace Entries",
+        "tags": [
+          "Dictionaries"
+        ]
+      }
+    },
+    "/v1/dictionaries/{dict_id}/entries/{entry_id}": {
+      "delete": {
+        "description": "Reference: https://docs.kugelaudio.com/api-reference/endpoints/dictionaries",
+        "operationId": "delete_entry_v1_dictionaries__dict_id__entries__entry_id__delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "dict_id",
+            "required": true,
+            "schema": {
+              "title": "Dict Id",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "path",
+            "name": "entry_id",
+            "required": true,
+            "schema": {
+              "title": "Entry Id",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "project_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ingress__routes__dictionaries__DeleteResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyHeader": []
+          }
+        ],
+        "summary": "Delete Entry",
+        "tags": [
+          "Dictionaries"
+        ]
+      },
+      "patch": {
+        "description": "Reference: https://docs.kugelaudio.com/api-reference/endpoints/dictionaries",
+        "operationId": "update_entry_v1_dictionaries__dict_id__entries__entry_id__patch",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "dict_id",
+            "required": true,
+            "schema": {
+              "title": "Dict Id",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "path",
+            "name": "entry_id",
+            "required": true,
+            "schema": {
+              "title": "Entry Id",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "project_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateEntryRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DictionaryEntryResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyHeader": []
+          }
+        ],
+        "summary": "Update Entry",
+        "tags": [
+          "Dictionaries"
+        ]
+      }
+    },
+    "/v1/models": {
+      "get": {
+        "description": "Reference: https://docs.kugelaudio.com/api-reference/endpoints/models",
+        "operationId": "get_models_v1_models_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelsResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [],
+        "summary": "Get Models",
+        "tags": [
+          "Models"
+        ]
+      }
+    },
+    "/v1/projects": {
+      "get": {
+        "description": "Reference: https://docs.kugelaudio.com/api-reference/endpoints/projects",
+        "operationId": "list_projects_v1_projects_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectListResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyHeader": []
+          }
+        ],
+        "summary": "List Projects",
+        "tags": [
+          "Projects"
+        ]
+      },
+      "post": {
+        "description": "Reference: https://docs.kugelaudio.com/api-reference/endpoints/projects",
+        "operationId": "create_project_v1_projects_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateProjectRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyHeader": []
+          }
+        ],
+        "summary": "Create Project",
+        "tags": [
+          "Projects"
+        ]
+      }
+    },
+    "/v1/projects/{project_id}": {
+      "delete": {
+        "description": "Reference: https://docs.kugelaudio.com/api-reference/endpoints/projects",
+        "operationId": "delete_project_v1_projects__project_id__delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "title": "Project Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ingress__routes__projects__DeleteResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyHeader": []
+          }
+        ],
+        "summary": "Delete Project",
+        "tags": [
+          "Projects"
+        ]
+      }
+    },
+    "/v1/projects/{project_id}/api-keys": {
+      "post": {
+        "description": "Reference: https://docs.kugelaudio.com/api-reference/endpoints/projects",
+        "operationId": "issue_api_key_v1_projects__project_id__api_keys_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "title": "Project Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IssueApiKeyRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiKeyResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyHeader": []
+          }
+        ],
+        "summary": "Issue Api Key",
+        "tags": [
+          "Projects"
+        ]
+      }
+    },
+    "/v1/projects/{project_id}/api-keys/{key_id}": {
+      "delete": {
+        "description": "Reference: https://docs.kugelaudio.com/api-reference/endpoints/projects",
+        "operationId": "revoke_api_key_v1_projects__project_id__api_keys__key_id__delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "title": "Project Id",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "path",
+            "name": "key_id",
+            "required": true,
+            "schema": {
+              "title": "Key Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ingress__routes__projects__DeleteResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyHeader": []
+          }
+        ],
+        "summary": "Revoke Api Key",
+        "tags": [
+          "Projects"
+        ]
+      }
+    },
+    "/v1/tts/generate": {
+      "post": {
+        "description": "Reference: https://docs.kugelaudio.com/api-reference/tts/generate",
+        "operationId": "generate_v1_tts_generate_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SynthesizeRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyHeader": []
+          }
+        ],
+        "summary": "Generate",
+        "tags": [
+          "Text to Speech"
+        ]
+      }
+    },
+    "/v1/voices": {
+      "get": {
+        "description": "Reference: https://docs.kugelaudio.com/api-reference/endpoints/voices",
+        "operationId": "get_voices_v1_voices_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "language",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 35,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Language"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VoicesResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyHeader": []
+          }
+        ],
+        "summary": "Get Voices",
+        "tags": [
+          "Voices"
+        ]
+      },
+      "post": {
+        "description": "Reference: https://docs.kugelaudio.com/api-reference/endpoints/voices",
+        "operationId": "create_voice_v1_voices_post",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VoiceDetailInfo"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyHeader": []
+          }
+        ],
+        "summary": "Create Voice",
+        "tags": [
+          "Voices"
+        ]
+      }
+    },
+    "/v1/voices/{voice_id}": {
+      "delete": {
+        "description": "Reference: https://docs.kugelaudio.com/api-reference/endpoints/voices",
+        "operationId": "delete_voice_v1_voices__voice_id__delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "voice_id",
+            "required": true,
+            "schema": {
+              "title": "Voice Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyHeader": []
+          }
+        ],
+        "summary": "Delete Voice",
+        "tags": [
+          "Voices"
+        ]
+      },
+      "get": {
+        "description": "Reference: https://docs.kugelaudio.com/api-reference/endpoints/voices",
+        "operationId": "get_voice_by_id_v1_voices__voice_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "voice_id",
+            "required": true,
+            "schema": {
+              "title": "Voice Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VoiceInfo"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyHeader": []
+          }
+        ],
+        "summary": "Get Voice By Id",
+        "tags": [
+          "Voices"
+        ]
+      },
+      "patch": {
+        "description": "Reference: https://docs.kugelaudio.com/api-reference/endpoints/voices",
+        "operationId": "update_voice_v1_voices__voice_id__patch",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "voice_id",
+            "required": true,
+            "schema": {
+              "title": "Voice Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateVoiceRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VoiceDetailInfo"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyHeader": []
+          }
+        ],
+        "summary": "Update Voice",
+        "tags": [
+          "Voices"
+        ]
+      }
+    },
+    "/v1/voices/{voice_id}/avatar": {
+      "put": {
+        "description": "Reference: https://docs.kugelaudio.com/api-reference/endpoints/voices",
+        "operationId": "upload_voice_avatar_v1_voices__voice_id__avatar_put",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "voice_id",
+            "required": true,
+            "schema": {
+              "title": "Voice Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_upload_voice_avatar_v1_voices__voice_id__avatar_put"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UploadedAvatarInfo"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyHeader": []
+          }
+        ],
+        "summary": "Upload Voice Avatar",
+        "tags": [
+          "Voices"
+        ]
+      }
+    },
+    "/v1/voices/{voice_id}/generate-sample": {
+      "post": {
+        "description": "Reference: https://docs.kugelaudio.com/api-reference/endpoints/voices",
+        "operationId": "generate_voice_sample_v1_voices__voice_id__generate_sample_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "voice_id",
+            "required": true,
+            "schema": {
+              "title": "Voice Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GeneratedSampleInfo"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyHeader": []
+          }
+        ],
+        "summary": "Generate Voice Sample",
+        "tags": [
+          "Voices"
+        ]
+      }
+    },
+    "/v1/voices/{voice_id}/publish": {
+      "post": {
+        "description": "Reference: https://docs.kugelaudio.com/api-reference/endpoints/voices",
+        "operationId": "publish_voice_v1_voices__voice_id__publish_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "voice_id",
+            "required": true,
+            "schema": {
+              "title": "Voice Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VoiceDetailInfo"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyHeader": []
+          }
+        ],
+        "summary": "Publish Voice",
+        "tags": [
+          "Voices"
+        ]
+      }
+    },
+    "/v1/voices/{voice_id}/references": {
+      "get": {
+        "description": "Reference: https://docs.kugelaudio.com/api-reference/endpoints/voices",
+        "operationId": "list_voice_references_v1_voices__voice_id__references_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "voice_id",
+            "required": true,
+            "schema": {
+              "title": "Voice Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/VoiceReferenceInfo"
+                  },
+                  "title": "Response List Voice References V1 Voices  Voice Id  References Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyHeader": []
+          }
+        ],
+        "summary": "List Voice References",
+        "tags": [
+          "Voices"
+        ]
+      },
+      "post": {
+        "description": "Reference: https://docs.kugelaudio.com/api-reference/endpoints/voices",
+        "operationId": "upload_voice_reference_v1_voices__voice_id__references_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "voice_id",
+            "required": true,
+            "schema": {
+              "title": "Voice Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_upload_voice_reference_v1_voices__voice_id__references_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VoiceReferenceInfo"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyHeader": []
+          }
+        ],
+        "summary": "Upload Voice Reference",
+        "tags": [
+          "Voices"
+        ]
+      }
+    },
+    "/v1/voices/{voice_id}/references/{ref_id}": {
+      "delete": {
+        "description": "Reference: https://docs.kugelaudio.com/api-reference/endpoints/voices",
+        "operationId": "delete_voice_reference_v1_voices__voice_id__references__ref_id__delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "voice_id",
+            "required": true,
+            "schema": {
+              "title": "Voice Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "ref_id",
+            "required": true,
+            "schema": {
+              "title": "Ref Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyHeader": []
+          }
+        ],
+        "summary": "Delete Voice Reference",
+        "tags": [
+          "Voices"
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "Default, geo-routed",
+      "url": "https://api.kugelaudio.com"
+    },
+    {
+      "description": "Direct EU endpoint",
+      "url": "https://api.eu.kugelaudio.com"
+    }
+  ],
+  "tags": [
+    {
+      "externalDocs": {
+        "url": "https://docs.kugelaudio.com/api-reference/tts/generate"
+      },
+      "name": "Text to Speech"
+    },
+    {
+      "externalDocs": {
+        "url": "https://docs.kugelaudio.com/api-reference/endpoints/models"
+      },
+      "name": "Models"
+    },
+    {
+      "externalDocs": {
+        "url": "https://docs.kugelaudio.com/api-reference/endpoints/voices"
+      },
+      "name": "Voices"
+    },
+    {
+      "externalDocs": {
+        "url": "https://docs.kugelaudio.com/api-reference/endpoints/dictionaries"
+      },
+      "name": "Dictionaries"
+    },
+    {
+      "externalDocs": {
+        "url": "https://docs.kugelaudio.com/api-reference/endpoints/projects"
+      },
+      "name": "Projects"
+    },
+    {
+      "externalDocs": {
+        "url": "https://docs.kugelaudio.com/integrations/elevenlabs-proxy"
+      },
+      "name": "ElevenLabs compatible"
+    }
+  ]
+}

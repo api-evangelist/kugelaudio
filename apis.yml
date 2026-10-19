@@ -87,56 +87,6 @@ tags_raw:
 - Company
 - Machine-Learning
 apis:
-- aid: kugelaudio:kugelaudio-11labs-api
-  name: KugelAudio 11labs API
-  description: The 11labs API from KugelAudio — 6 operation(s) for 11labs.
-  humanURL: https://docs.kugelaudio.com/api-reference/introduction
-  baseURL: https://api.kugelaudio.com
-  tags:
-  - 11labs
-  properties:
-  - type: OpenAPI
-    url: openapi/kugelaudio-11labs-api-openapi.yml
-  - type: Documentation
-    url: https://docs.kugelaudio.com/api-reference/introduction
-  - type: AsyncAPI
-    url: asyncapi/kugelaudio-tts-asyncapi.yml
-  - type: DataModel
-    url: data-model/kugelaudio-data-model.yml
-- aid: kugelaudio:kugelaudio-audio-api
-  name: KugelAudio Audio API
-  description: The Audio API from KugelAudio — 1 operation(s) for audio.
-  humanURL: https://docs.kugelaudio.com/api-reference/introduction
-  baseURL: https://api.kugelaudio.com
-  tags:
-  - Audio
-  properties:
-  - type: OpenAPI
-    url: openapi/kugelaudio-audio-api-openapi.yml
-  - type: Documentation
-    url: https://docs.kugelaudio.com/api-reference/introduction
-  - type: AsyncAPI
-    url: asyncapi/kugelaudio-tts-asyncapi.yml
-  - type: DataModel
-    url: data-model/kugelaudio-data-model.yml
-- aid: kugelaudio:kugelaudio-billing-api
-  name: KugelAudio Billing API
-  description: The billing API from KugelAudio — 2 operation(s) for billing.
-  humanURL: https://docs.kugelaudio.com/api-reference/introduction
-  baseURL: https://api.kugelaudio.com
-  tags:
-  - Billing
-  tags_raw:
-  - billing
-  properties:
-  - type: OpenAPI
-    url: openapi/kugelaudio-billing-api-openapi.yml
-  - type: Documentation
-    url: https://docs.kugelaudio.com/api-reference/introduction
-  - type: AsyncAPI
-    url: asyncapi/kugelaudio-tts-asyncapi.yml
-  - type: DataModel
-    url: data-model/kugelaudio-data-model.yml
 - aid: kugelaudio:kugelaudio-dictionaries-api
   name: KugelAudio Dictionaries API
   description: The Dictionaries API from KugelAudio — 5 operation(s) for dictionaries.
@@ -147,40 +97,6 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/kugelaudio-dictionaries-api-openapi.yml
-  - type: Documentation
-    url: https://docs.kugelaudio.com/api-reference/introduction
-  - type: AsyncAPI
-    url: asyncapi/kugelaudio-tts-asyncapi.yml
-  - type: DataModel
-    url: data-model/kugelaudio-data-model.yml
-- aid: kugelaudio:kugelaudio-health-api
-  name: KugelAudio Health API
-  description: The Health API from KugelAudio — 1 operation(s) for health.
-  humanURL: https://docs.kugelaudio.com/api-reference/introduction
-  baseURL: https://api.kugelaudio.com
-  tags:
-  - Health
-  properties:
-  - type: OpenAPI
-    url: openapi/kugelaudio-health-api-openapi.yml
-  - type: Documentation
-    url: https://docs.kugelaudio.com/api-reference/introduction
-  - type: AsyncAPI
-    url: asyncapi/kugelaudio-tts-asyncapi.yml
-  - type: DataModel
-    url: data-model/kugelaudio-data-model.yml
-- aid: kugelaudio:kugelaudio-license-api
-  name: KugelAudio License API
-  description: The license API from KugelAudio — 12 operation(s) for license.
-  humanURL: https://docs.kugelaudio.com/api-reference/introduction
-  baseURL: https://api.kugelaudio.com
-  tags:
-  - License
-  tags_raw:
-  - license
-  properties:
-  - type: OpenAPI
-    url: openapi/kugelaudio-license-api-openapi.yml
   - type: Documentation
     url: https://docs.kugelaudio.com/api-reference/introduction
   - type: AsyncAPI
@@ -203,104 +119,6 @@ apis:
     url: asyncapi/kugelaudio-tts-asyncapi.yml
   - type: DataModel
     url: data-model/kugelaudio-data-model.yml
-- aid: kugelaudio:kugelaudio-normalize-api
-  name: KugelAudio Normalize API
-  description: The Normalize API from KugelAudio — 1 operation(s) for normalize.
-  humanURL: https://docs.kugelaudio.com/api-reference/introduction
-  baseURL: https://api.kugelaudio.com
-  tags:
-  - Normalize
-  properties:
-  - type: OpenAPI
-    url: openapi/kugelaudio-normalize-api-openapi.yml
-  - type: Documentation
-    url: https://docs.kugelaudio.com/api-reference/introduction
-  - type: AsyncAPI
-    url: asyncapi/kugelaudio-tts-asyncapi.yml
-  - type: DataModel
-    url: data-model/kugelaudio-data-model.yml
-- aid: kugelaudio:kugelaudio-post-overrides-api
-  name: KugelAudio Post Overrides API
-  description: The Post Overrides API from KugelAudio — 1 operation(s) for post overrides.
-  humanURL: https://docs.kugelaudio.com/api-reference/introduction
-  baseURL: https://api.kugelaudio.com
-  tags:
-  - Post Overrides
-  properties:
-  - type: OpenAPI
-    url: openapi/kugelaudio-post-overrides-api-openapi.yml
-  - type: Documentation
-    url: https://docs.kugelaudio.com/api-reference/introduction
-  - type: AsyncAPI
-    url: asyncapi/kugelaudio-tts-asyncapi.yml
-  - type: DataModel
-    url: data-model/kugelaudio-data-model.yml
-- aid: kugelaudio:kugelaudio-predict-api
-  name: KugelAudio Predict API
-  description: The Predict API from KugelAudio — 1 operation(s) for predict.
-  humanURL: https://docs.kugelaudio.com/api-reference/introduction
-  baseURL: https://api.kugelaudio.com
-  tags:
-  - Predict
-  properties:
-  - type: OpenAPI
-    url: openapi/kugelaudio-predict-api-openapi.yml
-  - type: Documentation
-    url: https://docs.kugelaudio.com/api-reference/introduction
-  - type: AsyncAPI
-    url: asyncapi/kugelaudio-tts-asyncapi.yml
-  - type: DataModel
-    url: data-model/kugelaudio-data-model.yml
-- aid: kugelaudio:kugelaudio-ready-api
-  name: KugelAudio Ready API
-  description: The Ready API from KugelAudio — 1 operation(s) for ready.
-  humanURL: https://docs.kugelaudio.com/api-reference/introduction
-  baseURL: https://api.kugelaudio.com
-  tags:
-  - Ready
-  properties:
-  - type: OpenAPI
-    url: openapi/kugelaudio-ready-api-openapi.yml
-  - type: Documentation
-    url: https://docs.kugelaudio.com/api-reference/introduction
-  - type: AsyncAPI
-    url: asyncapi/kugelaudio-tts-asyncapi.yml
-  - type: DataModel
-    url: data-model/kugelaudio-data-model.yml
-- aid: kugelaudio:kugelaudio-tts-api
-  name: KugelAudio Tts API
-  description: The Tts API from KugelAudio — 1 operation(s) for tts.
-  humanURL: https://docs.kugelaudio.com/api-reference/introduction
-  baseURL: https://api.kugelaudio.com
-  tags:
-  - TTS
-  tags_raw:
-  - Tts
-  properties:
-  - type: OpenAPI
-    url: openapi/kugelaudio-tts-api-openapi.yml
-  - type: Documentation
-    url: https://docs.kugelaudio.com/api-reference/introduction
-  - type: AsyncAPI
-    url: asyncapi/kugelaudio-tts-asyncapi.yml
-  - type: DataModel
-    url: data-model/kugelaudio-data-model.yml
-- aid: kugelaudio:kugelaudio-vapi-api
-  name: KugelAudio Vapi API
-  description: The Vapi API from KugelAudio — 1 operation(s) for vapi.
-  humanURL: https://docs.kugelaudio.com/api-reference/introduction
-  baseURL: https://api.kugelaudio.com
-  tags:
-  - Vapi
-  properties:
-  - type: OpenAPI
-    url: openapi/kugelaudio-vapi-api-openapi.yml
-  - type: Documentation
-    url: https://docs.kugelaudio.com/api-reference/introduction
-  - type: AsyncAPI
-    url: asyncapi/kugelaudio-tts-asyncapi.yml
-  - type: DataModel
-    url: data-model/kugelaudio-data-model.yml
 - aid: kugelaudio:kugelaudio-voices-api
   name: KugelAudio Voices API
   description: The Voices API from KugelAudio — 6 operation(s) for voices.
@@ -313,6 +131,55 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/kugelaudio-voices-api-openapi.yml
+  - type: Documentation
+    url: https://docs.kugelaudio.com/api-reference/introduction
+  - type: AsyncAPI
+    url: asyncapi/kugelaudio-tts-asyncapi.yml
+  - type: DataModel
+    url: data-model/kugelaudio-data-model.yml
+- aid: kugelaudio:kugelaudio-elevenlabs-compatible-api
+  name: KugelAudio ElevenLabs compatible API
+  description: >-
+    The ElevenLabs compatible API from KugelAudio — 5 operation(s) for elevenlabs compatible.
+  humanURL: https://docs.kugelaudio.com/api-reference/introduction
+  baseURL: https://api.kugelaudio.com
+  tags:
+  - ElevenLabs compatible
+  properties:
+  - type: OpenAPI
+    url: openapi/kugelaudio-elevenlabs-compatible-api-openapi.yml
+  - type: Documentation
+    url: https://docs.kugelaudio.com/api-reference/introduction
+  - type: AsyncAPI
+    url: asyncapi/kugelaudio-tts-asyncapi.yml
+  - type: DataModel
+    url: data-model/kugelaudio-data-model.yml
+- aid: kugelaudio:kugelaudio-projects-api
+  name: KugelAudio Projects API
+  description: The Projects API from KugelAudio — 4 operation(s) for projects.
+  humanURL: https://docs.kugelaudio.com/api-reference/introduction
+  baseURL: https://api.kugelaudio.com
+  tags:
+  - Projects
+  properties:
+  - type: OpenAPI
+    url: openapi/kugelaudio-projects-api-openapi.yml
+  - type: Documentation
+    url: https://docs.kugelaudio.com/api-reference/introduction
+  - type: AsyncAPI
+    url: asyncapi/kugelaudio-tts-asyncapi.yml
+  - type: DataModel
+    url: data-model/kugelaudio-data-model.yml
+- aid: kugelaudio:kugelaudio-text-to-speech-api
+  name: KugelAudio Text to Speech API
+  description: The Text to Speech API from KugelAudio — 1 operation(s) for text to speech.
+  humanURL: https://docs.kugelaudio.com/api-reference/introduction
+  baseURL: https://api.kugelaudio.com
+  tags:
+  - Text to Speech
+  properties:
+  - type: OpenAPI
+    url: openapi/kugelaudio-text-to-speech-api-openapi.yml
   - type: Documentation
     url: https://docs.kugelaudio.com/api-reference/introduction
   - type: AsyncAPI

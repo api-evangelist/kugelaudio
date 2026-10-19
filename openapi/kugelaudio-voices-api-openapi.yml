@@ -1,345 +1,629 @@
 openapi: 3.2.0
 info:
-  title: KugelAudio TTS Voices API
-  description: 'Unified API: REST + WebSocket + ElevenLabs + Vapi'
-  version: 2.0.0
+  description: 'The public REST API of KugelAudio text to speech: synthesis, models, voices, pronunciation dictionaries, projects, and the ElevenLabs-compatible endpoints. Streaming over WebSocket (`/ws/tts`, `/ws/tts/stream`, `/ws/tts/multi`) is described in the API reference, not here. Guides and examples: https://docs.kugelaudio.com/api-reference/introduction'
+  title: KugelAudio Voices API
+  version: v1
+servers:
+- description: Default, geo-routed
+  url: https://api.kugelaudio.com
+- description: Direct EU endpoint
+  url: https://api.eu.kugelaudio.com
 tags:
-- name: Voices
+- externalDocs:
+    url: https://docs.kugelaudio.com/api-reference/endpoints/voices
+  name: Voices
 paths:
   /v1/voices:
     get:
-      summary: Get Voices
-      description: 'Voices visible to the caller: public catalog page + own voices.'
+      description: 'Reference: https://docs.kugelaudio.com/api-reference/endpoints/voices'
       operationId: get_voices_v1_voices_get
       parameters:
-      - name: limit
-        in: query
+      - in: query
+        name: limit
         required: false
         schema:
-          type: integer
+          default: 20
           maximum: 100
           minimum: 1
-          default: 20
           title: Limit
-      - name: offset
-        in: query
+          type: integer
+      - in: query
+        name: offset
         required: false
         schema:
-          type: integer
-          minimum: 0
           default: 0
+          minimum: 0
           title: Offset
+          type: integer
+      - in: query
+        name: language
+        required: false
+        schema:
+          anyOf:
+          - maxLength: 35
+            type: string
+          - type: 'null'
+          title: Language
       responses:
         '200':
-          description: Successful Response
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/VoicesResponse'
+          description: Successful Response
         '422':
-          description: Validation Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      security:
+      - BearerAuth: []
+      - ApiKeyHeader: []
+      summary: Get Voices
       tags:
       - Voices
     post:
-      summary: Create Voice
-      description: 'Create a new voice, optionally with reference audio files.
-
-
-        Accepts either:
-
-
-        - ``application/json`` with a :class:`CreateVoiceRequest` body, or
-
-        - ``multipart/form-data`` with a ``metadata`` JSON part and optional
-
-        ``files`` parts (audio files). This is the format sent by the
-
-        Python and JS SDKs when ``reference_files`` are provided.'
+      description: 'Reference: https://docs.kugelaudio.com/api-reference/endpoints/voices'
       operationId: create_voice_v1_voices_post
       responses:
         '201':
-          description: Successful Response
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/VoiceDetailInfo'
+          description: Successful Response
+      security:
+      - BearerAuth: []
+      - ApiKeyHeader: []
+      summary: Create Voice
       tags:
       - Voices
   /v1/voices/{voice_id}:
-    get:
-      summary: Get Voice By Id
-      description: 'One voice by handle or legacy numeric id.
-
-
-        The caller''s org rides along so private/unverified own voices —
-
-        which the listing endpoint shows — resolve individually too.'
-      operationId: get_voice_by_id_v1_voices__voice_id__get
+    delete:
+      description: 'Reference: https://docs.kugelaudio.com/api-reference/endpoints/voices'
+      operationId: delete_voice_v1_voices__voice_id__delete
       parameters:
-      - name: voice_id
-        in: path
+      - in: path
+        name: voice_id
         required: true
         schema:
-          type: string
           title: Voice Id
+          type: string
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      security:
+      - BearerAuth: []
+      - ApiKeyHeader: []
+      summary: Delete Voice
+      tags:
+      - Voices
+    get:
+      description: 'Reference: https://docs.kugelaudio.com/api-reference/endpoints/voices'
+      operationId: get_voice_by_id_v1_voices__voice_id__get
+      parameters:
+      - in: path
+        name: voice_id
+        required: true
+        schema:
+          title: Voice Id
+          type: string
       responses:
         '200':
-          description: Successful Response
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/VoiceInfo'
+          description: Successful Response
         '422':
-          description: Validation Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      security:
+      - BearerAuth: []
+      - ApiKeyHeader: []
+      summary: Get Voice By Id
       tags:
       - Voices
     patch:
-      summary: Update Voice
-      description: Update a voice you own.
+      description: 'Reference: https://docs.kugelaudio.com/api-reference/endpoints/voices'
       operationId: update_voice_v1_voices__voice_id__patch
       parameters:
-      - name: voice_id
-        in: path
+      - in: path
+        name: voice_id
         required: true
         schema:
-          type: string
           title: Voice Id
+          type: string
       requestBody:
-        required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/UpdateVoiceRequest'
+        required: true
       responses:
         '200':
-          description: Successful Response
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/VoiceDetailInfo'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      tags:
-      - Voices
-    delete:
-      summary: Delete Voice
-      description: Archive (soft-delete) a voice you own.
-      operationId: delete_voice_v1_voices__voice_id__delete
-      parameters:
-      - name: voice_id
-        in: path
-        required: true
-        schema:
-          type: string
-          title: Voice Id
-      responses:
-        '204':
           description: Successful Response
         '422':
-          description: Validation Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
-      tags:
-      - Voices
-  /v1/voices/{voice_id}/references:
-    get:
-      summary: List Voice References
-      description: List all reference audio files for a voice you own.
-      operationId: list_voice_references_v1_voices__voice_id__references_get
-      parameters:
-      - name: voice_id
-        in: path
-        required: true
-        schema:
-          type: string
-          title: Voice Id
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/VoiceReferenceInfo'
-                title: Response List Voice References V1 Voices  Voice Id  References Get
-        '422':
           description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - BearerAuth: []
+      - ApiKeyHeader: []
+      summary: Update Voice
       tags:
       - Voices
-    post:
-      summary: Upload Voice Reference
-      description: 'Upload a reference audio file for a voice you own.
-
-
-        Accepts multipart/form-data with a ``file`` field (audio).
-
-        Optionally include ``reference_text`` for the transcript.'
-      operationId: upload_voice_reference_v1_voices__voice_id__references_post
+  /v1/voices/{voice_id}/avatar:
+    put:
+      description: 'Reference: https://docs.kugelaudio.com/api-reference/endpoints/voices'
+      operationId: upload_voice_avatar_v1_voices__voice_id__avatar_put
       parameters:
-      - name: voice_id
-        in: path
+      - in: path
+        name: voice_id
         required: true
         schema:
-          type: string
           title: Voice Id
+          type: string
       requestBody:
-        required: true
         content:
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/Body_upload_voice_reference_v1_voices__voice_id__references_post'
-      responses:
-        '201':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/VoiceReferenceInfo'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      tags:
-      - Voices
-  /v1/voices/{voice_id}/references/{ref_id}:
-    delete:
-      summary: Delete Voice Reference
-      description: Delete a reference audio file from a voice you own.
-      operationId: delete_voice_reference_v1_voices__voice_id__references__ref_id__delete
-      parameters:
-      - name: voice_id
-        in: path
+              $ref: '#/components/schemas/Body_upload_voice_avatar_v1_voices__voice_id__avatar_put'
         required: true
-        schema:
-          type: string
-          title: Voice Id
-      - name: ref_id
-        in: path
-        required: true
-        schema:
-          type: integer
-          title: Ref Id
-      responses:
-        '204':
-          description: Successful Response
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      tags:
-      - Voices
-  /v1/voices/{voice_id}/publish:
-    post:
-      summary: Publish Voice
-      description: 'Publish a voice (sets is_public=True, pending_verification=True).
-
-
-        Verification is admin-controlled and cannot be bypassed via the API.'
-      operationId: publish_voice_v1_voices__voice_id__publish_post
-      parameters:
-      - name: voice_id
-        in: path
-        required: true
-        schema:
-          type: string
-          title: Voice Id
       responses:
         '200':
-          description: Successful Response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/VoiceDetailInfo'
+                $ref: '#/components/schemas/UploadedAvatarInfo'
+          description: Successful Response
         '422':
-          description: Validation Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      security:
+      - BearerAuth: []
+      - ApiKeyHeader: []
+      summary: Upload Voice Avatar
       tags:
       - Voices
   /v1/voices/{voice_id}/generate-sample:
     post:
-      summary: Generate Voice Sample
-      description: 'Generate a sample WAV for a voice you own.
-
-
-        Requires at least one reference audio to be uploaded first. The
-
-        sample is generated through the TTS engine without billing (no
-
-        usage lease — parity with v1) and stored via the admin seam.'
+      description: 'Reference: https://docs.kugelaudio.com/api-reference/endpoints/voices'
       operationId: generate_voice_sample_v1_voices__voice_id__generate_sample_post
       parameters:
-      - name: voice_id
-        in: path
+      - in: path
+        name: voice_id
         required: true
         schema:
-          type: string
           title: Voice Id
+          type: string
       responses:
         '200':
-          description: Successful Response
           content:
             application/json:
               schema:
-                type: object
-                additionalProperties: true
-                title: Response Generate Voice Sample V1 Voices  Voice Id  Generate Sample Post
+                $ref: '#/components/schemas/GeneratedSampleInfo'
+          description: Successful Response
         '422':
-          description: Validation Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      security:
+      - BearerAuth: []
+      - ApiKeyHeader: []
+      summary: Generate Voice Sample
+      tags:
+      - Voices
+  /v1/voices/{voice_id}/publish:
+    post:
+      description: 'Reference: https://docs.kugelaudio.com/api-reference/endpoints/voices'
+      operationId: publish_voice_v1_voices__voice_id__publish_post
+      parameters:
+      - in: path
+        name: voice_id
+        required: true
+        schema:
+          title: Voice Id
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VoiceDetailInfo'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      security:
+      - BearerAuth: []
+      - ApiKeyHeader: []
+      summary: Publish Voice
+      tags:
+      - Voices
+  /v1/voices/{voice_id}/references:
+    get:
+      description: 'Reference: https://docs.kugelaudio.com/api-reference/endpoints/voices'
+      operationId: list_voice_references_v1_voices__voice_id__references_get
+      parameters:
+      - in: path
+        name: voice_id
+        required: true
+        schema:
+          title: Voice Id
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/VoiceReferenceInfo'
+                title: Response List Voice References V1 Voices  Voice Id  References Get
+                type: array
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      security:
+      - BearerAuth: []
+      - ApiKeyHeader: []
+      summary: List Voice References
+      tags:
+      - Voices
+    post:
+      description: 'Reference: https://docs.kugelaudio.com/api-reference/endpoints/voices'
+      operationId: upload_voice_reference_v1_voices__voice_id__references_post
+      parameters:
+      - in: path
+        name: voice_id
+        required: true
+        schema:
+          title: Voice Id
+          type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Body_upload_voice_reference_v1_voices__voice_id__references_post'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VoiceReferenceInfo'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      security:
+      - BearerAuth: []
+      - ApiKeyHeader: []
+      summary: Upload Voice Reference
+      tags:
+      - Voices
+  /v1/voices/{voice_id}/references/{ref_id}:
+    delete:
+      description: 'Reference: https://docs.kugelaudio.com/api-reference/endpoints/voices'
+      operationId: delete_voice_reference_v1_voices__voice_id__references__ref_id__delete
+      parameters:
+      - in: path
+        name: voice_id
+        required: true
+        schema:
+          title: Voice Id
+          type: string
+      - in: path
+        name: ref_id
+        required: true
+        schema:
+          title: Ref Id
+          type: integer
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      security:
+      - BearerAuth: []
+      - ApiKeyHeader: []
+      summary: Delete Voice Reference
       tags:
       - Voices
 components:
   schemas:
-    UpdateVoiceRequest:
+    ValidationError:
       properties:
-        name:
+        ctx:
+          title: Context
+          type: object
+        input:
+          title: Input
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          title: Location
+          type: array
+        msg:
+          title: Message
+          type: string
+        type:
+          title: Error Type
+          type: string
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+      type: object
+    VoiceReferenceInfo:
+      description: Voice reference audio metadata.
+      properties:
+        audio_url:
           anyOf:
           - type: string
-            maxLength: 200
-            minLength: 1
           - type: 'null'
+          title: Audio Url
+        id:
+          title: Id
+          type: integer
+        is_generated:
+          default: false
+          title: Is Generated
+          type: boolean
+        name:
+          default: ''
           title: Name
+          type: string
+        reference_text:
+          default: ''
+          title: Reference Text
+          type: string
+        s3_path:
+          default: ''
+          title: S3 Path
+          type: string
+        voice_id:
+          title: Voice Id
+          type: integer
+      required:
+      - id
+      - voice_id
+      title: VoiceReferenceInfo
+      type: object
+    Body_upload_voice_reference_v1_voices__voice_id__references_post:
+      properties:
+        file:
+          contentMediaType: application/octet-stream
+          title: File
+          type: string
+        reference_text:
+          default: ''
+          title: Reference Text
+          type: string
+        speaker_consent:
+          default: false
+          title: Speaker Consent
+          type: boolean
+      required:
+      - file
+      title: Body_upload_voice_reference_v1_voices__voice_id__references_post
+      type: object
+    UploadedAvatarInfo:
+      description: Stored avatar location returned after upload.
+      properties:
+        avatar_s3_path:
+          title: Avatar S3 Path
+          type: string
+      required:
+      - avatar_s3_path
+      title: UploadedAvatarInfo
+      type: object
+    VoiceDetailInfo:
+      description: Extended voice metadata returned by CRUD endpoints.
+      properties:
+        age:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Age
+        avatar_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Avatar Url
+        category:
+          default: cloned
+          title: Category
+          type: string
+        description:
+          default: ''
+          title: Description
+          type: string
+        generative_voice_description:
+          default: ''
+          title: Generative Voice Description
+          type: string
+        handle:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Handle
+        id:
+          title: Id
+          type: integer
+        is_public:
+          default: false
+          title: Is Public
+          type: boolean
+        name:
+          title: Name
+          type: string
+        pending_verification:
+          default: false
+          title: Pending Verification
+          type: boolean
+        public_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Public Id
+        quality:
+          default: mid
+          title: Quality
+          type: string
+        sample_text:
+          default: ''
+          title: Sample Text
+          type: string
+        sample_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Sample Url
+        sex:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Sex
+        supported_languages:
+          default: []
+          items:
+            type: string
+          title: Supported Languages
+          type: array
+        verified:
+          default: false
+          title: Verified
+          type: boolean
+        voice_id:
+          title: Voice Id
+          type: integer
+      required:
+      - id
+      - voice_id
+      - name
+      title: VoiceDetailInfo
+      type: object
+    Body_upload_voice_avatar_v1_voices__voice_id__avatar_put:
+      properties:
+        file:
+          contentMediaType: application/octet-stream
+          title: File
+          type: string
+      required:
+      - file
+      title: Body_upload_voice_avatar_v1_voices__voice_id__avatar_put
+      type: object
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          title: Detail
+          type: array
+      title: HTTPValidationError
+      type: object
+    GeneratedSampleInfo:
+      description: Stored sample location returned after free sample synthesis.
+      properties:
+        sample_s3_path:
+          title: Sample S3 Path
+          type: string
+        sample_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Sample Url
+      required:
+      - sample_s3_path
+      title: GeneratedSampleInfo
+      type: object
+    UpdateVoiceRequest:
+      description: Request body for updating an existing voice (partial update).
+      properties:
+        age:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Age
+        category:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Category
         description:
           anyOf:
-          - type: string
-            maxLength: 2000
+          - maxLength: 2000
+            type: string
           - type: 'null'
           title: Description
         generative_voice_description:
           anyOf:
-          - type: string
-            maxLength: 2000
+          - maxLength: 2000
+            type: string
           - type: 'null'
           title: Generative Voice Description
+        name:
+          anyOf:
+          - maxLength: 200
+            minLength: 1
+            type: string
+          - type: 'null'
+          title: Name
+        quality:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Quality
+        sample_text:
+          anyOf:
+          - maxLength: 2000
+            type: string
+          - type: 'null'
+          title: Sample Text
+        sex:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Sex
         supported_languages:
           anyOf:
           - items:
@@ -347,293 +631,113 @@ components:
             type: array
           - type: 'null'
           title: Supported Languages
-        category:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Category
-        age:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Age
-        sex:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Sex
-        quality:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Quality
-        sample_text:
-          anyOf:
-          - type: string
-            maxLength: 2000
-          - type: 'null'
-          title: Sample Text
-      type: object
       title: UpdateVoiceRequest
-      description: Request body for updating an existing voice (partial update).
-    Body_upload_voice_reference_v1_voices__voice_id__references_post:
-      properties:
-        file:
-          type: string
-          contentMediaType: application/octet-stream
-          title: File
-        reference_text:
-          type: string
-          title: Reference Text
-          default: ''
       type: object
-      required:
-      - file
-      title: Body_upload_voice_reference_v1_voices__voice_id__references_post
-    VoiceReferenceInfo:
-      properties:
-        id:
-          type: integer
-          title: Id
-        voice_id:
-          type: integer
-          title: Voice Id
-        name:
-          type: string
-          title: Name
-          default: ''
-        reference_text:
-          type: string
-          title: Reference Text
-          default: ''
-        s3_path:
-          type: string
-          title: S3 Path
-          default: ''
-        audio_url:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Audio Url
-        is_generated:
-          type: boolean
-          title: Is Generated
-          default: false
-      type: object
-      required:
-      - id
-      - voice_id
-      title: VoiceReferenceInfo
-      description: Voice reference audio metadata.
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    VoiceDetailInfo:
-      properties:
-        id:
-          type: integer
-          title: Id
-        voice_id:
-          type: integer
-          title: Voice Id
-        handle:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Handle
-        public_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Public Id
-        name:
-          type: string
-          title: Name
-        description:
-          type: string
-          title: Description
-          default: ''
-        generative_voice_description:
-          type: string
-          title: Generative Voice Description
-          default: ''
-        supported_languages:
-          items:
-            type: string
-          type: array
-          title: Supported Languages
-          default: []
-        category:
-          type: string
-          title: Category
-          default: cloned
-        age:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Age
-        sex:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Sex
-        quality:
-          type: string
-          title: Quality
-          default: mid
-        is_public:
-          type: boolean
-          title: Is Public
-          default: false
-        verified:
-          type: boolean
-          title: Verified
-          default: false
-        pending_verification:
-          type: boolean
-          title: Pending Verification
-          default: false
-        sample_url:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Sample Url
-        avatar_url:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Avatar Url
-        sample_text:
-          type: string
-          title: Sample Text
-          default: ''
-      type: object
-      required:
-      - id
-      - voice_id
-      - name
-      title: VoiceDetailInfo
-      description: Extended voice metadata returned by CRUD endpoints.
     VoicesResponse:
+      description: List of available voices.
       properties:
+        limit:
+          default: 20
+          title: Limit
+          type: integer
+        offset:
+          default: 0
+          title: Offset
+          type: integer
+        total:
+          default: 0
+          title: Total
+          type: integer
         voices:
           items:
             $ref: '#/components/schemas/VoiceInfo'
-          type: array
           title: Voices
-        total:
-          type: integer
-          title: Total
-          default: 0
-        limit:
-          type: integer
-          title: Limit
-          default: 20
-        offset:
-          type: integer
-          title: Offset
-          default: 0
-      type: object
+          type: array
       required:
       - voices
       title: VoicesResponse
-      description: List of available voices.
+      type: object
     VoiceInfo:
+      description: Voice metadata.
       properties:
-        id:
-          type: integer
-          title: Id
-        voice_id:
-          type: integer
-          title: Voice Id
-        handle:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Handle
-        public_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Public Id
-        name:
-          type: string
-          title: Name
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-        category:
-          type: string
-          title: Category
-          default: cloned
-        sex:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Sex
         age:
           anyOf:
           - type: string
           - type: 'null'
           title: Age
-        quality:
-          type: string
-          title: Quality
-          default: mid
-        supported_languages:
-          items:
-            type: string
-          type: array
-          title: Supported Languages
-          default: []
-        sample_url:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Sample Url
         avatar_url:
           anyOf:
           - type: string
           - type: 'null'
           title: Avatar Url
-      type: object
+        category:
+          default: cloned
+          title: Category
+          type: string
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        handle:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Handle
+        id:
+          title: Id
+          type: integer
+        name:
+          title: Name
+          type: string
+        public_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Public Id
+        quality:
+          default: mid
+          title: Quality
+          type: string
+        sample_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Sample Url
+        sex:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Sex
+        supported_languages:
+          default: []
+          items:
+            type: string
+          title: Supported Languages
+          type: array
+        voice_id:
+          title: Voice Id
+          type: integer
       required:
       - id
       - voice_id
       - name
       title: VoiceInfo
-      description: Voice metadata.
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
       type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+  securitySchemes:
+    ApiKeyHeader:
+      description: Your API key in the `X-API-Key` header.
+      in: header
+      name: X-API-Key
+      type: apiKey
+    BearerAuth:
+      description: 'Your API key as `Authorization: Bearer YOUR_API_KEY`.'
+      scheme: bearer
+      type: http
+    ElevenLabsApiKey:
+      description: Your KugelAudio API key in the ElevenLabs `xi-api-key` header.
+      in: header
+      name: xi-api-key
+      type: apiKey
+externalDocs:
+  url: https://docs.kugelaudio.com/api-reference/introduction

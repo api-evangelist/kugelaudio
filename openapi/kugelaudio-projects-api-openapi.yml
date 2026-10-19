@@ -1,0 +1,329 @@
+openapi: 3.2.0
+info:
+  description: 'The public REST API of KugelAudio text to speech: synthesis, models, voices, pronunciation dictionaries, projects, and the ElevenLabs-compatible endpoints. Streaming over WebSocket (`/ws/tts`, `/ws/tts/stream`, `/ws/tts/multi`) is described in the API reference, not here. Guides and examples: https://docs.kugelaudio.com/api-reference/introduction'
+  title: KugelAudio Projects API
+  version: v1
+servers:
+- description: Default, geo-routed
+  url: https://api.kugelaudio.com
+- description: Direct EU endpoint
+  url: https://api.eu.kugelaudio.com
+tags:
+- externalDocs:
+    url: https://docs.kugelaudio.com/api-reference/endpoints/projects
+  name: Projects
+paths:
+  /v1/projects:
+    get:
+      description: 'Reference: https://docs.kugelaudio.com/api-reference/endpoints/projects'
+      operationId: list_projects_v1_projects_get
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectListResponse'
+          description: Successful Response
+      security:
+      - BearerAuth: []
+      - ApiKeyHeader: []
+      summary: List Projects
+      tags:
+      - Projects
+    post:
+      description: 'Reference: https://docs.kugelaudio.com/api-reference/endpoints/projects'
+      operationId: create_project_v1_projects_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProjectRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      security:
+      - BearerAuth: []
+      - ApiKeyHeader: []
+      summary: Create Project
+      tags:
+      - Projects
+  /v1/projects/{project_id}:
+    delete:
+      description: 'Reference: https://docs.kugelaudio.com/api-reference/endpoints/projects'
+      operationId: delete_project_v1_projects__project_id__delete
+      parameters:
+      - in: path
+        name: project_id
+        required: true
+        schema:
+          title: Project Id
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ingress__routes__projects__DeleteResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      security:
+      - BearerAuth: []
+      - ApiKeyHeader: []
+      summary: Delete Project
+      tags:
+      - Projects
+  /v1/projects/{project_id}/api-keys:
+    post:
+      description: 'Reference: https://docs.kugelaudio.com/api-reference/endpoints/projects'
+      operationId: issue_api_key_v1_projects__project_id__api_keys_post
+      parameters:
+      - in: path
+        name: project_id
+        required: true
+        schema:
+          title: Project Id
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IssueApiKeyRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeyResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      security:
+      - BearerAuth: []
+      - ApiKeyHeader: []
+      summary: Issue Api Key
+      tags:
+      - Projects
+  /v1/projects/{project_id}/api-keys/{key_id}:
+    delete:
+      description: 'Reference: https://docs.kugelaudio.com/api-reference/endpoints/projects'
+      operationId: revoke_api_key_v1_projects__project_id__api_keys__key_id__delete
+      parameters:
+      - in: path
+        name: project_id
+        required: true
+        schema:
+          title: Project Id
+          type: integer
+      - in: path
+        name: key_id
+        required: true
+        schema:
+          title: Key Id
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ingress__routes__projects__DeleteResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      security:
+      - BearerAuth: []
+      - ApiKeyHeader: []
+      summary: Revoke Api Key
+      tags:
+      - Projects
+components:
+  schemas:
+    ValidationError:
+      properties:
+        ctx:
+          title: Context
+          type: object
+        input:
+          title: Input
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          title: Location
+          type: array
+        msg:
+          title: Message
+          type: string
+        type:
+          title: Error Type
+          type: string
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+      type: object
+    ingress__routes__projects__DeleteResponse:
+      properties:
+        deleted:
+          default: true
+          title: Deleted
+          type: boolean
+      title: DeleteResponse
+      type: object
+    ProjectResponse:
+      properties:
+        created_at:
+          title: Created At
+          type: string
+        id:
+          title: Id
+          type: integer
+        name:
+          title: Name
+          type: string
+        slug:
+          title: Slug
+          type: string
+      required:
+      - id
+      - name
+      - slug
+      - created_at
+      title: ProjectResponse
+      type: object
+    IssueApiKeyRequest:
+      additionalProperties: false
+      properties:
+        name:
+          anyOf:
+          - maxLength: 200
+            type: string
+          - type: 'null'
+          title: Name
+        permissions:
+          anyOf:
+          - additionalProperties:
+              type: string
+            type: object
+          - type: 'null'
+          description: 'Resource to level, e.g. {''tts'': ''write''}; omit for full access to the project.'
+          title: Permissions
+      title: IssueApiKeyRequest
+      type: object
+    ApiKeyResponse:
+      properties:
+        created_at:
+          title: Created At
+          type: string
+        id:
+          title: Id
+          type: integer
+        key_last4:
+          title: Key Last4
+          type: string
+        key_prefix:
+          title: Key Prefix
+          type: string
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        permissions:
+          anyOf:
+          - additionalProperties:
+              type: string
+            type: object
+          - type: 'null'
+          title: Permissions
+        project_id:
+          title: Project Id
+          type: integer
+        secret:
+          description: The full API key. Shown once; store it now.
+          title: Secret
+          type: string
+      required:
+      - id
+      - project_id
+      - key_prefix
+      - key_last4
+      - created_at
+      - secret
+      title: ApiKeyResponse
+      type: object
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          title: Detail
+          type: array
+      title: HTTPValidationError
+      type: object
+    CreateProjectRequest:
+      additionalProperties: false
+      properties:
+        name:
+          maxLength: 200
+          minLength: 1
+          title: Name
+          type: string
+      required:
+      - name
+      title: CreateProjectRequest
+      type: object
+    ProjectListResponse:
+      properties:
+        projects:
+          items:
+            $ref: '#/components/schemas/ProjectResponse'
+          title: Projects
+          type: array
+      required:
+      - projects
+      title: ProjectListResponse
+      type: object
+  securitySchemes:
+    ApiKeyHeader:
+      description: Your API key in the `X-API-Key` header.
+      in: header
+      name: X-API-Key
+      type: apiKey
+    BearerAuth:
+      description: 'Your API key as `Authorization: Bearer YOUR_API_KEY`.'
+      scheme: bearer
+      type: http
+    ElevenLabsApiKey:
+      description: Your KugelAudio API key in the ElevenLabs `xi-api-key` header.
+      in: header
+      name: xi-api-key
+      type: apiKey
+externalDocs:
+  url: https://docs.kugelaudio.com/api-reference/introduction

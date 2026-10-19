@@ -1,0 +1,344 @@
+openapi: 3.2.0
+info:
+  description: 'The public REST API of KugelAudio text to speech: synthesis, models, voices, pronunciation dictionaries, projects, and the ElevenLabs-compatible endpoints. Streaming over WebSocket (`/ws/tts`, `/ws/tts/stream`, `/ws/tts/multi`) is described in the API reference, not here. Guides and examples: https://docs.kugelaudio.com/api-reference/introduction'
+  title: KugelAudio ElevenLabs compatible API
+  version: v1
+servers:
+- description: Default, geo-routed
+  url: https://api.kugelaudio.com
+- description: Direct EU endpoint
+  url: https://api.eu.kugelaudio.com
+tags:
+- externalDocs:
+    url: https://docs.kugelaudio.com/integrations/elevenlabs-proxy
+  name: ElevenLabs compatible
+paths:
+  /11labs/v1/models:
+    get:
+      description: 'Reference: https://docs.kugelaudio.com/integrations/elevenlabs-proxy'
+      operationId: get_models_11labs_v1_models_get
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ElevenLabsModel'
+                title: Response Get Models 11Labs V1 Models Get
+                type: array
+          description: Successful Response
+      security: []
+      summary: Get Models
+      tags:
+      - ElevenLabs compatible
+  /11labs/v1/text-to-speech/{voice_id}:
+    post:
+      description: 'Reference: https://docs.kugelaudio.com/integrations/elevenlabs-proxy'
+      operationId: text_to_speech_11labs_v1_text_to_speech__voice_id__post
+      parameters:
+      - in: path
+        name: voice_id
+        required: true
+        schema:
+          title: Voice Id
+          type: string
+      - in: query
+        name: output_format
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Output Format
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ElevenLabsTTSRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      security:
+      - ElevenLabsApiKey: []
+      summary: Text To Speech
+      tags:
+      - ElevenLabs compatible
+  /11labs/v1/text-to-speech/{voice_id}/stream:
+    post:
+      description: 'Reference: https://docs.kugelaudio.com/integrations/elevenlabs-proxy'
+      operationId: text_to_speech_stream_11labs_v1_text_to_speech__voice_id__stream_post
+      parameters:
+      - in: path
+        name: voice_id
+        required: true
+        schema:
+          title: Voice Id
+          type: string
+      - in: query
+        name: output_format
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Output Format
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ElevenLabsTTSRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      security:
+      - ElevenLabsApiKey: []
+      summary: Text To Speech Stream
+      tags:
+      - ElevenLabs compatible
+  /11labs/v1/voices:
+    get:
+      description: 'Reference: https://docs.kugelaudio.com/integrations/elevenlabs-proxy'
+      operationId: get_voices_11labs_v1_voices_get
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ElevenLabsVoicesResponse'
+          description: Successful Response
+      security:
+      - ElevenLabsApiKey: []
+      summary: Get Voices
+      tags:
+      - ElevenLabs compatible
+  /11labs/v1/voices/{voice_id}:
+    get:
+      description: 'Reference: https://docs.kugelaudio.com/integrations/elevenlabs-proxy'
+      operationId: get_voice_11labs_v1_voices__voice_id__get
+      parameters:
+      - in: path
+        name: voice_id
+        required: true
+        schema:
+          title: Voice Id
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ElevenLabsVoice'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      security:
+      - ElevenLabsApiKey: []
+      summary: Get Voice
+      tags:
+      - ElevenLabs compatible
+components:
+  schemas:
+    ElevenLabsVoiceSettings:
+      description: ElevenLabs voice settings (mapped onto KugelAudio params).
+      properties:
+        similarity_boost:
+          default: 0.75
+          maximum: 1
+          minimum: 0
+          title: Similarity Boost
+          type: number
+        stability:
+          default: 0.5
+          maximum: 1
+          minimum: 0
+          title: Stability
+          type: number
+        style:
+          default: 0
+          maximum: 1
+          minimum: 0
+          title: Style
+          type: number
+        use_speaker_boost:
+          default: true
+          title: Use Speaker Boost
+          type: boolean
+      title: ElevenLabsVoiceSettings
+      type: object
+    ValidationError:
+      properties:
+        ctx:
+          title: Context
+          type: object
+        input:
+          title: Input
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          title: Location
+          type: array
+        msg:
+          title: Message
+          type: string
+        type:
+          title: Error Type
+          type: string
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+      type: object
+    ElevenLabsTTSRequest:
+      description: ElevenLabs-compatible TTS request body.
+      properties:
+        model_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: eleven_monolingual_v1
+          title: Model Id
+        text:
+          maxLength: 10000
+          minLength: 1
+          title: Text
+          type: string
+        voice_settings:
+          anyOf:
+          - $ref: '#/components/schemas/ElevenLabsVoiceSettings'
+          - type: 'null'
+      required:
+      - text
+      title: ElevenLabsTTSRequest
+      type: object
+    ElevenLabsModel:
+      description: One model in the ElevenLabs catalog shape.
+      properties:
+        can_be_finetuned:
+          default: false
+          title: Can Be Finetuned
+          type: boolean
+        can_do_text_to_speech:
+          default: true
+          title: Can Do Text To Speech
+          type: boolean
+        can_do_voice_conversion:
+          default: false
+          title: Can Do Voice Conversion
+          type: boolean
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        model_id:
+          title: Model Id
+          type: string
+        name:
+          title: Name
+          type: string
+        token_cost_factor:
+          default: 1
+          title: Token Cost Factor
+          type: number
+      required:
+      - model_id
+      - name
+      title: ElevenLabsModel
+      type: object
+    ElevenLabsVoice:
+      description: One voice in the ElevenLabs catalog shape.
+      properties:
+        category:
+          default: cloned
+          title: Category
+          type: string
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        labels:
+          additionalProperties:
+            type: string
+          title: Labels
+          type: object
+        name:
+          title: Name
+          type: string
+        preview_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Preview Url
+        voice_id:
+          title: Voice Id
+          type: string
+      required:
+      - voice_id
+      - name
+      title: ElevenLabsVoice
+      type: object
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          title: Detail
+          type: array
+      title: HTTPValidationError
+      type: object
+    ElevenLabsVoicesResponse:
+      properties:
+        voices:
+          items:
+            $ref: '#/components/schemas/ElevenLabsVoice'
+          title: Voices
+          type: array
+      required:
+      - voices
+      title: ElevenLabsVoicesResponse
+      type: object
+  securitySchemes:
+    ApiKeyHeader:
+      description: Your API key in the `X-API-Key` header.
+      in: header
+      name: X-API-Key
+      type: apiKey
+    BearerAuth:
+      description: 'Your API key as `Authorization: Bearer YOUR_API_KEY`.'
+      scheme: bearer
+      type: http
+    ElevenLabsApiKey:
+      description: Your KugelAudio API key in the ElevenLabs `xi-api-key` header.
+      in: header
+      name: xi-api-key
+      type: apiKey
+externalDocs:
+  url: https://docs.kugelaudio.com/api-reference/introduction

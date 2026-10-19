@@ -1,72 +1,97 @@
 openapi: 3.2.0
 info:
-  title: KugelAudio TTS Models API
-  description: 'Unified API: REST + WebSocket + ElevenLabs + Vapi'
-  version: 2.0.0
+  description: 'The public REST API of KugelAudio text to speech: synthesis, models, voices, pronunciation dictionaries, projects, and the ElevenLabs-compatible endpoints. Streaming over WebSocket (`/ws/tts`, `/ws/tts/stream`, `/ws/tts/multi`) is described in the API reference, not here. Guides and examples: https://docs.kugelaudio.com/api-reference/introduction'
+  title: KugelAudio Models API
+  version: v1
+servers:
+- description: Default, geo-routed
+  url: https://api.kugelaudio.com
+- description: Direct EU endpoint
+  url: https://api.eu.kugelaudio.com
 tags:
-- name: Models
+- externalDocs:
+    url: https://docs.kugelaudio.com/api-reference/endpoints/models
+  name: Models
 paths:
   /v1/models:
     get:
-      summary: Get Models
-      description: The public model catalog, filtered to live deployments.
+      description: 'Reference: https://docs.kugelaudio.com/api-reference/endpoints/models'
       operationId: get_models_v1_models_get
       responses:
         '200':
-          description: Successful Response
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ModelsResponse'
+          description: Successful Response
+      security: []
+      summary: Get Models
       tags:
       - Models
 components:
   schemas:
-    ModelsResponse:
-      properties:
-        models:
-          items:
-            $ref: '#/components/schemas/ModelInfo'
-          type: array
-          title: Models
-      type: object
-      required:
-      - models
-      title: ModelsResponse
-      description: List of available models.
     ModelInfo:
+      description: Public catalog entry for one TTS model.
       properties:
-        id:
-          type: string
-          title: Id
-        model_id:
-          type: string
-          title: Model Id
-        name:
-          type: string
-          title: Name
         description:
           anyOf:
           - type: string
           - type: 'null'
           title: Description
+        id:
+          title: Id
+          type: string
+        max_input_length:
+          default: 5000
+          title: Max Input Length
+          type: integer
+        model_id:
+          title: Model Id
+          type: string
+        name:
+          title: Name
+          type: string
         parameters:
           anyOf:
           - type: string
           - type: 'null'
           title: Parameters
-        max_input_length:
-          type: integer
-          title: Max Input Length
-          default: 5000
         sample_rate:
-          type: integer
-          title: Sample Rate
           default: 24000
-      type: object
+          title: Sample Rate
+          type: integer
       required:
       - id
       - model_id
       - name
       title: ModelInfo
-      description: Public catalog entry for one TTS model.
+      type: object
+    ModelsResponse:
+      description: List of available models.
+      properties:
+        models:
+          items:
+            $ref: '#/components/schemas/ModelInfo'
+          title: Models
+          type: array
+      required:
+      - models
+      title: ModelsResponse
+      type: object
+  securitySchemes:
+    ApiKeyHeader:
+      description: Your API key in the `X-API-Key` header.
+      in: header
+      name: X-API-Key
+      type: apiKey
+    BearerAuth:
+      description: 'Your API key as `Authorization: Bearer YOUR_API_KEY`.'
+      scheme: bearer
+      type: http
+    ElevenLabsApiKey:
+      description: Your KugelAudio API key in the ElevenLabs `xi-api-key` header.
+      in: header
+      name: xi-api-key
+      type: apiKey
+externalDocs:
+  url: https://docs.kugelaudio.com/api-reference/introduction
