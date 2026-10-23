@@ -777,3 +777,9 @@ components:
       type: apiKey
 externalDocs:
   url: https://docs.kugelaudio.com/api-reference/introduction
+x-provenance:
+  method: harvested
+  publisher: KugelAudio
+  source: https://docs.kugelaudio.com/openapi.json
+  note: split by refine-openapis from the provider's own published document, verified by fetch (openapi/_original/*.fetch.json);
+    stamped by stamp-openapi-provenance.py (roadmap#793)
