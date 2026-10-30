@@ -64,52 +64,160 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-KugelAudio is a Y Combinator-backed, Germany-based voice AI company (KugelAudio GmbH) offering low-latency text-to-speech built, trained, and hosted entirely in the European Union. Its kugel-3 and kugel-2-turbo models produce natural speech in 26+ languages, with voice cloning, per-project pronunciation dictionaries, word-level timestamps, and inline break/spell/prosody tags. EU data sovereignty is the core differentiator — outside the reach of the US CLOUD Act, with a direct EU endpoint plus on-premise and dedicated deployment.
+KugelAudio is a Y Combinator-backed, Germany-based voice AI company (KugelAudio GmbH) offering low-latency text-to-speech built, trained, and hosted entirely in the European Union. Its kugel-3 and kugel-2-turbo models produce natural speech in 26+ languages with accent and dialect coverage, voice cloning from a short reference sample, per-project pronunciation dictionaries with IPA support, word-level timestamps, and inline break, spell, and prosody tags. The platform positions EU data sovereignty as its core differentiator, operating outside the reach of the US CLOUD Act and offering a direct EU endpoint plus on-premise and dedicated deployment. The developer surface is a REST API for generation, voices, models, and dictionaries plus three WebSocket streaming channels tuned for real-time voice agents, including token-by-token input, barge-in, and up to 20 concurrent contexts per connection. Drop-in compatibility surfaces let ElevenLabs-compatible SDKs, LiveKit, PipeCat, and Vapi integrations point at KugelAudio without rewrites.
 
-- Website: https://www.kugelaudio.com
-- Documentation: https://docs.kugelaudio.com
-- API reference: https://docs.kugelaudio.com/api-reference/introduction
-- Base URL: `https://api.kugelaudio.com` (direct EU: `https://api.eu.kugelaudio.com`)
+**Areas:** Voice · Text-to-Speech · Speech Synthesis · Voice AI · Voice Cloning · Audio · Artificial Intelligence · Machine Learning · Streaming · Real-Time · Conversational AI · Europe
 
-Backed by: y-combinator
+## KugelAudio on APIs.io
 
-## APIs
+Everything profiled for KugelAudio is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/kugelaudio/](https://apis.io/providers/kugelaudio/)** — or go straight to one of the APIs or properties below.
 
-**KugelAudio TTS API** — REST at `/v1/` for generation, voices, cloning, dictionaries, normalization, and transcription, plus three WebSocket streaming channels (`/ws/tts`, `/ws/tts/stream`, `/ws/tts/multi`) tuned for real-time voice agents with token-by-token input, barge-in, and up to 20 concurrent contexts per connection. Bearer API key authentication. Drop-in compatibility surfaces exist for ElevenLabs-compatible SDKs (`/11labs`) and Vapi (`/vapi`), alongside LiveKit and PipeCat integrations.
+### APIs (14)
 
-## Artifacts
+- [KugelAudio 11labs API](https://apis.io/apis/kugelaudio/kugelaudio-11labs-api/) — The 11labs API from KugelAudio — 6 operation(s) for 11labs.
+- [KugelAudio Audio API](https://apis.io/apis/kugelaudio/kugelaudio-audio-api/) — The Audio API from KugelAudio — 1 operation(s) for audio.
+- [KugelAudio Billing API](https://apis.io/apis/kugelaudio/kugelaudio-billing-api/) — The billing API from KugelAudio — 2 operation(s) for billing.
+- [KugelAudio Dictionaries API](https://apis.io/apis/kugelaudio/kugelaudio-dictionaries-api/) — The Dictionaries API from KugelAudio — 5 operation(s) for dictionaries.
+- [KugelAudio Health API](https://apis.io/apis/kugelaudio/kugelaudio-health-api/) — The Health API from KugelAudio — 1 operation(s) for health.
+- [KugelAudio License API](https://apis.io/apis/kugelaudio/kugelaudio-license-api/) — The license API from KugelAudio — 12 operation(s) for license.
+- [KugelAudio Models API](https://apis.io/apis/kugelaudio/kugelaudio-models-api/) — The Models API from KugelAudio — 1 operation(s) for models.
+- [KugelAudio Normalize API](https://apis.io/apis/kugelaudio/kugelaudio-normalize-api/) — The Normalize API from KugelAudio — 1 operation(s) for normalize.
+- [KugelAudio Post Overrides API](https://apis.io/apis/kugelaudio/kugelaudio-post-overrides-api/) — The Post Overrides API from KugelAudio — 1 operation(s) for post overrides.
+- [KugelAudio Predict API](https://apis.io/apis/kugelaudio/kugelaudio-predict-api/) — The Predict API from KugelAudio — 1 operation(s) for predict.
+- [KugelAudio Ready API](https://apis.io/apis/kugelaudio/kugelaudio-ready-api/) — The Ready API from KugelAudio — 1 operation(s) for ready.
+- [KugelAudio Tts API](https://apis.io/apis/kugelaudio/kugelaudio-tts-api/) — The Tts API from KugelAudio — 1 operation(s) for tts.
+- [KugelAudio Vapi API](https://apis.io/apis/kugelaudio/kugelaudio-vapi-api/) — The Vapi API from KugelAudio — 1 operation(s) for vapi.
+- [KugelAudio Voices API](https://apis.io/apis/kugelaudio/kugelaudio-voices-api/) — The Voices API from KugelAudio — 6 operation(s) for voices.
 
-| Artifact | Path | Method |
-| --- | --- | --- |
-| OpenAPI 3.1 (51 operations) | `openapi/kugelaudio-tts-openapi-original.json` | searched |
-| Agent Skill (provider-published) | `skills/kugelaudio-api.md` + `skills/_index.yml` | searched |
-| llms.txt | `llms/kugelaudio-llms.txt` | searched |
-| Well-known + RFC 9727 api-catalog | `well-known/` | searched |
-| Packages / SDKs | `packages/kugelaudio-packages.yml` | searched |
-| Error catalog | `errors/kugelaudio-error-codes.yml` | searched |
-| Authentication | `authentication/kugelaudio-authentication.yml` | searched |
-| Conventions | `conventions/kugelaudio-conventions.yml` | searched |
-| Lifecycle | `lifecycle/kugelaudio-lifecycle.yml` | searched |
-| Streaming AsyncAPI 3.0 | `asyncapi/kugelaudio-tts-asyncapi.yml` | generated |
-| OpenAPI Overlay | `overlays/kugelaudio-tts-overlay.yaml` | generated |
-| Data model | `data-model/kugelaudio-data-model.yml` | derived |
-| Conformance | `conformance/kugelaudio-conformance.yml` | derived |
-| MCP tool candidates | `mcp/kugelaudio-mcp.yml` | derived (candidate) |
-| Domain security | `security/kugelaudio-domain-security.yml` | probed |
+### Published properties
 
-## Notes for the provider
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-Findings worth raising with KugelAudio, all verified 2026-07-19:
+#### AsyncAPI (1)
 
-1. **The docs site serves the wrong OpenAPI.** `https://docs.kugelaudio.com/api-reference/openapi.json` — the spec the docs navigation and `llms.txt` both point at — is the untouched Mintlify **"OpenAPI Plant Store"** sample, not KugelAudio's API. The real spec lives at `https://api.kugelaudio.com/openapi.json` and is only discoverable through the `/.well-known/api-catalog` linkset. Any agent or codegen tool following the documented path gets a plant store.
-2. **The real spec omits `servers[]` and `securitySchemes`.** Every endpoint requires an API key, but the published document declares no security at all and no server URL, so generated clients have neither a host nor auth. `overlays/kugelaudio-tts-overlay.yaml` supplies both.
-3. **Most operations are untagged** and `operationId`s are raw FastAPI-generated names (`get_voice_by_id_v1_voices__voice_id__get`), which makes for poor SDK and MCP tool ergonomics.
-4. **Only 422 errors are modeled in the spec**, while the docs publish a rich 21-row error table with stable `error_code` values and WebSocket close codes. None of it reaches the machine-readable contract.
-5. **The three WebSocket channels are absent from the spec entirely** — the lowest-latency path, and the reason most customers pick the product, has no machine-readable description. `asyncapi/kugelaudio-tts-asyncapi.yml` is our reconstruction from the docs.
-6. **Spec-vs-docs drift on word timestamps**: the spec's `WordTimestamp` uses `start_s`/`end_s`/`confidence`; the streaming docs show `start_ms`/`end_ms`/`char_start`/`char_end`/`score`.
-7. **No `security.txt`, no vulnerability-disclosure page, and no trust center.** DNS posture is otherwise strong (DNSSEC enabled, SPF, DMARC `p=reject`, TLS 1.3, HSTS with a two-year max-age) — though `api.kugelaudio.com` serves no HSTS header and no CAA records are set on the domain.
-8. **No idempotency contract.** Writes such as voice creation and reference upload are not safely retryable.
-9. **No dated changelog** and no published SLA, despite a clearly written 6-month/12-month deprecation policy.
-10. **The Java SDK is documented but unpublished** — no Maven Central artifact exists for it. The npm/PyPI packages also point their repository metadata at `github.com/Kugelaudio/KugelAudio`, which is not public.
+Event-driven and webhook contracts.
 
-On the positive side, KugelAudio is one of very few providers in the network shipping an **RFC 9727 `api-catalog`** and a **provider-published Agent Skill** with a verifiable SHA-256 digest — both genuinely ahead of the field.
+- [KugelAudio TTS Streaming API](https://apis.io/asyncapis/kugelaudio/kugelaudio-tts-asyncapi/)
+
+#### Event channels (3)
+
+Individual events and webhooks the provider emits.
+
+- [/ws/tts](https://apis.io/channels/kugelaudio/ws-tts/)
+- [/ws/tts/multi](https://apis.io/channels/kugelaudio/ws-tts-multi/)
+- [/ws/tts/stream](https://apis.io/channels/kugelaudio/ws-tts-stream/)
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [kugelaudio](https://apis.io/servers/kugelaudio/kugelaudio/)
+
+#### Collections (14)
+
+Postman and Open Collection request collections.
+
+- [KugelAudio TTS 11labs API](https://apis.io/collections/kugelaudio/open-kugelaudio-11labs-api/)
+- [KugelAudio TTS 11labs Audio API](https://apis.io/collections/kugelaudio/open-kugelaudio-audio-api/)
+- [KugelAudio TTS 11labs billing API](https://apis.io/collections/kugelaudio/open-kugelaudio-billing-api/)
+- [KugelAudio TTS 11labs Dictionaries API](https://apis.io/collections/kugelaudio/open-kugelaudio-dictionaries-api/)
+- [KugelAudio TTS 11labs Health API](https://apis.io/collections/kugelaudio/open-kugelaudio-health-api/)
+- [KugelAudio TTS 11labs license API](https://apis.io/collections/kugelaudio/open-kugelaudio-license-api/)
+- [KugelAudio TTS 11labs Models API](https://apis.io/collections/kugelaudio/open-kugelaudio-models-api/)
+- [KugelAudio TTS 11labs Normalize API](https://apis.io/collections/kugelaudio/open-kugelaudio-normalize-api/)
+- [KugelAudio TTS 11labs Post Overrides API](https://apis.io/collections/kugelaudio/open-kugelaudio-post-overrides-api/)
+- [KugelAudio TTS 11labs Predict API](https://apis.io/collections/kugelaudio/open-kugelaudio-predict-api/)
+- [KugelAudio TTS 11labs Ready API](https://apis.io/collections/kugelaudio/open-kugelaudio-ready-api/)
+- [KugelAudio 11labs Tts API](https://apis.io/collections/kugelaudio/open-kugelaudio-tts-api/)
+- [KugelAudio TTS 11labs Vapi API](https://apis.io/collections/kugelaudio/open-kugelaudio-vapi-api/)
+- [KugelAudio TTS 11labs Voices API](https://apis.io/collections/kugelaudio/open-kugelaudio-voices-api/)
+
+#### Overlays (1)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Kugelaudio Tts Overlay](https://apis.io/overlays/kugelaudio/kugelaudio-tts-overlay/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Kugelaudio Authentication](https://apis.io/security/kugelaudio/kugelaudio-authentication/)
+- [Kugelaudio Domain Security](https://apis.io/security/kugelaudio/kugelaudio-domain-security/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Kugelaudio Plans Pricing](https://apis.io/plans/kugelaudio/kugelaudio-plans-pricing/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.kugelaudio.com)
+- [Documentation](https://docs.kugelaudio.com)
+- [Getting started](https://docs.kugelaudio.com/quickstart)
+- [API reference](https://docs.kugelaudio.com/api-reference/introduction)
+- [Pricing](https://www.kugelaudio.com/#pricing)
+- [Sign up](https://www.kugelaudio.com/en/signup)
+- [Blog](https://www.kugelaudio.com/en/articles)
+- [Terms of service](https://www.kugelaudio.com/terms)
+- [Privacy policy](https://www.kugelaudio.com/privacy)
+- [GitHub](https://github.com/kugelaudio)
+- [Status](https://www.kugelaudio.com/status)
+
+## API Evangelist rating
+
+**Kin Score 54.8** — strong · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 73.2 |
+| Contract quality | 56.2 |
+| Contract governance | 4.5 |
+| Operational transparency | 26.3 |
+| Developer ergonomics | 71.4 |
+| Access clarity | 71.1 |
+
+**Agent readiness 29.3** — agent-ready
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | verified |
+| OpenAPI Examples | — |
+| Rate Limit Signal | — |
+| Event Surface Described | derived (partial credit) |
+| Agent Skills | yes |
+| Well Known Catalog | yes |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | — |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 21.9** — AI & Biometrics
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/kugelaudio/](https://apis.io/providers/kugelaudio/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for KugelAudio: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/kugelaudio/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
